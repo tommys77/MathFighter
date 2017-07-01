@@ -1,48 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-  <TextView
-      android:text="First number"
-      android:textAppearance="?android:attr/textAppearanceMedium"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:id="@+id/first_number" />
-  <TextView
-      android:text="Second number"
-      android:textAppearance="?android:attr/textAppearanceMedium"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:id="@+id/second_number" />
-  <EditText
-      android:id="@+id/answer"
-      android:inputType="number"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content" />
-  <LinearLayout
-     android:orientation="horizontal"
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content"
-     android:weightSum="2">
+    android:layout_height="match_parent"
+    android:layout_padding="10dpi">
+    <TextView
+        android:id="@+id/rocklion_presents"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Rocklion Software presenterer: Math Fighter" />
     <Button
-         android:id="@+id/main_btn_answer"
-         android:text="Svar"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_weight="1" />
+        android:id="@+id/main_btn_topics"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/rocklion_presents"
+        android:text="Tema" />
+    <TextView
+        android:id="@+id/main_txt_topics"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/rocklion_presents"
+        android:layout_alignBaseline="@id/main_btn_topics"
+        android:text="Lett blanding" />
     <Button
-          android:id="@+id/main_btn_try_again"
-          android:text="Prøv igjen"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_weight="1" />
-  </LinearLayout>
-
-  <TextView
-      android:text=""
-      android:textAppearance="?android:attr/textAppearanceLarge"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:id="@+id/status" />
-</LinearLayout>
+        android:id="@+id/main_btn_difficulty"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/main_btn_topics"
+        android:text="Vanskelighetsgrad" />
+    <Button
+        android:id="@+id/main_btn_start"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/main_btn_difficulty"
+        android:text="Start spill" />
+    <Button
+        android:id="@+id/main_btn_highscore"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/main_btn_start"
+        android:layout_below="@id/main_btn_difficulty"
+        android:text="Topp 10 Mattegenier" />
+<!--<TextView
+        android:text="First number"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/first_number" />
+    <TextView
+        android:text="Second number"
+        android:layout_below="@id/first_number"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/second_number" />
+    <EditText
+        android:id="@+id/answer"
+        android:layout_below="@id/second_number"
+        android:inputType="number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_below="@id/answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/main_btn_answer"
+            android:text="Svar"
+            android:textScaleX="auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/main_btn_try_again"
+            android:text="Prøv igjen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/main_btn_highscore"
+            android:text="Highscore"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/main_btn_add_score"
+            android:text="Add Score"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <TextView
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/status" />-->
+</RelativeLayout>

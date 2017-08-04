@@ -60,6 +60,12 @@ namespace MathFighter
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f05000a
+			public const int answer = 2131034122;
+			
+			// aapt resource value: 0x7f050006
+			public const int first_number = 2131034118;
+			
 			// aapt resource value: 0x7f050003
 			public const int main_btn_difficulty = 2131034115;
 			
@@ -75,11 +81,23 @@ namespace MathFighter
 			// aapt resource value: 0x7f050002
 			public const int main_txt_topics = 2131034114;
 			
+			// aapt resource value: 0x7f050007
+			public const int operation = 2131034119;
+			
+			// aapt resource value: 0x7f05000b
+			public const int quiz_btn_answer = 2131034123;
+			
 			// aapt resource value: 0x7f050000
 			public const int rocklion_presents = 2131034112;
 			
-			// aapt resource value: 0x7f050006
-			public const int top_txt_highscore = 2131034118;
+			// aapt resource value: 0x7f050008
+			public const int second_number = 2131034120;
+			
+			// aapt resource value: 0x7f050009
+			public const int status = 2131034121;
+			
+			// aapt resource value: 0x7f05000c
+			public const int top_txt_highscore = 2131034124;
 			
 			static Id()
 			{

@@ -15,7 +15,7 @@ namespace MathFighter
     {
 
         private string dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "highscore.db3");
-
+        
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -30,7 +30,15 @@ namespace MathFighter
             //tryAgainBtn.Click += TryAgainBtn_Click;
             //answerBtn.Click += AnswerBtn_Click;
             highscoreBtn.Click += HighscoreBtn_Click;
+            Button startBtn = (Button)FindViewById(Resource.Id.main_btn_start);
+            startBtn.Click += StartBtn_Click;
             //addScoreBtn.Click += AddScoreBtn_Click;
+        }
+
+        private void StartBtn_Click(object sender, System.EventArgs e)
+        {
+            Intent quiz = new Intent(this, typeof(QuizActivity));
+            StartActivity(quiz);
         }
 
         //private void AddScoreBtn_Click(object sender, System.EventArgs e)
@@ -91,23 +99,9 @@ namespace MathFighter
         //    secondNumber.SetText(second.ToString(), null);
         //}
 
-        //private int Add()
-        //{
-        //    return first + second;
-        //}
+        
 
-        //private void CheckAnswer()
-        //{
-        //    EditText answer = (EditText)FindViewById(Resource.Id.answer);
-        //    int yourAnswer = Integer.ParseInt(answer.Text);
-        //    int correctAnswer = Add();
-        //    TextView status = (TextView)FindViewById(Resource.Id.status);
-        //    if (yourAnswer == correctAnswer)
-        //    {
-        //        status.SetText("Riktig!", null);
-        //    }
-        //    else status.SetText("Feil!", null);
-        //}
+
 
 
     }

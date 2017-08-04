@@ -78,6 +78,9 @@ namespace MathFighter
 			// aapt resource value: 0x7f050000
 			public const int rocklion_presents = 2131034112;
 			
+			// aapt resource value: 0x7f050006
+			public const int top_txt_highscore = 2131034118;
+			
 			static Id()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -96,6 +99,9 @@ namespace MathFighter
 			
 			// aapt resource value: 0x7f030001
 			public const int Quiz = 2130903041;
+			
+			// aapt resource value: 0x7f030002
+			public const int TopPlayers = 2130903042;
 			
 			static Layout()
 			{

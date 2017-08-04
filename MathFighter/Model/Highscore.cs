@@ -39,7 +39,6 @@ namespace MathFighter.Resources.Model
         public override string ToString()
         {
             return "Name: " + Name + ", Score: " + Score + ", Playtime: " + Playtime;
-            //return string.Format("[Highscore: Name={1}, Score={2}, Playtime={3}]", Name, Score, Playtime);
         }
 
     }

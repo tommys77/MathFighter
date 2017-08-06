@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Java.Lang;
+using Android.Preferences;
 
 namespace MathFighter
 {
@@ -27,6 +28,9 @@ namespace MathFighter
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Quiz);
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            j = prefs.GetInt("questions", 10);
+            x = prefs.GetInt("factor", 1);
             UpdateQuiz();
             Button answerBtn = (Button)FindViewById(Resource.Id.quiz_btn_answer);
             answerBtn.Click += AnswerBtn_Click;

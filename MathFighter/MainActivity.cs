@@ -7,6 +7,7 @@ using System.IO;
 using SQLite;
 using MathFighter.Resources.Model;
 using Android.Content;
+using Android.Preferences;
 
 namespace MathFighter
 {
@@ -21,6 +22,9 @@ namespace MathFighter
             base.OnCreate(bundle);
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
+            //ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            //prefs.GetInt("questions", 10);
+            //prefs.GetInt("factor", 1);
             createTable(dbPath);
             //RandomNumbers();
             //Button answerBtn = (Button)FindViewById(Resource.Id.main_btn_answer);
@@ -32,7 +36,15 @@ namespace MathFighter
             highscoreBtn.Click += HighscoreBtn_Click;
             Button startBtn = (Button)FindViewById(Resource.Id.main_btn_start);
             startBtn.Click += StartBtn_Click;
+            var topicsBtn = (Button)FindViewById(Resource.Id.main_btn_topics);
+            topicsBtn.Click += TopicsBtn_Click;
             //addScoreBtn.Click += AddScoreBtn_Click;
+        }
+
+        private void TopicsBtn_Click(object sender, System.EventArgs e)
+        {
+            var topics = new Intent(this, typeof(SubjectActivity));
+            StartActivity(topics);
         }
 
         private void StartBtn_Click(object sender, System.EventArgs e)

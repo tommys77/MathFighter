@@ -112,17 +112,14 @@ namespace MathFighter
 			// aapt resource value: 0x7f060009
 			public const int status = 2131099657;
 			
+			// aapt resource value: 0x7f06000d
+			public const int subject_gangetabellenBtn = 2131099661;
+			
 			// aapt resource value: 0x7f06000c
-			public const int subject_faktorSpinner = 2131099660;
+			public const int subject_questionsToggle = 2131099660;
 			
 			// aapt resource value: 0x7f06000e
-			public const int subject_gangetabellenBtn = 2131099662;
-			
-			// aapt resource value: 0x7f06000d
-			public const int subject_questionsToggle = 2131099661;
-			
-			// aapt resource value: 0x7f06000f
-			public const int top_txt_highscore = 2131099663;
+			public const int top_txt_highscore = 2131099662;
 			
 			static Id()
 			{

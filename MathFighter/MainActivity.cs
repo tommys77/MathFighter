@@ -16,16 +16,18 @@ namespace MathFighter
     {
 
         private string dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "highscore.db3");
-        
+        private TextView topicsTV;
+
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
-            //ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             //prefs.GetInt("questions", 10);
             //prefs.GetInt("factor", 1);
             createTable(dbPath);
+            RefreshScreen();
             //RandomNumbers();
             //Button answerBtn = (Button)FindViewById(Resource.Id.main_btn_answer);
             //Button tryAgainBtn = (Button)FindViewById(Resource.Id.main_btn_try_again);
@@ -45,6 +47,14 @@ namespace MathFighter
         {
             var topics = new Intent(this, typeof(SubjectActivity));
             StartActivity(topics);
+        }
+
+        private void RefreshScreen()
+        {
+            topicsTV = (TextView)FindViewById(Resource.Id.main_txt_topics);
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            string showTopic = prefs.GetString("tema", null);
+            topicsTV.SetText(showTopic, null);
         }
 
         private void StartBtn_Click(object sender, System.EventArgs e)
@@ -83,7 +93,11 @@ namespace MathFighter
             }
         }
 
-        
+        protected override void OnResume()
+        {
+            base.OnResume();
+            RefreshScreen();
+        }
 
         //private void TryAgainBtn_Click(object sender, System.EventArgs e)
         //{
@@ -111,7 +125,7 @@ namespace MathFighter
         //    secondNumber.SetText(second.ToString(), null);
         //}
 
-        
+
 
 
 

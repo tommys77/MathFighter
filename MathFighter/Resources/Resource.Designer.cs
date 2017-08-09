@@ -76,11 +76,8 @@ namespace MathFighter
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f06000a
-			public const int answer = 2131099658;
-			
-			// aapt resource value: 0x7f060006
-			public const int first_number = 2131099654;
+			// aapt resource value: 0x7f060008
+			public const int answer = 2131099656;
 			
 			// aapt resource value: 0x7f060003
 			public const int main_btn_difficulty = 2131099651;
@@ -97,29 +94,26 @@ namespace MathFighter
 			// aapt resource value: 0x7f060002
 			public const int main_txt_topics = 2131099650;
 			
-			// aapt resource value: 0x7f060007
-			public const int operation = 2131099655;
+			// aapt resource value: 0x7f060006
+			public const int question = 2131099654;
 			
-			// aapt resource value: 0x7f06000b
-			public const int quiz_btn_answer = 2131099659;
+			// aapt resource value: 0x7f060009
+			public const int quiz_btn_answer = 2131099657;
 			
 			// aapt resource value: 0x7f060000
 			public const int rocklion_presents = 2131099648;
 			
-			// aapt resource value: 0x7f060008
-			public const int second_number = 2131099656;
+			// aapt resource value: 0x7f060007
+			public const int status = 2131099655;
 			
-			// aapt resource value: 0x7f060009
-			public const int status = 2131099657;
+			// aapt resource value: 0x7f06000b
+			public const int subject_gangetabellenBtn = 2131099659;
 			
-			// aapt resource value: 0x7f06000d
-			public const int subject_gangetabellenBtn = 2131099661;
+			// aapt resource value: 0x7f06000a
+			public const int subject_questionsToggle = 2131099658;
 			
 			// aapt resource value: 0x7f06000c
-			public const int subject_questionsToggle = 2131099660;
-			
-			// aapt resource value: 0x7f06000e
-			public const int top_txt_highscore = 2131099662;
+			public const int top_txt_highscore = 2131099660;
 			
 			static Id()
 			{

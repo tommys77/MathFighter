@@ -5,23 +5,21 @@
     android:minWidth="25px"
     android:minHeight="25px"
     android:padding="20dp">
-  <Button
-      android:text="Gangetabellen"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/subject_questionsToggle"
-      android:id="@+id/subject_gangetabellenBtn" />
-
-  <TextView
-      android:text="20 Spørsmål"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:labelFor="@+id/subject_questionsToggle"
-      android:layout_alignParentTop="true" />
-  <Switch
-      android:id="@id/subject_questionsToggle"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_alignParentEnd="true"
-         />
+    <Button
+        android:text="Gangetabellen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/subject_questionsToggle"
+        android:id="@+id/subject_gangetabellenBtn" />
+    <TextView
+        android:text="20 Spørsmål"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/subject_questionsToggle"
+        android:layout_alignParentTop="true" />
+    <Switch
+        android:id="@id/subject_questionsToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

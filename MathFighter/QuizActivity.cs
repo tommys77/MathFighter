@@ -21,8 +21,7 @@ namespace MathFighter
         int x = 5;
         int j = 10;
         int antallRette = 0;
-        private TextView first;
-        private TextView second;
+        private TextView exercise;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -55,10 +54,9 @@ namespace MathFighter
 
         private void UpdateQuiz()
         {
-            first = (TextView)FindViewById(Resource.Id.first_number);
-            second = (TextView)FindViewById(Resource.Id.second_number);
-            first.SetText(i.ToString(), null);
-            second.SetText(x.ToString(), null);
+            exercise = (TextView)FindViewById(Resource.Id.question);
+            string showQuestion = $"{i} * {x}";
+            exercise.SetText(showQuestion, null);
         }
 
         private int Multiplication(int x, int i)

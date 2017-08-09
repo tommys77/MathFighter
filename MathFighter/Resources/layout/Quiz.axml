@@ -4,25 +4,13 @@
     android:layout_height="match_parent"
     android:padding="10dp">
     <TextView
-        android:id="@+id/first_number"
-        android:text="First number"
-        android:gravity="right"
-        android:layout_width="115.5dp"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/operation"
-        android:text="*"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_width="wrap_content"
+        android:id="@+id/question"
+        android:text="Spørsmål"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/first_number" />
-    <TextView
-        android:id="@+id/second_number"
-        android:text="Second number"
-        android:layout_width="115.5dp"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/operation" />
+        android:textSize="50dp"
+        android:gravity="center_horizontal"
+        android:paddingTop="50dp" />
     <TextView
         android:id="@+id/status"
         android:layout_width="match_parent"

@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Java.Lang;
 using Android.Preferences;
+using System.Diagnostics;
 
 namespace MathFighter
 {
@@ -19,50 +20,64 @@ namespace MathFighter
     {
         int i = 1;
         int x = 5;
-        int j = 10;
+        int antallSpm = 10;
         int antallRette = 0;
-        private TextView exercise;
+        private TextView oppgave;
+        private TextView status;
+        private Stopwatch stopWatch = new Stopwatch();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Quiz);
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-            j = prefs.GetInt("questions", 10);
+            antallSpm = prefs.GetInt("questions", 10);
             x = prefs.GetInt("factor", 1);
+            status = (TextView)FindViewById(Resource.Id.status);
             UpdateQuiz();
+            stopWatch = new Stopwatch();
             Button answerBtn = (Button)FindViewById(Resource.Id.quiz_btn_answer);
             answerBtn.Click += AnswerBtn_Click;
             EditText answerEdit = (EditText)FindViewById(Resource.Id.answer);
             answerEdit.Click += delegate
             {
                 answerEdit.SelectAll();
+                if (i == 1)
+                {
+                    stopWatch.Start();
+                }
+
             };
 
         }
 
+        
         private void AnswerBtn_Click(object sender, EventArgs e)
         {
+            //if (i == 1)
+            //{
+            //    stopWatch.Start();
+            //}
             CheckAnswer();
-            if (i == j)
+            if (i > antallSpm)
             {
+                stopWatch.Stop();
                 GameOver();
             }
-            i++;
             UpdateQuiz();
         }
 
         private void UpdateQuiz()
         {
-            exercise = (TextView)FindViewById(Resource.Id.question);
+            oppgave = (TextView)FindViewById(Resource.Id.question);
             string showQuestion = $"{i} * {x}";
-            exercise.SetText(showQuestion, null);
+            oppgave.SetText(showQuestion, null);
         }
 
         private int Multiplication(int x, int i)
         {
             int answer = 0;
-            if (i <= j)
+            if (i <= antallSpm)
             {
                 answer = x * i;
             }
@@ -71,10 +86,32 @@ namespace MathFighter
 
         private void GameOver()
         {
-            TextView status = (TextView)FindViewById(Resource.Id.status);
-            status.SetText("Gratulerer! Du fikk " + antallRette + " av " + i + " rette.", null);
-            i = 0;
+            i = 1;
+            int totalScore = CalculateScore();
+            string totalTid = stopWatch.Elapsed.Minutes + "m " + stopWatch.Elapsed.Seconds + "s";
+            status.SetText("Time: " + totalTid + " -- In Millis: " + stopWatch.ElapsedMilliseconds + " Score: " + CalculateScore(), null);
             antallRette = 0;
+            stopWatch.Reset();
+            AlertDialog.Builder retry = new AlertDialog.Builder(this)
+                .SetTitle("En gang til?")
+                .SetMessage("Tid: " + totalTid + "\nPoengsum: " + totalScore)
+                .SetNegativeButton("Nei takk!", (Cancel, args) =>
+                {
+                    Finish();
+                })
+                .SetPositiveButton("OK", (OK, args) =>
+                {
+                    this.Recreate();
+                });
+            retry.Create().Show();
+        }
+
+        private int CalculateScore()
+        {
+            double difficulty = 1.0;
+            double pointsPerCorrectAnswer = 1000 * difficulty;
+            double baseScore = pointsPerCorrectAnswer * antallRette;
+            return Convert.ToInt32(baseScore * (1F / ((stopWatch.ElapsedMilliseconds / 1000) * (antallSpm / 10))));
         }
 
         private void CheckAnswer()
@@ -91,8 +128,12 @@ namespace MathFighter
                 // status.SetText("Riktig", null);
                 antallRette++;
             }
-            else status.Append("  ---  Beklager, det er feil.");
+            else
+            {
+                status.Append("  ---  Beklager, det er feil.");
+            }
 
+            i++;
         }
 
     }

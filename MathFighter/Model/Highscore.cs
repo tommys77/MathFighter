@@ -12,6 +12,7 @@ using SQLite;
 
 namespace MathFighter.Resources.Model
 {
+  
     public class Highscore
     {
         [PrimaryKey, NotNull]
@@ -26,7 +27,7 @@ namespace MathFighter.Resources.Model
         {
 
         }
-        public Highscore(int Id, string Name, int Score, int Playtime, int TopicId, int LevelId)
+        public Highscore(int Id, string Name, int Score, long playtime, int TopicId, int LevelId)
         {
             this.Id = Id;
             this.Name = Name;

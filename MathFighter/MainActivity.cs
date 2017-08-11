@@ -23,10 +23,12 @@ namespace MathFighter
         {
             base.OnCreate(bundle);
             // Set our view from the "main" layout resource
-            SetContentView(Resource.Layout.Main);
-            //prefs.GetInt("questions", 10);
-            //prefs.GetInt("factor", 1);
-            createTable(dbPath);
+            SetContentView(Resource.Layout.activity_main);
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("dbPath", dbPath);
+            CreateTable(dbPath);
+            editor.Apply();
             RefreshScreen();
             //RandomNumbers();
             //Button answerBtn = (Button)FindViewById(Resource.Id.main_btn_answer);
@@ -78,11 +80,10 @@ namespace MathFighter
 
 
         //Method to create table if not already exists.
-        private void createTable(string path)
+        private void CreateTable(string path)
         {
-
+            
             var db = new SQLiteConnection(path);
-            // db.DropTable<Highscore>();
             db.CreateTable<Highscore>();
             for (int i = 1; i <= 10; i++)
             {

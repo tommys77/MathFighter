@@ -12,6 +12,8 @@ using Android.Widget;
 using Java.Lang;
 using Android.Preferences;
 using System.Diagnostics;
+using SQLite;
+using MathFighter.Resources.Model;
 
 namespace MathFighter
 {
@@ -25,15 +27,17 @@ namespace MathFighter
         private TextView oppgave;
         private TextView status;
         private Stopwatch stopWatch = new Stopwatch();
+        private string dbPath;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.Quiz);
+            SetContentView(Resource.Layout.activity_quiz);
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             antallSpm = prefs.GetInt("questions", 10);
             x = prefs.GetInt("factor", 1);
             status = (TextView)FindViewById(Resource.Id.status);
+            dbPath = prefs.GetString("dbPath", null);
             UpdateQuiz();
             stopWatch = new Stopwatch();
             Button answerBtn = (Button)FindViewById(Resource.Id.quiz_btn_answer);
@@ -51,19 +55,16 @@ namespace MathFighter
 
         }
 
-        
         private void AnswerBtn_Click(object sender, EventArgs e)
         {
-            //if (i == 1)
-            //{
-            //    stopWatch.Start();
-            //}
             CheckAnswer();
+
             if (i > antallSpm)
             {
                 stopWatch.Stop();
                 GameOver();
             }
+
             UpdateQuiz();
         }
 
@@ -92,6 +93,8 @@ namespace MathFighter
             status.SetText("Time: " + totalTid + " -- In Millis: " + stopWatch.ElapsedMilliseconds + " Score: " + CalculateScore(), null);
             antallRette = 0;
             stopWatch.Reset();
+           
+
             AlertDialog.Builder retry = new AlertDialog.Builder(this)
                 .SetTitle("En gang til?")
                 .SetMessage("Tid: " + totalTid + "\nPoengsum: " + totalScore)
@@ -103,9 +106,34 @@ namespace MathFighter
                 {
                     this.Recreate();
                 });
-            retry.Create().Show();
+            retry.Create();
+            var lowestScore = LowestScore();
+            if (totalScore > lowestScore.Score)
+            {
+                NewHighscore(totalScore, lowestScore.Id, stopWatch.ElapsedMilliseconds);
+                retry.Show();
+            }
         }
 
+        private Highscore LowestScore()
+        {
+            var db = new SQLiteConnection(dbPath);
+            var highscoreList = db.Table<Highscore>();
+            var lowest = highscoreList.OrderByDescending(s => s.Score).Last();
+            return lowest;
+
+        }
+
+        //Creates a dialog where you can enter your name and save your highscore, as well as remove the
+        //lowest scoring entry from the database.
+        private void NewHighscore(int totalScore, int lowestScoreId, long playtime)
+        {
+            FragmentTransaction transaction = FragmentManager.BeginTransaction();
+            NewHighscoreDialog highscoreDialog = new NewHighscoreDialog(totalScore, lowestScoreId, playtime);
+            highscoreDialog.Show(transaction, "highscore dialog");
+        }
+
+        //Score is based on time spent completing the questions and difficulty. Speedy completion, higher difficulty and more correct answers gives a higher score.
         private int CalculateScore()
         {
             double difficulty = 1.0;

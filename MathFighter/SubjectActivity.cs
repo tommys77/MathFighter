@@ -22,7 +22,7 @@ namespace MathFighter
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.Subject);
+            SetContentView(Resource.Layout.activity_subject);
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             ISharedPreferencesEditor editor = prefs.Edit();
             Listeners();

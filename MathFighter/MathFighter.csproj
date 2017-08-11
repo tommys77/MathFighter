@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="Database.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="NewHighscoreDialog.cs" />
     <Compile Include="QuizActivity.cs" />
     <Compile Include="Model\Highscore.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -93,18 +94,19 @@
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\layout\Quiz.axml">
+    <AndroidResource Include="Resources\layout\activity_quiz.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\TopPlayers.axml">
+    <AndroidResource Include="Resources\layout\activity_subject.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\Subject.axml">
+    <AndroidResource Include="Resources\layout\dialog_new_highscore.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\activity_top_player.axml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\Main.axml">
+    <AndroidResource Include="Resources\layout\activity_main.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

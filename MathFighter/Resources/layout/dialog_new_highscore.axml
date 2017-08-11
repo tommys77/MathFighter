@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gratulerer! Du er blant de 10 beste!"
+        android:textSize="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp" />
+    <EditText
+        android:id="@+id/new_highscore_name"
+        android:hint="Skriv inn navnet ditt"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp" />
+    <Button
+        android:id="@+id/new_highscore_ok_btn"
+        android:text="Lagre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

@@ -94,6 +94,12 @@ namespace MathFighter
 			// aapt resource value: 0x7f060002
 			public const int main_txt_topics = 2131099650;
 			
+			// aapt resource value: 0x7f06000e
+			public const int new_highscore_name = 2131099662;
+			
+			// aapt resource value: 0x7f06000f
+			public const int new_highscore_ok_btn = 2131099663;
+			
 			// aapt resource value: 0x7f060006
 			public const int question = 2131099654;
 			
@@ -132,16 +138,19 @@ namespace MathFighter
 		{
 			
 			// aapt resource value: 0x7f030000
-			public const int Main = 2130903040;
+			public const int activity_main = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int Quiz = 2130903041;
+			public const int activity_quiz = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int Subject = 2130903042;
+			public const int activity_subject = 2130903042;
 			
 			// aapt resource value: 0x7f030003
-			public const int TopPlayers = 2130903043;
+			public const int activity_top_player = 2130903043;
+			
+			// aapt resource value: 0x7f030004
+			public const int dialog_new_highscore = 2130903044;
 			
 			static Layout()
 			{

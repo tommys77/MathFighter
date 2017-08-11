@@ -12,6 +12,7 @@ using Android.Widget;
 using Java.Lang;
 using Android.Preferences;
 using System.Diagnostics;
+using Android.Media;
 using SQLite;
 using MathFighter.Resources.Model;
 
@@ -23,11 +24,12 @@ namespace MathFighter
         int i = 1;
         int x = 5;
         int antallSpm = 10;
-        int antallRette = 0;
+        int correctAnswers = 0;
         private TextView oppgave;
         private TextView status;
         private Stopwatch stopWatch = new Stopwatch();
         private string dbPath;
+        private MediaPlayer responseSample;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -36,8 +38,8 @@ namespace MathFighter
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             antallSpm = prefs.GetInt("questions", 10);
             x = prefs.GetInt("factor", 1);
-            status = (TextView)FindViewById(Resource.Id.status);
             dbPath = prefs.GetString("dbPath", null);
+            status = (TextView)FindViewById(Resource.Id.status);
             UpdateQuiz();
             stopWatch = new Stopwatch();
             stopWatch.Reset();
@@ -92,7 +94,7 @@ namespace MathFighter
             i = 1;
             int totalScore = CalculateScore();
             long playtime = stopWatch.ElapsedMilliseconds;
-            antallRette = 0;
+            correctAnswers = 0;
             var lowestScore = FindLowestScore();
             if (totalScore > lowestScore.Score)
             {
@@ -146,7 +148,7 @@ namespace MathFighter
         {
             double difficulty = 1.0;
             double pointsPerCorrectAnswer = 1000 * difficulty;
-            double baseScore = pointsPerCorrectAnswer * antallRette;
+            double baseScore = pointsPerCorrectAnswer * correctAnswers;
             return Convert.ToInt32(baseScore * (1F / ((stopWatch.ElapsedMilliseconds / 1000) * (antallSpm / 10))));
         }
 
@@ -158,15 +160,19 @@ namespace MathFighter
 
             int correctAnswer = Calculator(x, i);
             TextView status = (TextView)FindViewById(Resource.Id.status);
-            status.SetText("Ditt svar: " + yourAnswer.ToString() + " Riktig svar: " + correctAnswer.ToString(), null);
+            status.SetText("Ditt svar: " + yourAnswer + " Riktig svar: " + correctAnswer, null);
             if (yourAnswer == correctAnswer)
             {
+                responseSample = MediaPlayer.Create(this, Resource.Raw.correct);
+                responseSample.Start();
                 status.Append(" ---  Gratulerer det var rett!");
                 // status.SetText("Riktig", null);
-                antallRette++;
+                correctAnswers++;
             }
             else
             {
+                responseSample = MediaPlayer.Create(this, Resource.Raw.incorrect);
+                responseSample.Start();
                 status.Append("  ---  Beklager, det er feil.");
             }
 

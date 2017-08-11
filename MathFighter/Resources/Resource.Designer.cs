@@ -44,8 +44,8 @@ namespace MathFighter
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f040000
-			public const int backgroundspinner = 2130968576;
+			// aapt resource value: 0x7f050000
+			public const int backgroundspinner = 2131034112;
 			
 			static Color()
 			{
@@ -76,53 +76,53 @@ namespace MathFighter
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f060008
-			public const int answer = 2131099656;
+			// aapt resource value: 0x7f070008
+			public const int answer = 2131165192;
 			
-			// aapt resource value: 0x7f060003
-			public const int main_btn_difficulty = 2131099651;
+			// aapt resource value: 0x7f070003
+			public const int main_btn_difficulty = 2131165187;
 			
-			// aapt resource value: 0x7f060005
-			public const int main_btn_highscore = 2131099653;
+			// aapt resource value: 0x7f070005
+			public const int main_btn_highscore = 2131165189;
 			
-			// aapt resource value: 0x7f060004
-			public const int main_btn_start = 2131099652;
+			// aapt resource value: 0x7f070004
+			public const int main_btn_start = 2131165188;
 			
-			// aapt resource value: 0x7f060001
-			public const int main_btn_topics = 2131099649;
+			// aapt resource value: 0x7f070001
+			public const int main_btn_topics = 2131165185;
 			
-			// aapt resource value: 0x7f060002
-			public const int main_txt_topics = 2131099650;
+			// aapt resource value: 0x7f070002
+			public const int main_txt_topics = 2131165186;
 			
-			// aapt resource value: 0x7f06000e
-			public const int new_highscore_name = 2131099662;
+			// aapt resource value: 0x7f07000e
+			public const int new_highscore_name = 2131165198;
 			
-			// aapt resource value: 0x7f06000f
-			public const int new_highscore_ok_btn = 2131099663;
+			// aapt resource value: 0x7f07000f
+			public const int new_highscore_ok_btn = 2131165199;
 			
-			// aapt resource value: 0x7f060006
-			public const int question = 2131099654;
+			// aapt resource value: 0x7f070006
+			public const int question = 2131165190;
 			
-			// aapt resource value: 0x7f060009
-			public const int quiz_btn_answer = 2131099657;
+			// aapt resource value: 0x7f070009
+			public const int quiz_btn_answer = 2131165193;
 			
-			// aapt resource value: 0x7f060000
-			public const int rocklion_presents = 2131099648;
+			// aapt resource value: 0x7f070000
+			public const int rocklion_presents = 2131165184;
 			
-			// aapt resource value: 0x7f060007
-			public const int status = 2131099655;
+			// aapt resource value: 0x7f070007
+			public const int status = 2131165191;
 			
-			// aapt resource value: 0x7f06000c
-			public const int subject_gangetabellenBtn = 2131099660;
+			// aapt resource value: 0x7f07000c
+			public const int subject_gangetabellenBtn = 2131165196;
 			
-			// aapt resource value: 0x7f06000a
-			public const int subject_questionsToggle = 2131099658;
+			// aapt resource value: 0x7f07000a
+			public const int subject_questionsToggle = 2131165194;
 			
-			// aapt resource value: 0x7f06000b
-			public const int subject_questionsToggleLabel = 2131099659;
+			// aapt resource value: 0x7f07000b
+			public const int subject_questionsToggleLabel = 2131165195;
 			
-			// aapt resource value: 0x7f06000d
-			public const int top_txt_highscore = 2131099661;
+			// aapt resource value: 0x7f07000d
+			public const int top_txt_highscore = 2131165197;
 			
 			static Id()
 			{
@@ -162,14 +162,33 @@ namespace MathFighter
 			}
 		}
 		
+		public partial class Raw
+		{
+			
+			// aapt resource value: 0x7f040000
+			public const int correct = 2130968576;
+			
+			// aapt resource value: 0x7f040001
+			public const int incorrect = 2130968577;
+			
+			static Raw()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Raw()
+			{
+			}
+		}
+		
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f050001
-			public const int ApplicationName = 2131034113;
+			// aapt resource value: 0x7f060001
+			public const int ApplicationName = 2131099649;
 			
-			// aapt resource value: 0x7f050000
-			public const int Hello = 2131034112;
+			// aapt resource value: 0x7f060000
+			public const int Hello = 2131099648;
 			
 			static String()
 			{

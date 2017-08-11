@@ -22,6 +22,7 @@ namespace MathFighter
         private long playtime;
         private Button save;
         private EditText yourName;
+        public event EventHandler DialogClosed;
 
         public NewHighscoreDialog (int highscore_in, int id_in, long playtime_in)
         {
@@ -49,7 +50,15 @@ namespace MathFighter
             var newHighscore = new Highscore(id, yourName.Text, highscore, playtime, 1 , 1);
             db.InsertOrReplace(newHighscore);
             this.Dismiss();
+            
         }
-        
+
+        public override void OnDismiss(IDialogInterface dialog)
+        {
+            base.OnDismiss(dialog);
+            DialogClosed?.Invoke(this, null);
+        }
+
+
     }
 }

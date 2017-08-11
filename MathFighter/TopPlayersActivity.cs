@@ -12,12 +12,14 @@ using Android.Widget;
 using SQLite;
 using MathFighter.Resources.Model;
 
+
 namespace MathFighter
 {
     [Activity(Label = "TopPlayersActivity")]
     public class TopPlayersActivity : Activity
     {
         private string dbPath;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -26,6 +28,10 @@ namespace MathFighter
             GetHighscoreTable(dbPath);
         }
 
+        /// <summary>
+        /// Gets the highscore table.
+        /// </summary>
+        /// <param name="path">The path to the database file.</param>
         private void GetHighscoreTable(string path)
         {
             TextView hallOfFame = (TextView)FindViewById(Resource.Id.top_txt_highscore);

@@ -40,6 +40,7 @@ namespace MathFighter
             dbPath = prefs.GetString("dbPath", null);
             UpdateQuiz();
             stopWatch = new Stopwatch();
+            stopWatch.Reset();
             Button answerBtn = (Button)FindViewById(Resource.Id.quiz_btn_answer);
             answerBtn.Click += AnswerBtn_Click;
             EditText answerEdit = (EditText)FindViewById(Resource.Id.answer);
@@ -50,11 +51,10 @@ namespace MathFighter
                 {
                     stopWatch.Start();
                 }
-
             };
-
         }
 
+        //When one clicks a button, this is what happens.
         private void AnswerBtn_Click(object sender, EventArgs e)
         {
             CheckAnswer();
@@ -68,6 +68,7 @@ namespace MathFighter
             UpdateQuiz();
         }
 
+        //For showing the next question
         private void UpdateQuiz()
         {
             oppgave = (TextView)FindViewById(Resource.Id.question);
@@ -75,7 +76,8 @@ namespace MathFighter
             oppgave.SetText(showQuestion, null);
         }
 
-        private int Multiplication(int x, int i)
+        //Currently just a method to multiply two numbers. TODO: Expand to handle different math operations, not just multiplication.
+        private int Calculator(int x, int i)
         {
             int answer = 0;
             if (i <= antallSpm)
@@ -84,44 +86,28 @@ namespace MathFighter
             }
             return answer;
         }
-
+        //Controls what happens when a game is over.
         private void GameOver()
         {
             i = 1;
             int totalScore = CalculateScore();
-            string totalTid = stopWatch.Elapsed.Minutes + "m " + stopWatch.Elapsed.Seconds + "s";
-            status.SetText("Time: " + totalTid + " -- In Millis: " + stopWatch.ElapsedMilliseconds + " Score: " + CalculateScore(), null);
+            long playtime = stopWatch.ElapsedMilliseconds;
             antallRette = 0;
-            stopWatch.Reset();
-           
-
-            AlertDialog.Builder retry = new AlertDialog.Builder(this)
-                .SetTitle("En gang til?")
-                .SetMessage("Tid: " + totalTid + "\nPoengsum: " + totalScore)
-                .SetNegativeButton("Nei takk!", (Cancel, args) =>
-                {
-                    Finish();
-                })
-                .SetPositiveButton("OK", (OK, args) =>
-                {
-                    this.Recreate();
-                });
-            retry.Create();
-            var lowestScore = LowestScore();
+            var lowestScore = FindLowestScore();
             if (totalScore > lowestScore.Score)
             {
                 NewHighscore(totalScore, lowestScore.Id, stopWatch.ElapsedMilliseconds);
-                retry.Show();
             }
+            else OpenRetryDialog(totalScore, stopWatch.ElapsedMilliseconds);
         }
 
-        private Highscore LowestScore()
+        //Returns the lowest current score in the database
+        private Highscore FindLowestScore()
         {
             var db = new SQLiteConnection(dbPath);
             var highscoreList = db.Table<Highscore>();
             var lowest = highscoreList.OrderByDescending(s => s.Score).Last();
             return lowest;
-
         }
 
         //Creates a dialog where you can enter your name and save your highscore, as well as remove the
@@ -131,6 +117,28 @@ namespace MathFighter
             FragmentTransaction transaction = FragmentManager.BeginTransaction();
             NewHighscoreDialog highscoreDialog = new NewHighscoreDialog(totalScore, lowestScoreId, playtime);
             highscoreDialog.Show(transaction, "highscore dialog");
+            highscoreDialog.DialogClosed += delegate
+            {
+                OpenRetryDialog(totalScore, playtime);
+            };
+        }
+
+        //Asks if the player wants to have another go, or if he wants to stop.
+        private void OpenRetryDialog(int totalScore, long _playtime)
+        {
+            var playtime = TimeSpan.FromMilliseconds(_playtime).Minutes + "m " + TimeSpan.FromMilliseconds(_playtime).Seconds + "s";
+            AlertDialog.Builder retry = new AlertDialog.Builder(this)
+            .SetTitle("En gang til?")
+            .SetMessage("Poengsum: " + totalScore + "\nSpilletid: " + playtime)
+            .SetNegativeButton("Nei takk!", (Cancel, args) =>
+            {
+                Finish();
+            })
+            .SetPositiveButton("OK", (OK, args) =>
+            {
+                this.Recreate();
+            });
+            retry.Create().Show();
         }
 
         //Score is based on time spent completing the questions and difficulty. Speedy completion, higher difficulty and more correct answers gives a higher score.
@@ -142,12 +150,13 @@ namespace MathFighter
             return Convert.ToInt32(baseScore * (1F / ((stopWatch.ElapsedMilliseconds / 1000) * (antallSpm / 10))));
         }
 
+        //Checks if the answer you gave is correct.
         private void CheckAnswer()
         {
             EditText answer = (EditText)FindViewById(Resource.Id.answer);
             int yourAnswer = Integer.ParseInt(answer.Text);
 
-            int correctAnswer = Multiplication(x, i);
+            int correctAnswer = Calculator(x, i);
             TextView status = (TextView)FindViewById(Resource.Id.status);
             status.SetText("Ditt svar: " + yourAnswer.ToString() + " Riktig svar: " + correctAnswer.ToString(), null);
             if (yourAnswer == correctAnswer)

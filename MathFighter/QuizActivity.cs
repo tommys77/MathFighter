@@ -44,10 +44,12 @@ namespace MathFighter
             stopWatch = new Stopwatch();
             stopWatch.Reset();
             Button answerBtn = (Button)FindViewById(Resource.Id.quiz_btn_answer);
+            answerBtn.SoundEffectsEnabled = false;
             answerBtn.Click += AnswerBtn_Click;
             EditText answerEdit = (EditText)FindViewById(Resource.Id.answer);
             answerEdit.Click += delegate
             {
+
                 answerEdit.SelectAll();
                 if (i == 1)
                 {
@@ -98,9 +100,9 @@ namespace MathFighter
             var lowestScore = FindLowestScore();
             if (totalScore > lowestScore.Score)
             {
-                NewHighscore(totalScore, lowestScore.Id, stopWatch.ElapsedMilliseconds);
+                NewHighscore(totalScore, lowestScore.Id, playtime);
             }
-            else OpenRetryDialog(totalScore, stopWatch.ElapsedMilliseconds);
+            else OpenRetryDialog(totalScore, playtime);
         }
 
         //Returns the lowest current score in the database
@@ -126,12 +128,12 @@ namespace MathFighter
         }
 
         //Asks if the player wants to have another go, or if he wants to stop.
-        private void OpenRetryDialog(int totalScore, long _playtime)
+        private void OpenRetryDialog(int totalScore, long playtime)
         {
-            var playtime = TimeSpan.FromMilliseconds(_playtime).Minutes + "m " + TimeSpan.FromMilliseconds(_playtime).Seconds + "s";
+            var playtimeString = TimeSpan.FromMilliseconds(playtime).Minutes + "m " + TimeSpan.FromMilliseconds(playtime).Seconds + "s";
             AlertDialog.Builder retry = new AlertDialog.Builder(this)
             .SetTitle("En gang til?")
-            .SetMessage("Poengsum: " + totalScore + "\nSpilletid: " + playtime)
+            .SetMessage("Poengsum: " + totalScore + "\nSpilletid: " + playtimeString)
             .SetNegativeButton("Nei takk!", (Cancel, args) =>
             {
                 Finish();

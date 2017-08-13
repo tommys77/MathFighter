@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using Java.Lang;
 using Android.Preferences;
 using System.Diagnostics;
 using Android.Media;
+using Android.Util;
+using MathFighter.Model;
 using SQLite;
-using MathFighter.Resources.Model;
 
 namespace MathFighter
 {
@@ -30,12 +26,13 @@ namespace MathFighter
         private Stopwatch stopWatch = new Stopwatch();
         private string dbPath;
         private MediaPlayer responseSample;
+        private ISharedPreferences prefs;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_quiz);
-            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             antallSpm = prefs.GetInt("questions", 10);
             x = prefs.GetInt("factor", 1);
             dbPath = prefs.GetString("dbPath", null);
@@ -95,12 +92,12 @@ namespace MathFighter
         {
             i = 1;
             int totalScore = CalculateScore();
-            long playtime = stopWatch.ElapsedMilliseconds;
+            var playtime = stopWatch.ElapsedMilliseconds;
             correctAnswers = 0;
             var lowestScore = FindLowestScore();
-            if (totalScore > lowestScore.Score)
+            if (lowestScore != null && totalScore > lowestScore.Score)
             {
-                NewHighscore(totalScore, lowestScore.Id, playtime);
+                NewHighscore(totalScore, lowestScore.HighscoreId, playtime);
             }
             else OpenRetryDialog(totalScore, playtime);
         }
@@ -108,10 +105,12 @@ namespace MathFighter
         //Returns the lowest current score in the database
         private Highscore FindLowestScore()
         {
+            
             var db = new SQLiteConnection(dbPath);
-            var highscoreList = db.Table<Highscore>();
-            var lowest = highscoreList.OrderByDescending(s => s.Score).Last();
-            return lowest;
+            var subjectId = prefs.GetInt("subjectId", 0);
+            Log.WriteLine(LogPriority.Debug, "MyTAG", "Current SubjectID: " + subjectId);
+            var highscoreList = db.Table<Highscore>().Where(h => h.SubjectId == subjectId);
+            return subjectId != 0 ? highscoreList.OrderByDescending(s => s.Score).Last() : null;
         }
 
         //Creates a dialog where you can enter your name and save your highscore, as well as remove the
@@ -181,5 +180,14 @@ namespace MathFighter
             i++;
         }
 
+        private int first;
+        private int second;
+
+        private void RandomNumbers()
+        {
+            var random = new Random();
+            first = random.Next(10);
+            second = random.Next(10);
+        }
     }
 }

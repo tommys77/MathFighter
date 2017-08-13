@@ -19,12 +19,13 @@ namespace MathFighter
     {
         private int questions = 10;
         private ISharedPreferences prefs;
+        private ISharedPreferencesEditor editor;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_subject);
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-            ISharedPreferencesEditor editor = prefs.Edit();
+            editor = prefs.Edit();
             Listeners();
             var questionSwitch = (Switch)FindViewById(Resource.Id.subject_questionsToggle);
             questionSwitch.CheckedChange += delegate (object sender, CompoundButton.CheckedChangeEventArgs e)
@@ -40,14 +41,14 @@ namespace MathFighter
         List<string> factorList = new List<string>();
         private void Listeners()
         {
-            Button timesTable = FindViewById<Button>(Resource.Id.subject_gangetabellenBtn);
+            var timesTable = FindViewById<Button>(Resource.Id.subject_gangetabellenBtn);
             for (int i = 2; i <= 20; i++)
             {
                 factorList.Add(i + " - gangen");
             }
             var adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerDropDownItem, factorList);
             timesTable.Click += delegate
-             {
+            {
                  new AlertDialog.Builder(this)
                      .SetTitle("Velg en rekke")
                      .SetSingleChoiceItems(adapter, factorList.IndexOf(prefs.GetInt("factor", -1).ToString()), TimesTableClicked)
@@ -58,18 +59,18 @@ namespace MathFighter
 
         private void TimesTableClicked(object sender, DialogClickEventArgs e)
         {
-            
             var toast = Toast.MakeText(this, "Du valgte: " + factorList.ElementAt(e.Which), ToastLength.Short);
             toast.Show();
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             ISharedPreferencesEditor editor = prefs.Edit();
-            var rekke = Integer.ParseInt(factorList.ElementAt(e.Which).ToString().Substring(0, 1));
+            var rekke = Integer.ParseInt(factorList.ElementAt(e.Which).Substring(0, 1));
             editor.PutInt("factor", rekke);
-            editor.PutString("tema", factorList.ElementAt(e.Which).ToString());
+            editor.PutInt("subjectId", 1);
+            editor.PutString("subject", factorList.ElementAt(e.Which));
             editor.Apply();
             Finish();
-
         }
+        
 
 
     }

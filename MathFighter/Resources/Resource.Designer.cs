@@ -76,53 +76,65 @@ namespace MathFighter
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f070008
-			public const int answer = 2131165192;
-			
-			// aapt resource value: 0x7f070003
-			public const int main_btn_difficulty = 2131165187;
-			
-			// aapt resource value: 0x7f070005
-			public const int main_btn_highscore = 2131165189;
-			
-			// aapt resource value: 0x7f070004
-			public const int main_btn_start = 2131165188;
-			
-			// aapt resource value: 0x7f070001
-			public const int main_btn_topics = 2131165185;
-			
-			// aapt resource value: 0x7f070002
-			public const int main_txt_topics = 2131165186;
-			
-			// aapt resource value: 0x7f07000e
-			public const int new_highscore_name = 2131165198;
-			
-			// aapt resource value: 0x7f07000f
-			public const int new_highscore_ok_btn = 2131165199;
-			
-			// aapt resource value: 0x7f070006
-			public const int question = 2131165190;
-			
-			// aapt resource value: 0x7f070009
-			public const int quiz_btn_answer = 2131165193;
-			
-			// aapt resource value: 0x7f070000
-			public const int rocklion_presents = 2131165184;
+			// aapt resource value: 0x7f07000c
+			public const int answer = 2131165196;
 			
 			// aapt resource value: 0x7f070007
-			public const int status = 2131165191;
+			public const int main_btn_difficulty = 2131165191;
 			
-			// aapt resource value: 0x7f07000c
-			public const int subject_gangetabellenBtn = 2131165196;
+			// aapt resource value: 0x7f070009
+			public const int main_btn_highscore = 2131165193;
+			
+			// aapt resource value: 0x7f070008
+			public const int main_btn_start = 2131165192;
+			
+			// aapt resource value: 0x7f070005
+			public const int main_btn_topics = 2131165189;
+			
+			// aapt resource value: 0x7f070006
+			public const int main_txt_topics = 2131165190;
+			
+			// aapt resource value: 0x7f070012
+			public const int new_highscore_name = 2131165202;
+			
+			// aapt resource value: 0x7f070013
+			public const int new_highscore_ok_btn = 2131165203;
 			
 			// aapt resource value: 0x7f07000a
-			public const int subject_questionsToggle = 2131165194;
-			
-			// aapt resource value: 0x7f07000b
-			public const int subject_questionsToggleLabel = 2131165195;
+			public const int question = 2131165194;
 			
 			// aapt resource value: 0x7f07000d
-			public const int top_txt_highscore = 2131165197;
+			public const int quiz_btn_answer = 2131165197;
+			
+			// aapt resource value: 0x7f070001
+			public const int rb_gangetabellen = 2131165185;
+			
+			// aapt resource value: 0x7f070002
+			public const int rb_kvadratrot = 2131165186;
+			
+			// aapt resource value: 0x7f070003
+			public const int rb_lett_blanding = 2131165187;
+			
+			// aapt resource value: 0x7f070000
+			public const int rbg_tema = 2131165184;
+			
+			// aapt resource value: 0x7f070004
+			public const int rocklion_presents = 2131165188;
+			
+			// aapt resource value: 0x7f07000b
+			public const int status = 2131165195;
+			
+			// aapt resource value: 0x7f070010
+			public const int subject_gangetabellenBtn = 2131165200;
+			
+			// aapt resource value: 0x7f07000e
+			public const int subject_questionsToggle = 2131165198;
+			
+			// aapt resource value: 0x7f07000f
+			public const int subject_questionsToggleLabel = 2131165199;
+			
+			// aapt resource value: 0x7f070011
+			public const int top_txt_highscore = 2131165201;
 			
 			static Id()
 			{
@@ -138,19 +150,22 @@ namespace MathFighter
 		{
 			
 			// aapt resource value: 0x7f030000
-			public const int activity_main = 2130903040;
+			public const int actionbar_top_player = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int activity_quiz = 2130903041;
+			public const int activity_main = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int activity_subject = 2130903042;
+			public const int activity_quiz = 2130903042;
 			
 			// aapt resource value: 0x7f030003
-			public const int activity_top_player = 2130903043;
+			public const int activity_subject = 2130903043;
 			
 			// aapt resource value: 0x7f030004
-			public const int dialog_new_highscore = 2130903044;
+			public const int activity_top_player = 2130903044;
+			
+			// aapt resource value: 0x7f030005
+			public const int dialog_new_highscore = 2130903045;
 			
 			static Layout()
 			{

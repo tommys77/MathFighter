@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <RadioGroup
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rbg_tema">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Gangetabellen"
+            android:id="@+id/rb_gangetabellen" />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kvadratrot"
+            android:id="@+id/rb_kvadratrot" />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lett blanding"
+            android:id="@+id/rb_lett_blanding" />
+    </RadioGroup>
+</LinearLayout>

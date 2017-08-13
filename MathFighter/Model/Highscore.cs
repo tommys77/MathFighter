@@ -1,47 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+﻿using MathFighter.Model;
 using SQLite;
 
-namespace MathFighter.Resources.Model
+namespace MathFighter.Model
 {
   
     public class Highscore
     {
         [PrimaryKey, NotNull]
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public int HighscoreId { get; set; }
+        public string Player { get; set; }
         public int Score { get; set; }
-        public int Playtime { get; set; }
-        public int TopicId { get; set; }
-        public int LevelId { get; set; }
+        public long Playtime { get; set; }
+        public int SubjectId { get; set; }
+        public int DifficultyId { get; set; }
 
         public Highscore()
         {
 
         }
-        public Highscore(int Id, string Name, int Score, long playtime, int TopicId, int LevelId)
+        public Highscore(int highscoreId, string player, int score, long playtime, int subjectId, int difficultyId)
         {
-            this.Id = Id;
-            this.Name = Name;
-            this.Score = Score;
-            this.Playtime = Playtime;
-            this.TopicId = TopicId;
-            this.LevelId = LevelId;
+            this.HighscoreId = highscoreId;
+            this.Player = player;
+            this.Score = score;
+            this.Playtime = playtime;
+            this.SubjectId = subjectId;
+            this.DifficultyId = difficultyId;
         }
-
-        public override string ToString()
-        {
-            return "Name: " + Name + ", Score: " + Score + ", Playtime: " + Playtime;
-        }
-
     }
 
 

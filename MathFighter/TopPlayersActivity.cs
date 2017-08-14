@@ -12,6 +12,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using MathFighter.Adapters;
 using MathFighter.Model;
 using SQLite;
 
@@ -88,17 +89,15 @@ namespace MathFighter
 
         private void GetHighscoreTable()
         {
-            var hallOfFame = FindViewById<TextView>(Resource.Id.top_txt_highscore);
-            hallOfFame.Text = "";
+            //var hallOfFame = FindViewById<TextView>(Resource.Id.top_txt_highscore);
+            //hallOfFame.Text = "";
             if (dbPath == null) return;
-
             var dbManager = new DatabaseManager(dbPath);
             var highscores = dbManager.GetHighscores(subjectId);
-
-            foreach (var item in highscores)
-            {
-                hallOfFame.Text += item + "\n";
-            }
+            var mList = new List<HighscoreViewHelper>();
+            var adapter = new HighscoreListAdapter(this, highscores);
+            var lvHighscores = FindViewById<ListView>(Resource.Id.listView_top_player_highscores);
+            lvHighscores.Adapter = adapter;
         }
 
 

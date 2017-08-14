@@ -15,7 +15,7 @@ namespace MathFighter
     [Activity(Label = "MathFighter", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        private string dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "highscore.db3");
+        private string dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "highscore.db3");
         private TextView topicsTV;
         private DatabaseManager dbManager;
 

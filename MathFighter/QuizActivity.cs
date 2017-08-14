@@ -91,7 +91,7 @@ namespace MathFighter
         private void GameOver()
         {
             i = 1;
-            int totalScore = CalculateScore();
+            var totalScore = CalculateScore();
             var playtime = stopWatch.ElapsedMilliseconds;
             correctAnswers = 0;
             var lowestScore = FindLowestScore();

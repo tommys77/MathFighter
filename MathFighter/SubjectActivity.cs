@@ -38,20 +38,26 @@ namespace MathFighter
             };
         }
 
-        List<string> factorList = new List<string>();
+        List<int> factorInt = new List<int>();
+        private List<string> factorStrings = new List<string>();
         private void Listeners()
         {
             var timesTable = FindViewById<Button>(Resource.Id.subject_gangetabellenBtn);
             for (int i = 2; i <= 20; i++)
             {
-                factorList.Add(i + " - gangen");
+                factorInt.Add(i);
             }
-            var adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerDropDownItem, factorList);
+            foreach (var i in factorInt)
+            {
+                factorStrings.Add(i + " - gangen");
+            }
+
+            var adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerDropDownItem, factorStrings);
             timesTable.Click += delegate
             {
                  new AlertDialog.Builder(this)
                      .SetTitle("Velg en rekke")
-                     .SetSingleChoiceItems(adapter, factorList.IndexOf(prefs.GetInt("factor", -1).ToString()), TimesTableClicked)
+                     .SetSingleChoiceItems(adapter,factorStrings.IndexOf(prefs.GetInt("factor", -1).ToString()), TimesTableClicked)
                      .Create()
                      .Show();
              };
@@ -59,14 +65,11 @@ namespace MathFighter
 
         private void TimesTableClicked(object sender, DialogClickEventArgs e)
         {
-            var toast = Toast.MakeText(this, "Du valgte: " + factorList.ElementAt(e.Which), ToastLength.Short);
-            toast.Show();
-            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-            ISharedPreferencesEditor editor = prefs.Edit();
-            var rekke = Integer.ParseInt(factorList.ElementAt(e.Which).Substring(0, 1));
+            //Toast.MakeText(this, "Du valgte: " + factorInt.ElementAt(e.Which), ToastLength.Short).Show();
+            var rekke = factorInt.ElementAt(e.Which);
             editor.PutInt("factor", rekke);
             editor.PutInt("subjectId", 1);
-            editor.PutString("subject", factorList.ElementAt(e.Which));
+            editor.PutString("subject", factorStrings.ElementAt(e.Which));
             editor.Apply();
             Finish();
         }

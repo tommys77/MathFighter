@@ -50,12 +50,12 @@ namespace MathFighter
         {
             db.Execute(CreateTableSubject);
             db.Execute(CreateTableHighscore);
-            AddSubjects(db);
-            AddDefaultHighscores(db);
+            AddSubjects();
+            AddDefaultHighscores();
         }
 
         //For better presentation, add some default highscores.
-        private static void AddDefaultHighscores(SQLiteConnection db)
+        private  void AddDefaultHighscores()
         {
             for (var i = 1; i <= 10; i++)
             {
@@ -69,7 +69,7 @@ namespace MathFighter
         }
 
         //To easier add more subjects in the future
-        private static void AddSubjects(SQLiteConnection db)
+        private void AddSubjects()
         {
             var multi = new Subject(1, "Gangetabllen");
             var mixed = new Subject(2, "Lett blanding");
@@ -101,10 +101,9 @@ namespace MathFighter
                 if (item.SubjectId != subjectId) continue;
                 var playtime = TimeSpan.FromMilliseconds(item.Playtime).Minutes + "m" +
                                TimeSpan.FromMilliseconds(item.Playtime).Seconds + "s";
-                highscoresViewList.Add( new HighscoreViewHelper( item.HighscoreId, item.Player, item.Score, playtime, subjectName));
+                highscoresViewList.Add( new HighscoreViewHelper( item.HighscoreId, item.Player, item.Score, playtime));
             }
             return highscoresViewList;
-
         }
 
         //Onwards are methods read from and write to the database.

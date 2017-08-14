@@ -14,27 +14,25 @@ namespace MathFighter.Model
 {
     public class HighscoreViewHelper
     {
-        private int HighscoreId { get; set; }
-        private string Player { get; set; }
-        private int Score { get; set; }
-        private string Playtime { get; set; }
-        private string SubjectName { get; set; }
+        public int HighscoreId { get; set; }
+        public string Player { get; set; }
+        public int Score { get; set; }
+        public string Playtime { get; set; }
+        //public string SubjectName { get; set; }
 
-        public HighscoreViewHelper() { }
-
-        public HighscoreViewHelper(int highscoreId, string player, int score, string playTime, string subjectName)
+        public HighscoreViewHelper(int highscoreId, string player, int score, string playTime)
         {
-            this.HighscoreId = highscoreId;
-            this.Player = player;
-            this.Score = score;
-            this.Playtime = playTime;
-            this.SubjectName = subjectName;
+            HighscoreId = highscoreId;
+            Player = player;
+            Score = score;
+            Playtime = playTime;
+          //  SubjectName = subjectName;
         }
 
-        public override string ToString()
-        {
-            return "Spiller: " + Player + ", Poeng: " + Score + ", Spilletid: " + Playtime + ", Tema: " + SubjectName;
-        }
+        //public override string ToString()
+        //{
+        //    return "Spiller: " + Player + ", Poeng: " + Score + ", Spilletid: " + Playtime + ", Tema: " + SubjectName;
+        //}
     }
 
 

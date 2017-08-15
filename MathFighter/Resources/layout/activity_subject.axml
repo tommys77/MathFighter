@@ -8,13 +8,12 @@
         android:text="20 Spørsmål"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:labelFor="@+id/subject_questionsToggle"
+        android:labelFor="@+id/sw_subject_antall_sporsmaal"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:id="@+id/subject_questionsToggleLabel" />
+        android:layout_alignParentTop="true" />
     <Switch
-        android:id="@id/subject_questionsToggle"
+        android:id="@id/sw_subject_antall_sporsmaal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -24,6 +23,18 @@
         android:text="Gangetabellen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/subject_gangetabellenBtn"
-        android:layout_below="@id/subject_questionsToggle" />
+        android:id="@+id/btn_subject_gangetabellen"
+        android:layout_below="@id/sw_subject_antall_sporsmaal" />
+    <Button
+        android:text="Kvadratrøtter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_subject_kvadratrot"
+        android:layout_below="@id/btn_subject_gangetabellen" />
+    <Button
+        android:text="Lett blanding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_subject_lett_blanding"
+        android:layout_below="@id/btn_subject_kvadratrot" />
 </RelativeLayout>

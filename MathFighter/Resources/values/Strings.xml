@@ -2,4 +2,5 @@
 <resources>
     <string name="Hello">Hello World, Click Me!</string>
     <string name="ApplicationName">MathFighter</string>
+    <string name="square_root_symbol">\u221a</string>
 </resources>

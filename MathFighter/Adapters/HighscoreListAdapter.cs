@@ -15,12 +15,12 @@ namespace MathFighter.Adapters
 {
     public class HighscoreListAdapter : BaseAdapter<HighscoreViewHelper>
     {
-        public List<HighscoreViewHelper> mItems;
+        public List<HighscoreViewHelper> highscores;
         private Context mContext;
 
         public HighscoreListAdapter(Context context, List<HighscoreViewHelper> items)
         {
-            mItems = items;
+            highscores = items;
             mContext = context;
         }
 
@@ -33,33 +33,35 @@ namespace MathFighter.Adapters
 
         public override int Count
         {
-            get { return mItems.Count; }
+            get { return highscores.Count; }
             
         }
 
         public override HighscoreViewHelper this[int position]
         {
-            get { return mItems[position]; }
+            get { return highscores[position]; }
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            View row = convertView;
+            View highscoreView = convertView;
 
-            if (row == null)
+            if (highscoreView == null)
             {
-                row = LayoutInflater.From(mContext).Inflate(Resource.Layout.item_highscore, null, false);
+                highscoreView = LayoutInflater.From(mContext).Inflate(Resource.Layout.item_highscore, null, false);
             }
 
-            var txtPos = row.FindViewById<TextView>(Resource.Id.tv_position);
-            var txtPlayer = row.FindViewById<TextView>(Resource.Id.tv_player);
-            var txtScore = row.FindViewById<TextView>(Resource.Id.tv_score);
-            var txtPlaytime = row.FindViewById<TextView>(Resource.Id.tv_playtime);
-            txtPos.SetText(mItems[position].HighscoreId.ToString(), null); 
-            txtPlayer.SetText(mItems[position].Player, null);
-            txtScore.SetText(mItems[position].Score.ToString(), null);
-            txtPlaytime.SetText(mItems[position].Playtime, null);
-            return row;
+            var txtPos = highscoreView.FindViewById<TextView>(Resource.Id.tv_position);
+            var txtPlayer = highscoreView.FindViewById<TextView>(Resource.Id.tv_player);
+            var txtScore = highscoreView.FindViewById<TextView>(Resource.Id.tv_score);
+            var txtPlaytime = highscoreView.FindViewById<TextView>(Resource.Id.tv_playtime);
+            var pos = highscores.IndexOf(highscores[position]) + 1;
+            txtPos.SetText(pos.ToString(), null); 
+            txtPlayer.SetText(highscores[position].Player, null);
+            txtScore.SetText(highscores[position].Score.ToString(), null);
+            txtPlaytime.SetText(highscores[position].Playtime, null);
+
+            return highscoreView;
         }
 
     }

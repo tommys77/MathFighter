@@ -57,11 +57,11 @@ namespace MathFighter
             {
                 subjectId = 1;
             }
-            else if (e.CheckedId == rb_lett_blanding.Id)
+            else if (e.CheckedId == rb_kvadratrot.Id)
             {
                 subjectId = 2;
             }
-            else if (e.CheckedId == rb_kvadratrot.Id)
+            else if (e.CheckedId == rb_lett_blanding.Id)
             {
                 subjectId = 3;
             }
@@ -89,8 +89,6 @@ namespace MathFighter
 
         private void GetHighscoreTable()
         {
-            //var hallOfFame = FindViewById<TextView>(Resource.Id.top_txt_highscore);
-            //hallOfFame.Text = "";
             if (dbPath == null) return;
             var dbManager = new DatabaseManager(dbPath);
             var highscores = dbManager.GetHighscores(subjectId);

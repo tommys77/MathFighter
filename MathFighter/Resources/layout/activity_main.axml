@@ -5,34 +5,43 @@
     android:padding="10dp"
     android:gravity="top">
     <TextView
-        android:id="@+id/rocklion_presents"
+        android:id="@+id/title"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="Rocklion Software presenterer: Math Fighter" />
     <Button
-        android:id="@+id/main_btn_topics"
+        android:id="@+id/btn_main_tema"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_below="@id/rocklion_presents"
+        android:layout_below="@id/title"
         android:text="Tema" />
     <TextView
-        android:id="@+id/main_txt_topics"
+        android:id="@+id/tv_main_tema"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/rocklion_presents"
-        android:layout_alignBaseline="@id/main_btn_topics"
+        android:layout_below="@id/title"
+        android:layout_alignBaseline="@id/btn_main_tema"
         android:text="Lett blanding" />
     <Button
-        android:id="@+id/main_btn_difficulty"
+        android:id="@+id/btn_main_vanskelighetsgrad"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_below="@id/main_btn_topics"
+        android:layout_below="@id/btn_main_tema"
         android:text="Vanskelighetsgrad" />
+    <TextView
+        android:id="@+id/tv_main_vanskelighetsgrad"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tv_main_tema"
+        android:layout_alignBaseline="@id/btn_main_vanskelighetsgrad"
+        android:text="Lett" />
     <Button
-        android:id="@+id/main_btn_start"
+        android:id="@+id/btn_main_start"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_alignParentBottom="true"

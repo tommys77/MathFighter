@@ -5,6 +5,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Drm;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -27,7 +28,7 @@ namespace MathFighter
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             editor = prefs.Edit();
             Listeners();
-            var questionSwitch = (Switch)FindViewById(Resource.Id.subject_questionsToggle);
+            var questionSwitch = (Switch)FindViewById(Resource.Id.sw_subject_antall_sporsmaal);
             questionSwitch.CheckedChange += delegate (object sender, CompoundButton.CheckedChangeEventArgs e)
             {
                 questions = e.IsChecked ? 20 : 10;
@@ -42,7 +43,7 @@ namespace MathFighter
         private List<string> factorStrings = new List<string>();
         private void Listeners()
         {
-            var timesTable = FindViewById<Button>(Resource.Id.subject_gangetabellenBtn);
+            var timesTable = FindViewById<Button>(Resource.Id.btn_subject_gangetabellen);
             for (int i = 2; i <= 20; i++)
             {
                 factorInt.Add(i);
@@ -61,15 +62,25 @@ namespace MathFighter
                      .Create()
                      .Show();
              };
+            var btnSqrt = FindViewById<Button>(Resource.Id.btn_subject_kvadratrot);
+            btnSqrt.Click += delegate
+            {
+                SetSharedPreferencesAndFinish(2, "Kvadratrøtter");
+            };
         }
 
         private void TimesTableClicked(object sender, DialogClickEventArgs e)
         {
-            //Toast.MakeText(this, "Du valgte: " + factorInt.ElementAt(e.Which), ToastLength.Short).Show();
             var rekke = factorInt.ElementAt(e.Which);
-            editor.PutInt("factor", rekke);
-            editor.PutInt("subjectId", 1);
-            editor.PutString("subject", factorStrings.ElementAt(e.Which));
+            SetSharedPreferencesAndFinish(1, factorStrings.ElementAt(e.Which), rekke);
+        }
+
+        private void SetSharedPreferencesAndFinish(int subjectId, string subject, int factor = 0)
+        {
+            //Toast.MakeText(this, "Du valgte: " + subject, ToastLength.Long).Show();
+            editor.PutInt("subjectId", subjectId);
+            editor.PutString("subject", subject);
+            editor.PutInt("factor", factor);
             editor.Apply();
             Finish();
         }

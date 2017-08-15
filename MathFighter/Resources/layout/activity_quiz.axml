@@ -4,13 +4,20 @@
     android:layout_height="match_parent"
     android:padding="10dp">
     <TextView
-        android:id="@+id/question"
+        android:id="@+id/tv_quiz_current_question"
+        android:text="Spørsmål nr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingTop="30dp" />
+    <TextView
+        android:id="@+id/tv_quiz_show_question"
         android:text="Spørsmål"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="50dp"
         android:gravity="center_horizontal"
-        android:paddingTop="50dp" />
+        android:layout_below="@+id/tv_quiz_current_question" />
     <TextView
         android:id="@+id/status"
         android:layout_width="match_parent"

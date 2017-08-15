@@ -200,18 +200,37 @@ namespace MathFighter
         //Score is based on time spent completing the questions and difficulty. Speedy completion, higher difficulty and more correct answers gives a higher score.
         private int CalculateScore()
         {
-            var difficulty = 1.0;
+            double difficulty;
+            switch (prefs.GetInt("difficultyId", 1))
+            {
+                case 2:
+                    difficulty = 1.5;
+                    break;
+                case 3:
+                    difficulty = 2.0;
+                    break;
+                default:
+                    difficulty = 1.0;
+                    break;
+            }
+            
             var pointsPerCorrectAnswer = 1000 * difficulty;
             var baseScore = pointsPerCorrectAnswer * correctAnswers;
-            return Convert.ToInt32(baseScore * (1F / ((stopWatch.ElapsedMilliseconds / 1000) * (prefs.GetInt("questions", 10) / 10))));
+            int timeBonus;
+            if(prefs.GetInt("questions", 10) == 20);
+            {
+                timeBonus = (int) ( 120000 - stopWatch.ElapsedMilliseconds ) / 20 * correctAnswers;
+            }
+            var totalScore = (int) baseScore + timeBonus;
+            return totalScore;
+            //return Convert.ToInt32(baseScore * (1F / ((stopWatch.ElapsedMilliseconds / 1000) * (prefs.GetInt("questions", 10) / 10))));
         }
 
         //Checks if the answer you gave is correct.
         private void CheckAnswer()
         {
             EditText answer = (EditText)FindViewById(Resource.Id.answer);
-            double yourAnswer;
-            Double.TryParse(answer.Text, out yourAnswer);
+            double.TryParse(answer.Text, out double yourAnswer);
 
             TextView status = (TextView)FindViewById(Resource.Id.status);
             status.SetText("Ditt svar: " + yourAnswer + " Riktig svar: " + rightAnswer, null);

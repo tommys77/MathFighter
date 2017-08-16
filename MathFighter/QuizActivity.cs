@@ -75,6 +75,7 @@ namespace MathFighter
             UpdateQuiz();
         }
 
+        List<int> intList = new List<int>();
         //For showing the next question
         private void UpdateQuiz()
         {
@@ -83,14 +84,27 @@ namespace MathFighter
 
             var showQuestion = "";
             var difficultyId = prefs.GetInt("difficultyId", 0);
-
+            var r = 0;
             switch (subjectId)
             {
                 case 1:
                     x = prefs.GetInt("factor", 1);
-                    i = new Random().Next(1, prefs.GetInt("questions", 10));
+                    int numberOfQuestions = prefs.GetInt("questions", 10);
+                    if (count == 1)
+                    {
+                        for (int k = 1; k <= numberOfQuestions; k++)
+                        {
+                            intList.Add(k);
+                        }
+                    }
+                    if (intList.Count() != 0)
+                    {
+                        i = intList.ElementAt(new Random().Next(intList.IndexOf(intList.Last())));
+                    }
+                    intList.Remove(i);
+                    //if (!spentQuestions.Co(ntains(i)) { UpdateQuiz(); }
+                    //spentQuestions.Add(i);
                     showQuestion = $"{x} * {i}";
-                    spentQuestions.Add(i);
                     rightAnswer = calculator.Multiply(x, i);
                     break;
                 case 2:
@@ -116,7 +130,7 @@ namespace MathFighter
                             }
                             break;
                     }
-                    var r = new Random().Next(rootableInts.Count);
+                    r = new Random().Next(rootableInts.Count);
                     x = rootableInts.ElementAt(r);
                     if (spentQuestions.Contains(x))
                     {
@@ -127,10 +141,8 @@ namespace MathFighter
                     rightAnswer = System.Math.Sqrt(x);
                     break;
                 case 3:
-                    var list = new List<string>();
                     string[] input = { "+", "-", "/", "*" };
-                    list.AddRange(input);
-                    operation = new Random().Next(list.IndexOf(list.First()), list.Count).ToString();
+                    operation = input.ElementAt(new Random().Next(input.Count() - 1));
                     break;
             }
             oppgave = (TextView)FindViewById(Resource.Id.tv_quiz_show_question);
@@ -144,6 +156,7 @@ namespace MathFighter
         //Controls what happens when a game is over.
         private void GameOver()
         {
+            count = 10;
             var totalScore = CalculateScore();
             var playtime = stopWatch.ElapsedMilliseconds;
             correctAnswers = 0;
@@ -200,6 +213,7 @@ namespace MathFighter
         //Score is based on time spent completing the questions and difficulty. Speedy completion, higher difficulty and more correct answers gives a higher score.
         private int CalculateScore()
         {
+            int numberOfQUestions = prefs.GetInt("questions", 10);
             double difficulty;
             switch (prefs.GetInt("difficultyId", 1))
             {
@@ -213,16 +227,22 @@ namespace MathFighter
                     difficulty = 1.0;
                     break;
             }
-            
+
             var pointsPerCorrectAnswer = 1000 * difficulty;
             var baseScore = pointsPerCorrectAnswer * correctAnswers;
-            int timeBonus;
-            if(prefs.GetInt("questions", 10) == 20);
+            long timeBonus;
+            long maxTime = 60000;
+            if (numberOfQUestions == 20)
             {
-                timeBonus = (int) ( 120000 - stopWatch.ElapsedMilliseconds ) / 20 * correctAnswers;
+                maxTime *= 2;
             }
-            var totalScore = (int) baseScore + timeBonus;
-            return totalScore;
+            if (stopWatch.ElapsedMilliseconds > maxTime)
+            {
+                timeBonus = 0;
+            }
+            else { timeBonus = ((maxTime / numberOfQUestions) - (stopWatch.ElapsedMilliseconds / numberOfQUestions)) * correctAnswers / 10; }
+            var totalScore = baseScore + timeBonus;
+            return (int)totalScore;
             //return Convert.ToInt32(baseScore * (1F / ((stopWatch.ElapsedMilliseconds / 1000) * (prefs.GetInt("questions", 10) / 10))));
         }
 
@@ -236,11 +256,12 @@ namespace MathFighter
             status.SetText("Ditt svar: " + yourAnswer + " Riktig svar: " + rightAnswer, null);
             if (yourAnswer == rightAnswer)
             {
+                correctAnswers++;
                 responseSample = MediaPlayer.Create(this, Resource.Raw.correct);
                 responseSample.Start();
-                status.Append(" ---  Gratulerer det var rett!");
+                status.Append(" ---  Gratulerer du har nå " + correctAnswers + "av " + count + " mulige rette!");
                 // status.SetText("Riktig", null);
-                correctAnswers++;
+
             }
             else
             {

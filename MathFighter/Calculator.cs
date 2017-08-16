@@ -40,43 +40,51 @@ namespace MathFighter
             return (double)x / y;
         }
 
-        public int Add(params int[] numbers)
+        public int Add(params int[] integers)
         {
-            int answer = 0;
-            for (int i = 0; i < numbers.Length; i++)
+            var answer = integers.ElementAt(0);
+            for (var i = 1; i < integers.Length; i++)
             {
-                answer += numbers.ElementAt(i);
+                answer += integers.ElementAt(i);
             }
             return answer;
         }
 
-        public int Subtract(params int[] numbers)
+        public int Subtract(params int[] integers)
         {
-            int answer = 0;
-            for (int i = 0; i < numbers.Length; i++)
+            var answer = integers.ElementAt(0);
+            for (var i = 1; i < integers.Length; i++)
             {
-                answer -= numbers.ElementAt(i);
+                answer -= integers.ElementAt(i);
             }
             return answer;
         }
 
-        public void MixedSubjects(string operation, int x = 0, int y = 0, params int[] integers)
+        public double MixedSubjects(string operation, int x = 0, int y = 0, params int[] integers)
         {
+            if (integers.Length == 0)
+            {
+                integers = new int[2];
+                integers[0] = x;
+                integers[1] = y;
+            }
+            double answer = 0;
             switch (operation)
             {
                 case "*":
-                    Multiply(x, y);
+                    answer = Multiply(x, y);
                     break;
                 case "/":
-                    Divide(x, y);
+                    answer = Divide(x, y);
                     break;
                 case "+":
-                    Add(integers);
+                    answer = Add(integers);
                     break;
                 case "-":
-                    Subtract(integers);
+                    answer = Subtract(integers);
                     break;
             }
+            return answer;
         }
     }
 }

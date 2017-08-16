@@ -40,7 +40,9 @@ namespace MathFighter
         }
 
         List<int> factorInt = new List<int>();
+
         private List<string> factorStrings = new List<string>();
+
         private void Listeners()
         {
             var timesTable = FindViewById<Button>(Resource.Id.btn_subject_gangetabellen);
@@ -66,6 +68,11 @@ namespace MathFighter
             btnSqrt.Click += delegate
             {
                 SetSharedPreferencesAndFinish(2, "Kvadratrøtter");
+            };
+            var btnLettBlanding = FindViewById<Button>(Resource.Id.btn_subject_lett_blanding);
+            btnLettBlanding.Click += delegate
+            {
+                SetSharedPreferencesAndFinish(3, "Lett blanding");
             };
         }
 

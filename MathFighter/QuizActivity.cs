@@ -8,6 +8,7 @@ using Android.Widget;
 using Java.Lang;
 using Android.Preferences;
 using System.Diagnostics;
+using System.Globalization;
 using Android.Media;
 using MathFighter.Model;
 using SQLite;
@@ -112,22 +113,14 @@ namespace MathFighter
                     switch (difficultyId)
                     {
                         case 1:
-                            for (var i = 0; i <= 10; i++)
-                            {
-                                rootableInts.Add(i * i);
-                            }
+
+                            GenerateNumbers(10, rootableInts, true);
                             break;
                         case 2:
-                            for (var i = 0; i <= 15; i++)
-                            {
-                                rootableInts.Add(i * i);
-                            }
+                            GenerateNumbers(15, rootableInts);
                             break;
                         case 3:
-                            for (var i = 0; i <= 25; i++)
-                            {
-                                rootableInts.Add(i * i);
-                            }
+                            GenerateNumbers(25, rootableInts);
                             break;
                     }
                     r = new Random().Next(rootableInts.Count);
@@ -143,6 +136,25 @@ namespace MathFighter
                 case 3:
                     string[] input = { "+", "-", "/", "*" };
                     operation = input.ElementAt(new Random().Next(input.Count() - 1));
+                    if (intList.Count == 0)
+                    {
+                        GenerateNumbers(10, intList);
+                        if (difficultyId == 2)
+                        {
+                            GenerateNumbers(15, intList);
+                        }
+                        else if (difficultyId == 3) GenerateNumbers(25, intList);
+                    }
+                    var rnd = new Random();
+                    var a = rnd.Next(intList.Count - 1);
+                    var b = rnd.Next(intList.Count - 1);
+                    if (operation == "/" && (a == 0 || b == 0 || a % b != 0 ))
+                    {
+                        UpdateQuiz();
+                    }
+                    showQuestion = $"{a} {operation} {b}";
+                    rightAnswer = calculator.MixedSubjects(operation, a, b);
+                    intList.Remove(b);
                     break;
             }
             oppgave = (TextView)FindViewById(Resource.Id.tv_quiz_show_question);
@@ -152,10 +164,20 @@ namespace MathFighter
             tvOppgaveNr.SetText(oppgaveNr, null);
         }
 
+        private void GenerateNumbers(int max, List<int> list, bool sqrt = false)
+        {
+            for (var k = 0; k <= max; k++)
+            {
+                if (sqrt == true) list.Add(k * k);
+                else list.Add(k);
+            }
+        }
+
 
         //Controls what happens when a game is over.
         private void GameOver()
         {
+            intList.Clear();
             count = 10;
             var totalScore = CalculateScore();
             var playtime = stopWatch.ElapsedMilliseconds;
@@ -183,8 +205,8 @@ namespace MathFighter
         //lowest scoring entry from the database.
         private void NewHighscore(int totalScore, int lowestScoreId, long playtime)
         {
-            FragmentTransaction transaction = FragmentManager.BeginTransaction();
-            NewHighscoreDialog highscoreDialog = new NewHighscoreDialog(totalScore, lowestScoreId, playtime);
+            var transaction = FragmentManager.BeginTransaction();
+            var highscoreDialog = new NewHighscoreDialog(totalScore, lowestScoreId, playtime);
             highscoreDialog.Show(transaction, "highscore dialog");
             highscoreDialog.DialogClosed += delegate
             {
@@ -196,16 +218,16 @@ namespace MathFighter
         private void OpenRetryDialog(int totalScore, long playtime)
         {
             var playtimeString = TimeSpan.FromMilliseconds(playtime).Minutes + "m " + TimeSpan.FromMilliseconds(playtime).Seconds + "s";
-            AlertDialog.Builder retry = new AlertDialog.Builder(this)
+            var retry = new AlertDialog.Builder(this)
             .SetTitle("En gang til?")
             .SetMessage("Poengsum: " + totalScore + "\nSpilletid: " + playtimeString)
-            .SetNegativeButton("Nei takk!", (Cancel, args) =>
+            .SetNegativeButton("Nei takk!", (cancel, args) =>
             {
                 Finish();
             })
-            .SetPositiveButton("OK", (OK, args) =>
+            .SetPositiveButton("OK", (ok, args) =>
             {
-                this.Recreate();
+                Recreate();
             });
             retry.Create().Show();
         }
@@ -213,7 +235,7 @@ namespace MathFighter
         //Score is based on time spent completing the questions and difficulty. Speedy completion, higher difficulty and more correct answers gives a higher score.
         private int CalculateScore()
         {
-            int numberOfQUestions = prefs.GetInt("questions", 10);
+            var numberOfQUestions = prefs.GetInt("questions", 10);
             double difficulty;
             switch (prefs.GetInt("difficultyId", 1))
             {
@@ -249,12 +271,12 @@ namespace MathFighter
         //Checks if the answer you gave is correct.
         private void CheckAnswer()
         {
-            EditText answer = (EditText)FindViewById(Resource.Id.answer);
+            var answer = (EditText)FindViewById(Resource.Id.answer);
             double.TryParse(answer.Text, out double yourAnswer);
 
-            TextView status = (TextView)FindViewById(Resource.Id.status);
+            status = (TextView)FindViewById(Resource.Id.status);
             status.SetText("Ditt svar: " + yourAnswer + " Riktig svar: " + rightAnswer, null);
-            if (yourAnswer == rightAnswer)
+            if (yourAnswer.ToString().Equals(rightAnswer.ToString()))
             {
                 correctAnswers++;
                 responseSample = MediaPlayer.Create(this, Resource.Raw.correct);
@@ -271,15 +293,5 @@ namespace MathFighter
             }
             count++;
         }
-
-        //private int first;
-        //private int second;
-
-        //private void RandomNumbers()
-        //{
-        //    var random = new Random();
-        //    first = random.Next(10);
-        //    second = random.Next(10);
-        //}
     }
 }

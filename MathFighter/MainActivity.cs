@@ -25,6 +25,10 @@ namespace MathFighter
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            ActionBar.SetDisplayShowHomeEnabled(false);
+            ActionBar.SetDisplayShowTitleEnabled(false);
+            ActionBar.SetCustomView(Resource.Layout.actionbar_main);
+            ActionBar.SetDisplayShowCustomEnabled(true);
             SetContentView(Resource.Layout.activity_main);
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             editor = prefs.Edit();

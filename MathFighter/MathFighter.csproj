@@ -80,6 +80,12 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="Xamarin.Android.Support.v4, Version=1.0.0.0, Culture=neutral, PublicKeyToken=71f3e3261ac778b5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Crosslight.Xamarin.Android.Support.v4.23.1.1\lib\MonoAndroid10\Xamarin.Android.Support.v4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.AppCompat, Version=1.0.0.0, Culture=neutral, PublicKeyToken=71f3e3261ac778b5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Crosslight.Xamarin.Android.Support.v7.AppCompat.23.1.1\lib\MonoAndroid10\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\HighscoreListAdapter.cs" />
@@ -89,6 +95,7 @@
     <Compile Include="Model\HighscoreViewModel.cs" />
     <Compile Include="Model\Subject.cs" />
     <Compile Include="NewHighscoreDialog.cs" />
+    <Compile Include="PlayerSettingsDialog.cs" />
     <Compile Include="QuizActivity.cs" />
     <Compile Include="Model\Highscore.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -117,6 +124,12 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\item_highscore.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\actionbar_main.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\dialog_player_settings.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

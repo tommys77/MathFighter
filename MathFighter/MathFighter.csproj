@@ -86,7 +86,7 @@
     <Compile Include="Calculator.cs" />
     <Compile Include="DatabaseManager.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="Model\HighscoreViewHelper.cs" />
+    <Compile Include="Model\HighscoreViewModel.cs" />
     <Compile Include="Model\Subject.cs" />
     <Compile Include="NewHighscoreDialog.cs" />
     <Compile Include="QuizActivity.cs" />

@@ -26,7 +26,6 @@ namespace MathFighter
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.activity_main);
-
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             editor = prefs.Edit();
             editor.PutString("dbPath", dbPath);

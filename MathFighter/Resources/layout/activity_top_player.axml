@@ -2,40 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-  <LinearLayout
-          android:id="@+id/layout_columns"
-          android:orientation="horizontal"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:minWidth="25px"
-          android:minHeight="25px"
-          android:gravity="center_horizontal"
-          android:weightSum="100" >
-    <TextView
-       android:text="Pos"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_weight="10" />
-    <TextView
-       android:text="Player"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_weight="40" />
-    <TextView
-       android:text="Score"
-       android:layout_width="wrap_content"
-       android:layout_height="match_parent"
-       android:layout_weight="30" />
-    <TextView
-       android:text="Playtime"
-       android:layout_width="wrap_content"
-       android:layout_height="match_parent"
-       android:layout_weight="20" />
-  </LinearLayout>
+    android:layout_height="match_parent"
+    android:weightSum="100">
   <ListView
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="0dp"
       android:id="@+id/listView_top_player_highscores"
-      />
+      android:layout_weight="97"/>
+  <LinearLayout
+         android:orientation="horizontal"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_gravity="center_horizontal"
+         android:layout_weight="3">
+    <Button
+        android:text="Tema"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:id="@+id/btn_top_player_subject" />
+    <Button
+        android:text="Vanskelighetsgrad"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:id="@+id/btn_top_player_difficulty" />
+  </LinearLayout>
 </LinearLayout>

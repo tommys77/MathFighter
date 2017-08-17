@@ -2,33 +2,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
     android:minWidth="25px"
     android:minHeight="25px"
-    android:gravity="center_horizontal"
     android:weightSum="100">
-  <TextView
-      android:text="Pos"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:id="@+id/tv_position"
-      android:layout_weight="10" />
-  <TextView
-      android:text="Player"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:id="@+id/tv_player"
-      android:layout_weight="40" />
-  <TextView
-      android:text="Score"
-      android:layout_width="wrap_content"
-      android:layout_height="match_parent"
-      android:id="@+id/tv_score"
-      android:layout_weight="30" />
-  <TextView
-      android:text="Playtime"
-      android:layout_width="wrap_content"
-      android:layout_height="match_parent"
-      android:id="@+id/tv_playtime"
-      android:layout_weight="20" />
+    <TextView
+        android:text="Pos"
+        android:textStyle="italic"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="35dp"
+        android:layout_height="match_parent"
+        android:id="@+id/tv_position"
+        android:layout_weight="5" />
+    <ImageView
+        android:src="@android:drawable/ic_menu_gallery"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:id="@+id/iv_mugshot"
+        android:layout_weight="15" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:layout_width="60.0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="50">
+        <TextView
+            android:text="Player"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_player" />
+        <TextView
+            android:text="Playtime"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_playtime" />
+    </LinearLayout>
+    <TextView
+        android:text="Score"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="italic"
+        android:singleLine="true"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:layout_weight="50"
+        android:gravity="center_vertical"
+        android:id="@+id/tv_score" />
 </LinearLayout>

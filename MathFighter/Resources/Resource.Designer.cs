@@ -79,89 +79,83 @@ namespace MathFighter
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f07000e
-			public const int answer = 2131165198;
-			
-			// aapt resource value: 0x7f070009
-			public const int btn_main_start = 2131165193;
+			// aapt resource value: 0x7f07000a
+			public const int answer = 2131165194;
 			
 			// aapt resource value: 0x7f070005
-			public const int btn_main_tema = 2131165189;
-			
-			// aapt resource value: 0x7f070007
-			public const int btn_main_vanskelighetsgrad = 2131165191;
-			
-			// aapt resource value: 0x7f070011
-			public const int btn_subject_gangetabellen = 2131165201;
-			
-			// aapt resource value: 0x7f070012
-			public const int btn_subject_kvadratrot = 2131165202;
-			
-			// aapt resource value: 0x7f070013
-			public const int btn_subject_lett_blanding = 2131165203;
-			
-			// aapt resource value: 0x7f070014
-			public const int layout_columns = 2131165204;
-			
-			// aapt resource value: 0x7f070015
-			public const int listView_top_player_highscores = 2131165205;
-			
-			// aapt resource value: 0x7f07000a
-			public const int main_btn_highscore = 2131165194;
-			
-			// aapt resource value: 0x7f070016
-			public const int new_highscore_name = 2131165206;
-			
-			// aapt resource value: 0x7f070017
-			public const int new_highscore_ok_btn = 2131165207;
-			
-			// aapt resource value: 0x7f07000f
-			public const int quiz_btn_answer = 2131165199;
+			public const int btn_main_start = 2131165189;
 			
 			// aapt resource value: 0x7f070001
-			public const int rb_gangetabellen = 2131165185;
-			
-			// aapt resource value: 0x7f070002
-			public const int rb_kvadratrot = 2131165186;
+			public const int btn_main_tema = 2131165185;
 			
 			// aapt resource value: 0x7f070003
-			public const int rb_lett_blanding = 2131165187;
-			
-			// aapt resource value: 0x7f070000
-			public const int rbg_tema = 2131165184;
+			public const int btn_main_vanskelighetsgrad = 2131165187;
 			
 			// aapt resource value: 0x7f07000d
-			public const int status = 2131165197;
+			public const int btn_subject_gangetabellen = 2131165197;
+			
+			// aapt resource value: 0x7f07000e
+			public const int btn_subject_kvadratrot = 2131165198;
+			
+			// aapt resource value: 0x7f07000f
+			public const int btn_subject_lett_blanding = 2131165199;
+			
+			// aapt resource value: 0x7f070012
+			public const int btn_top_player_difficulty = 2131165202;
+			
+			// aapt resource value: 0x7f070011
+			public const int btn_top_player_subject = 2131165201;
+			
+			// aapt resource value: 0x7f070016
+			public const int iv_mugshot = 2131165206;
 			
 			// aapt resource value: 0x7f070010
-			public const int sw_subject_antall_sporsmaal = 2131165200;
-			
-			// aapt resource value: 0x7f070004
-			public const int title = 2131165188;
+			public const int listView_top_player_highscores = 2131165200;
 			
 			// aapt resource value: 0x7f070006
-			public const int tv_main_tema = 2131165190;
+			public const int main_btn_highscore = 2131165190;
 			
-			// aapt resource value: 0x7f070008
-			public const int tv_main_vanskelighetsgrad = 2131165192;
+			// aapt resource value: 0x7f070013
+			public const int new_highscore_name = 2131165203;
 			
-			// aapt resource value: 0x7f070019
-			public const int tv_player = 2131165209;
-			
-			// aapt resource value: 0x7f07001b
-			public const int tv_playtime = 2131165211;
-			
-			// aapt resource value: 0x7f070018
-			public const int tv_position = 2131165208;
+			// aapt resource value: 0x7f070014
+			public const int new_highscore_ok_btn = 2131165204;
 			
 			// aapt resource value: 0x7f07000b
-			public const int tv_quiz_current_question = 2131165195;
+			public const int quiz_btn_answer = 2131165195;
+			
+			// aapt resource value: 0x7f070009
+			public const int status = 2131165193;
 			
 			// aapt resource value: 0x7f07000c
-			public const int tv_quiz_show_question = 2131165196;
+			public const int sw_subject_antall_sporsmaal = 2131165196;
 			
-			// aapt resource value: 0x7f07001a
-			public const int tv_score = 2131165210;
+			// aapt resource value: 0x7f070000
+			public const int title = 2131165184;
+			
+			// aapt resource value: 0x7f070002
+			public const int tv_main_tema = 2131165186;
+			
+			// aapt resource value: 0x7f070004
+			public const int tv_main_vanskelighetsgrad = 2131165188;
+			
+			// aapt resource value: 0x7f070017
+			public const int tv_player = 2131165207;
+			
+			// aapt resource value: 0x7f070018
+			public const int tv_playtime = 2131165208;
+			
+			// aapt resource value: 0x7f070015
+			public const int tv_position = 2131165205;
+			
+			// aapt resource value: 0x7f070007
+			public const int tv_quiz_current_question = 2131165191;
+			
+			// aapt resource value: 0x7f070008
+			public const int tv_quiz_show_question = 2131165192;
+			
+			// aapt resource value: 0x7f070019
+			public const int tv_score = 2131165209;
 			
 			static Id()
 			{

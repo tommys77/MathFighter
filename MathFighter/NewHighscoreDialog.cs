@@ -20,16 +20,18 @@ namespace MathFighter
         private int highscore;
         private int id;
         private long playtime;
+        private int difficultyId;
         private Button save;
         private EditText yourName;
         public event EventHandler DialogClosed;
         private ISharedPreferences prefs;
 
-        public NewHighscoreDialog (int highscore_in, int id_in, long playtime_in)
+        public NewHighscoreDialog (int highscore_in, int id_in, long playtime_in, int difficultyId_in)
         {
             highscore = highscore_in;
             id = id_in;
             playtime = playtime_in;
+            difficultyId = difficultyId_in;
         }
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -51,7 +53,7 @@ namespace MathFighter
             var subjectId = prefs.GetInt("subjectId", 0);
             if (subjectId != 0)
             {
-                var newHighscore = new Highscore(id, yourName.Text, highscore, playtime, subjectId, 1);
+                var newHighscore = new Highscore(id, yourName.Text, highscore, playtime, subjectId, difficultyId);
                 dbManager.InsertHighscore(newHighscore);
             }
             else

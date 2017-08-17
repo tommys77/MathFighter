@@ -26,7 +26,7 @@ namespace MathFighter
                                                       "Playtime INTEGER NOT NULL," +
                                                       "SubjectId INTEGER NOT NULL," +
                                                       "DifficultyId INTEGER NOT NULL," +
-                                                      "PRIMARY KEY (HighscoreId, SubjectId)," +
+                                                      "PRIMARY KEY (HighscoreId, SubjectId, DifficultyId)," +
                                                       "FOREIGN KEY (SubjectId) REFERENCES Subject(SubjectId)" +
                                                       ");";
 
@@ -35,6 +35,8 @@ namespace MathFighter
                                                     "SubjectName TEXT NOT NULL," +
                                                     "PRIMARY KEY (SubjectId)" +
                                                     ");";
+
+
 
         private string dbPath;
         private SQLiteConnection db;
@@ -61,9 +63,12 @@ namespace MathFighter
             {
                 if (db.Find<Highscore>(i) == null)
                 {
-                    db.Insert(new Highscore(i, "Unregistered", 0, 0, 1, 1));
-                    db.Insert(new Highscore(i, "Unregistered", 0, 0, 2, 1));
-                    db.Insert(new Highscore(i, "Unregistered", 0, 0, 3, 1));
+                    for (var j = 1; j <= 3; j++)
+                    {
+                        db.Insert(new Highscore(i, "Unregistered", 0, 0, 1, j));
+                        db.Insert(new Highscore(i, "Unregistered", 0, 0, 2, j));
+                        db.Insert(new Highscore(i, "Unregistered", 0, 0, 3, j));
+                    }
                 }
             }
         }
@@ -84,29 +89,28 @@ namespace MathFighter
             }
         }
 
-        public List<HighscoreViewHelper> GetHighscores(int subjectId)
+        public List<HighscoreViewModel> GetHighscores(int subjectId, int difficultyId)
         {
             var highscoresTable = db.Table<Highscore>()
                 .OrderByDescending(s => s.Score)
-                .Where(h => h.SubjectId == subjectId);
+                .Where(h => h.SubjectId == subjectId && h.DifficultyId == difficultyId);
 
             var subjectName = db.Table<Subject>()
                 .FirstOrDefault(s => s.SubjectID == subjectId)
                 .SubjectName;
 
-            var highscoresViewList = new List<HighscoreViewHelper>();
+            var highscoresViewList = new List<HighscoreViewModel>();
 
             foreach (var item in highscoresTable)
             {
                 if (item.SubjectId != subjectId) continue;
                 var playtime = TimeSpan.FromMilliseconds(item.Playtime).Minutes + "m" +
                                TimeSpan.FromMilliseconds(item.Playtime).Seconds + "s";
-                highscoresViewList.Add( new HighscoreViewHelper( item.HighscoreId, item.Player, item.Score, playtime));
+                highscoresViewList.Add( new HighscoreViewModel( item.HighscoreId, item.Player, item.Score, playtime));
             }
             return highscoresViewList;
         }
-
-        //Onwards are methods read from and write to the database.
+       
         public void InsertHighscore(Highscore highscore)
         {
             db.InsertOrReplace(highscore);

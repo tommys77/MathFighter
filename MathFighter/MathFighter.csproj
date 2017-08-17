@@ -15,7 +15,7 @@
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
+    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <NuGetPackageImportStamp>
@@ -86,7 +86,7 @@
     <Compile Include="Calculator.cs" />
     <Compile Include="DatabaseManager.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="Model\HighscoreViewHelper.cs" />
+    <Compile Include="Model\HighscoreViewModel.cs" />
     <Compile Include="Model\Subject.cs" />
     <Compile Include="NewHighscoreDialog.cs" />
     <Compile Include="QuizActivity.cs" />

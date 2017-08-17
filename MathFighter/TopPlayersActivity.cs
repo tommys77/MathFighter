@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Preferences;
-using Android.Renderscripts;
-using Android.Runtime;
-using Android.Util;
-using Android.Views;
 using Android.Widget;
 using MathFighter.Adapters;
 using MathFighter.Model;
-using SQLite;
 
 
 namespace MathFighter
@@ -29,6 +22,9 @@ namespace MathFighter
         private RadioButton rb_kvadratrot;
         private RadioButton rb_lett_blanding;
         private RadioGroup subjectRadioGroup;
+        private Button btnDifficulty;
+        private Button btnSubject;
+        private int difficultyId;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -42,63 +38,124 @@ namespace MathFighter
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             dbPath = prefs.GetString("dbPath", null);
             subjectId = prefs.GetInt("subjectId", 1);
-            rb_gangetabellen = FindViewById<RadioButton>(Resource.Id.rb_gangetabellen);
-            rb_kvadratrot = FindViewById<RadioButton>(Resource.Id.rb_kvadratrot);
-            rb_lett_blanding = FindViewById<RadioButton>(Resource.Id.rb_lett_blanding);
-            subjectRadioGroup = FindViewById<RadioGroup>(Resource.Id.rbg_tema);
-            SetCurrentSubjectRadio(subjectRadioGroup);
-            subjectRadioGroup.CheckedChange += SubjectRadioGroup_CheckedChange; ;
+            difficultyId = prefs.GetInt("difficultyId", 1);
+            //rb_gangetabellen = FindViewById<RadioButton>(Resource.Id.rb_gangetabellen);
+            //rb_kvadratrot = FindViewById<RadioButton>(Resource.Id.rb_kvadratrot);
+            //rb_lett_blanding = FindViewById<RadioButton>(Resource.Id.rb_lett_blanding);
+            //subjectRadioGroup = FindViewById<RadioGroup>(Resource.Id.rbg_tema);
+
+            btnDifficulty = FindViewById<Button>(Resource.Id.btn_top_player_difficulty);
+            btnDifficulty.Click += BtnDifficulty_Click;
+
+            btnSubject = FindViewById<Button>(Resource.Id.btn_top_player_subject);
+            btnSubject.Text = prefs.GetString("subject", null);
+            btnSubject.Click += BtnSubject_Click;
+
+            SetCurrentSubjectAndDifficulty();
+
+            //SetCurrentSubjectRadio(subjectRadioGroup);
+
+
+            //subjectRadioGroup.CheckedChange += SubjectRadioGroup_CheckedChange; ;
             GetHighscoreTable();
         }
 
-        private void SubjectRadioGroup_CheckedChange(object sender, RadioGroup.CheckedChangeEventArgs e)
+        private void BtnDifficulty_Click(object sender, EventArgs e)
         {
-            if (e.CheckedId == rb_gangetabellen.Id)
+            if (difficultyId >= 3)
+            {
+                difficultyId = 1;
+            }
+            else difficultyId++;
+            SetCurrentSubjectAndDifficulty();
+        }
+
+        private void BtnSubject_Click(object sender, EventArgs e)
+        {
+            if (subjectId >= 3)
             {
                 subjectId = 1;
             }
-            else if (e.CheckedId == rb_kvadratrot.Id)
+            else subjectId++;
+            SetCurrentSubjectAndDifficulty();
+        }
+
+        private void SetCurrentSubjectAndDifficulty()
+        {
+            switch (difficultyId)
             {
-                subjectId = 2;
+                case 1:
+                    btnDifficulty.Text = "Lett";
+                    break;
+                case 2:
+                    btnDifficulty.Text = "Middels";
+                    break;
+                case 3:
+                    btnDifficulty.Text = "Vanskelig";
+                    break;
             }
-            else if (e.CheckedId == rb_lett_blanding.Id)
+
+            switch (subjectId)
             {
-                subjectId = 3;
+                case 1:
+                    btnSubject.Text = "Gangetabellen";
+                    break;
+                case 2:
+                    btnSubject.Text = "Kvadratrøtter";
+                    break;
+                case 3:
+                    btnSubject.Text = "Lett blanding";
+                    break;
             }
             GetHighscoreTable();
         }
 
-        public void SetCurrentSubjectRadio(RadioGroup subjectGroup)
-        {
-            switch (subjectId)
-            {
-                case 1:
-                    subjectGroup.Check(Resource.Id.rb_gangetabellen);
-                    break;
-                case 2:
-                    subjectGroup.Check(Resource.Id.rb_kvadratrot);
-                    break;
-                case 3:
-                    subjectGroup.Check(Resource.Id.rb_lett_blanding);
-                    break;
-                default:
-                    subjectGroup.Check(Resource.Id.rb_lett_blanding);
-                    break;
-            }
-        }
+        //private void SubjectRadioGroup_CheckedChange(object sender, RadioGroup.CheckedChangeEventArgs e)
+        //{
+        //    if (e.CheckedId == rb_gangetabellen.Id)
+        //    {
+        //        subjectId = 1;
+        //    }
+        //    else if (e.CheckedId == rb_kvadratrot.Id)
+        //    {
+        //        subjectId = 2;
+        //    }
+        //    else if (e.CheckedId == rb_lett_blanding.Id)
+        //    {
+        //        subjectId = 3;
+        //    }
+        //    GetHighscoreTable();
+        //}
+
+        //        public void SetCurrentSubjectRadio(RadioGroup subjectGroup)
+        //{
+        //            switch (subjectId)
+        //            {
+        //                case 1:
+        //                    subjectGroup.Check(Resource.Id.rb_gangetabellen);
+        //                    break;
+        //                case 2:
+        //                    subjectGroup.Check(Resource.Id.rb_kvadratrot);
+        //                    break;
+        //                case 3:
+        //                    subjectGroup.Check(Resource.Id.rb_lett_blanding);
+        //                    break;
+        //                default:
+        //                    subjectGroup.Check(Resource.Id.rb_lett_blanding);
+        //                    break;
+        //            }
+        //        }
 
         private void GetHighscoreTable()
         {
             if (dbPath == null) return;
             var dbManager = new DatabaseManager(dbPath);
-            var highscores = dbManager.GetHighscores(subjectId);
-            var mList = new List<HighscoreViewHelper>();
+            var highscores = dbManager.GetHighscores(subjectId, difficultyId);
+            var mList = new List<HighscoreViewModel>();
             var adapter = new HighscoreListAdapter(this, highscores);
             var lvHighscores = FindViewById<ListView>(Resource.Id.listView_top_player_highscores);
             lvHighscores.Adapter = adapter;
         }
-
-
 
     }
 }

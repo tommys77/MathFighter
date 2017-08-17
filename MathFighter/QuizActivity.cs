@@ -22,6 +22,8 @@ namespace MathFighter
         private int i;
         private int x;
         private int count = 1;
+        private int subjectId;
+        private int difficultyId;
         int correctAnswers = 0;
         private TextView oppgave;
         private TextView tvOppgaveNr;
@@ -30,11 +32,12 @@ namespace MathFighter
         private string dbPath;
         private MediaPlayer responseSample;
         private ISharedPreferences prefs;
-        private int subjectId;
         private double rightAnswer = 0;
         private string operation = "";
         private static Calculator calculator;
         private List<int> spentQuestions = new List<int>();
+        List<int> intList = new List<int>();
+        
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -53,7 +56,7 @@ namespace MathFighter
             var answerEdit = (EditText)FindViewById(Resource.Id.answer);
             answerEdit.Click += delegate
             {
-
+                answerEdit.Text = "";
                 answerEdit.SelectAll();
                 if (count == 1)
                 {
@@ -76,7 +79,6 @@ namespace MathFighter
             UpdateQuiz();
         }
 
-        List<int> intList = new List<int>();
         //For showing the next question
         private void UpdateQuiz()
         {
@@ -84,7 +86,7 @@ namespace MathFighter
             subjectId = prefs.GetInt("subjectId", 0);
 
             var showQuestion = "";
-            var difficultyId = prefs.GetInt("difficultyId", 0);
+            difficultyId = prefs.GetInt("difficultyId", 0);
             var r = 0;
             switch (subjectId)
             {
@@ -197,7 +199,7 @@ namespace MathFighter
             var db = new SQLiteConnection(dbPath);
             //var subjectId = prefs.GetInt("subjectId", 0);
             //Log.WriteLine(LogPriority.Debug, "MyTAG", "Current SubjectID: " + subjectId);
-            var highscoreList = db.Table<Highscore>().Where(h => h.SubjectId == subjectId);
+            var highscoreList = db.Table<Highscore>().Where(h => h.SubjectId == subjectId && h.DifficultyId == difficultyId);
             return subjectId != 0 ? highscoreList.OrderByDescending(s => s.Score).Last() : null;
         }
 
@@ -206,7 +208,7 @@ namespace MathFighter
         private void NewHighscore(int totalScore, int lowestScoreId, long playtime)
         {
             var transaction = FragmentManager.BeginTransaction();
-            var highscoreDialog = new NewHighscoreDialog(totalScore, lowestScoreId, playtime);
+            var highscoreDialog = new NewHighscoreDialog(totalScore, lowestScoreId, playtime, difficultyId);
             highscoreDialog.Show(transaction, "highscore dialog");
             highscoreDialog.DialogClosed += delegate
             {

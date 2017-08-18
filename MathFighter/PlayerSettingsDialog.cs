@@ -24,11 +24,18 @@ namespace MathFighter
         private Button btnSave;
         private Bitmap playerImg;
 
+        public EventHandler DialogClosed;
         private ISharedPreferences prefs;
         ISharedPreferencesEditor editor;
 
         public PlayerSettingsDialog()
         {
+        }
+
+        public override void OnDismiss(IDialogInterface dialog)
+        {
+            base.OnDismiss(dialog);
+            DialogClosed?.Invoke(this, null);
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -69,14 +76,14 @@ namespace MathFighter
             }
             ivPlayer = view.FindViewById<ImageView>(Resource.Id.iv_player_settings);
             ivPlayer.Click += IvPlayer_Click;
-
+            btnSave = view.FindViewById<Button>(Resource.Id.btn_player_settings_save);
             btnSave.Click += BtnSave_Click;
         }
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
             editor = prefs.Edit();
-            editor.PutString("player", null);
+            editor.PutString("player", editPlayerName.Text);
             editor.PutString("imgPath", null);
             editor.Apply();
             Dismiss();

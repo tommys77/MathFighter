@@ -45,6 +45,20 @@ namespace MathFighter
             subjectsBtn.Click += SubjectsBtn_Click;
             var btnVanskelighetsgrad = FindViewById(Resource.Id.btn_main_vanskelighetsgrad);
             btnVanskelighetsgrad.Click += BtnVanskelighetsgrad_Click;
+            var btnPlayerSettings = FindViewById<ImageButton>(Resource.Id.btn_main_settings);
+            btnPlayerSettings.Click += BtnPlayerSettings_Click;
+        }
+
+        private void BtnPlayerSettings_Click(object sender, System.EventArgs e)
+        {
+            var transaction = FragmentManager.BeginTransaction();
+            var playerSettingsDialog = new PlayerSettingsDialog();
+            playerSettingsDialog.Show(transaction, "player_settings");
+            playerSettingsDialog.DialogClosed += delegate
+            {
+                var tvPlayer = FindViewById<TextView>(Resource.Id.tv_actionbar_player_name);
+                tvPlayer.Text = prefs.GetString("player", null);
+            };
         }
 
         private void BtnVanskelighetsgrad_Click(object sender, System.EventArgs e)

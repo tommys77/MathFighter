@@ -39,6 +39,11 @@ namespace MathFighter
             var view = inflater.Inflate(Resource.Layout.dialog_new_highscore, container, false);
             prefs = PreferenceManager.GetDefaultSharedPreferences(this.Activity.BaseContext);
             yourName = view.FindViewById<EditText>(Resource.Id.new_highscore_name);
+            var currentPlayer = prefs.GetString("player", null);
+            if (currentPlayer != null)
+            {
+                yourName.Text = currentPlayer;
+            }
             save = view.FindViewById<Button>(Resource.Id.new_highscore_ok_btn);
             save.Click += Save_Click;
 
@@ -49,7 +54,6 @@ namespace MathFighter
         {
             var dbPath = prefs.GetString("dbPath", null);
             var dbManager = new DatabaseManager(dbPath);
-            //var db = new SQLiteConnection(dbPath);
             var subjectId = prefs.GetInt("subjectId", 0);
             if (subjectId != 0)
             {

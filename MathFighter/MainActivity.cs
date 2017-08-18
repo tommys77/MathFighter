@@ -52,7 +52,7 @@ namespace MathFighter
         private void BtnPlayerSettings_Click(object sender, System.EventArgs e)
         {
             var transaction = FragmentManager.BeginTransaction();
-            var playerSettingsDialog = new PlayerSettingsDialog();
+            var playerSettingsDialog = new PlayerSettingsDialog(this);
             playerSettingsDialog.Show(transaction, "player_settings");
             playerSettingsDialog.DialogClosed += delegate
             {
@@ -60,6 +60,9 @@ namespace MathFighter
                 tvPlayer.Text = prefs.GetString("player", null);
             };
         }
+
+       
+
 
         private void BtnVanskelighetsgrad_Click(object sender, System.EventArgs e)
         {

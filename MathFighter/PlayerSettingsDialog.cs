@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Preferences;
 using Android.Graphics;
+using Android.Provider;
 
 namespace MathFighter
 {
@@ -25,11 +26,13 @@ namespace MathFighter
         private Bitmap playerImg;
 
         public EventHandler DialogClosed;
+        private Context context;
         private ISharedPreferences prefs;
-        ISharedPreferencesEditor editor;
+        private ISharedPreferencesEditor editor;
 
-        public PlayerSettingsDialog()
+        public PlayerSettingsDialog(Context context)
         {
+            this.context = context;
         }
 
         public override void OnDismiss(IDialogInterface dialog)
@@ -42,7 +45,7 @@ namespace MathFighter
         {
             base.OnCreateView(inflater, container, savedInstanceState);
             var view = inflater.Inflate(Resource.Layout.dialog_player_settings, container, false);
-            prefs = PreferenceManager.GetDefaultSharedPreferences(this.Activity.BaseContext);
+            prefs = PreferenceManager.GetDefaultSharedPreferences(context);
 
             SetListeners(view);
 
@@ -55,7 +58,7 @@ namespace MathFighter
             imgPath = prefs.GetString("imgPath", null);
             if (imgPath == null)
             {
-                playerImg = BitmapFactory.DecodeResource(Activity.BaseContext.Resources, Resource.Drawable.Adrian);
+                playerImg = BitmapFactory.DecodeResource(context.Resources, Resource.Drawable.Adrian);
             }
             else
             {
@@ -65,7 +68,7 @@ namespace MathFighter
                 }
                 catch (Exception ex)
                 {
-                    Toast.MakeText(Activity.BaseContext, ex.Message, ToastLength.Long).Show();
+                    Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
                 }
             }
 
@@ -89,9 +92,19 @@ namespace MathFighter
             Dismiss();
         }
 
+        public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            Bitmap bitmap = (Bitmap)data.Extras.Get("data");
+        }
+
+
+
         private void IvPlayer_Click(object sender, EventArgs e)
         {
-            Toast.MakeText(Activity.BaseContext, "TODO: Change photo!", ToastLength.Long).Show();
+            Toast.MakeText(context, "TODO: Change photo!", ToastLength.Long).Show();
+            Intent cameraIntent = new Intent(MediaStore.ActionImageCapture);
+            StartActivityForResult(cameraIntent, 0);
         }
     }
 }

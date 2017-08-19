@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="MathFighter.MathFighter" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="16" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-feature android:name="android.hardware.camera" />
 	<uses-permission android:name="android.permission.CAMERA" />
 	<application android:label="MathFighter" android:theme="@android:style/Theme.Material">
@@ -21,10 +22,10 @@
 			<category android:name="android.intent.category.DEFAULT" />
 		</intent-filter>
 	</activity>
-	<activity android:name=".SettingsActivity">
+	<!--<activity android:name=".SettingsActivity">
 		<intent-filter>
 			<action android:name="android.intent.action.MAIN" />
 			<category android:name="android.intent.category.DEFAULT" />
 		</intent-filter>
-	</activity>
+	</activity>-->
 </manifest>

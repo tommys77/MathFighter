@@ -9,18 +9,24 @@ using SQLite;
 using Android.Content;
 using Android.Preferences;
 using MathFighter.Model;
+using Android.Graphics;
+using System;
 
 namespace MathFighter
 {
     [Activity(Label = "MathFighter", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        private string dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "highscore.db3");
+        private string dbPath = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "highscore.db3");
         private ISharedPreferences prefs;
         private ISharedPreferencesEditor editor;
         private TextView tvTema;
         private TextView tvVanskelighetsgrad;
         private DatabaseManager dbManager;
+
+        private TextView tvPlayer;
+        private ImageView ivPlayer;
+        private string imgPath;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -47,25 +53,22 @@ namespace MathFighter
             btnVanskelighetsgrad.Click += BtnVanskelighetsgrad_Click;
             var btnPlayerSettings = FindViewById<ImageButton>(Resource.Id.btn_main_settings);
             btnPlayerSettings.Click += BtnPlayerSettings_Click;
+            tvPlayer = FindViewById<TextView>(Resource.Id.tv_actionbar_player_name);
+            tvPlayer.Text = prefs.GetString("player", null);
         }
 
         private void BtnPlayerSettings_Click(object sender, System.EventArgs e)
         {
-            Intent intent = new Intent(this, typeof(SettingsActivity));
-            StartActivity(intent);
-            //var transaction = FragmentManager.BeginTransaction();
-            //var playerSettingsDialog = new PlayerSettingsDialog(this);
-            //playerSettingsDialog.Show(transaction, "player_settings");
-            //playerSettingsDialog.DialogClosed += delegate
-            //{
-            //    var tvPlayer = FindViewById<TextView>(Resource.Id.tv_actionbar_player_name);
-            //    tvPlayer.Text = prefs.GetString("player", null);
-            //};
+            var transaction = FragmentManager.BeginTransaction();
+            var playerSettingsDialog = new PlayerSettingsDialog(this);
+            playerSettingsDialog.Show(transaction, "player_settings");
+            playerSettingsDialog.DialogClosed += delegate
+            {
+                tvPlayer.Text = prefs.GetString("player", null);
+                RefreshScreen();
+            };
         }
-
-       
-
-
+        
         private void BtnVanskelighetsgrad_Click(object sender, System.EventArgs e)
         {
             var difficultyId = prefs.GetInt("difficultyId", 0);
@@ -108,6 +111,19 @@ namespace MathFighter
 
         private void RefreshScreen()
         {
+            imgPath = prefs.GetString("imgPath", null);
+            var file = new Java.IO.File(imgPath);
+            int height = Resources.DisplayMetrics.HeightPixels;
+            ivPlayer = FindViewById<ImageView>(Resource.Id.iv_actionbar_player);
+            int width = ivPlayer.Height;
+            Bitmap playerImg = BitmapFactory.DecodeResource(Resources, Resource.Drawable.Adrian);
+            if (file.Exists())
+            {
+                playerImg = file.Path.LoadAndResizeBitmap(width, height);
+                var bitmap = file.Path.ExifRotateBitmap(playerImg);
+                ivPlayer.SetImageBitmap(bitmap);
+            }
+
             tvTema = FindViewById<TextView>(Resource.Id.tv_main_tema);
             tvVanskelighetsgrad = FindViewById<TextView>(Resource.Id.tv_main_vanskelighetsgrad);
             tvTema.SetText(prefs.GetString("subject", null) ?? "Ikke valgt", null);

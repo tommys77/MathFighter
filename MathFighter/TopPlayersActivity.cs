@@ -18,10 +18,6 @@ namespace MathFighter
         private string dbPath;
         private ISharedPreferences prefs;
         private int subjectId;
-        private RadioButton rb_gangetabellen;
-        private RadioButton rb_kvadratrot;
-        private RadioButton rb_lett_blanding;
-        private RadioGroup subjectRadioGroup;
         private Button btnDifficulty;
         private Button btnSubject;
         private int difficultyId;

@@ -1435,8 +1435,8 @@ namespace MathFighter
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f0d006f
-			public const int action0 = 2131558511;
+			// aapt resource value: 0x7f0d0070
+			public const int action0 = 2131558512;
 			
 			// aapt resource value: 0x7f0d0041
 			public const int action_bar = 2131558465;
@@ -1462,8 +1462,8 @@ namespace MathFighter
 			// aapt resource value: 0x7f0d0042
 			public const int action_context_bar = 2131558466;
 			
-			// aapt resource value: 0x7f0d0073
-			public const int action_divider = 2131558515;
+			// aapt resource value: 0x7f0d0074
+			public const int action_divider = 2131558516;
 			
 			// aapt resource value: 0x7f0d0002
 			public const int action_menu_divider = 2131558402;
@@ -1528,14 +1528,14 @@ namespace MathFighter
 			// aapt resource value: 0x7f0d002b
 			public const int buttonPanel = 2131558443;
 			
-			// aapt resource value: 0x7f0d0070
-			public const int cancel_action = 2131558512;
+			// aapt resource value: 0x7f0d0071
+			public const int cancel_action = 2131558513;
 			
 			// aapt resource value: 0x7f0d0039
 			public const int checkbox = 2131558457;
 			
-			// aapt resource value: 0x7f0d0076
-			public const int chronometer = 2131558518;
+			// aapt resource value: 0x7f0d0077
+			public const int chronometer = 2131558519;
 			
 			// aapt resource value: 0x7f0d001c
 			public const int collapseActionView = 2131558428;
@@ -1564,8 +1564,8 @@ namespace MathFighter
 			// aapt resource value: 0x7f0d0019
 			public const int end = 2131558425;
 			
-			// aapt resource value: 0x7f0d007b
-			public const int end_padder = 2131558523;
+			// aapt resource value: 0x7f0d007c
+			public const int end_padder = 2131558524;
 			
 			// aapt resource value: 0x7f0d005f
 			public const int et_player_settings = 2131558495;
@@ -1591,23 +1591,26 @@ namespace MathFighter
 			// aapt resource value: 0x7f0d0026
 			public const int image = 2131558438;
 			
-			// aapt resource value: 0x7f0d007a
-			public const int info = 2131558522;
+			// aapt resource value: 0x7f0d007b
+			public const int info = 2131558523;
 			
 			// aapt resource value: 0x7f0d0050
 			public const int iv_actionbar_player = 2131558480;
 			
-			// aapt resource value: 0x7f0d006b
-			public const int iv_mugshot = 2131558507;
+			// aapt resource value: 0x7f0d006c
+			public const int iv_mugshot = 2131558508;
 			
 			// aapt resource value: 0x7f0d005e
 			public const int iv_player_settings = 2131558494;
 			
-			// aapt resource value: 0x7f0d0074
-			public const int line1 = 2131558516;
+			// aapt resource value: 0x7f0d006a
+			public const int layout_player_settings_mai = 2131558506;
 			
-			// aapt resource value: 0x7f0d0078
-			public const int line3 = 2131558520;
+			// aapt resource value: 0x7f0d0075
+			public const int line1 = 2131558517;
+			
+			// aapt resource value: 0x7f0d0079
+			public const int line3 = 2131558521;
 			
 			// aapt resource value: 0x7f0d0009
 			public const int listMode = 2131558409;
@@ -1621,8 +1624,8 @@ namespace MathFighter
 			// aapt resource value: 0x7f0d0058
 			public const int main_btn_highscore = 2131558488;
 			
-			// aapt resource value: 0x7f0d0072
-			public const int media_actions = 2131558514;
+			// aapt resource value: 0x7f0d0073
+			public const int media_actions = 2131558515;
 			
 			// aapt resource value: 0x7f0d001a
 			public const int middle = 2131558426;
@@ -1735,8 +1738,8 @@ namespace MathFighter
 			// aapt resource value: 0x7f0d005b
 			public const int status = 2131558491;
 			
-			// aapt resource value: 0x7f0d0071
-			public const int status_bar_latest_event_content = 2131558513;
+			// aapt resource value: 0x7f0d0072
+			public const int status_bar_latest_event_content = 2131558514;
 			
 			// aapt resource value: 0x7f0d004c
 			public const int submit_area = 2131558476;
@@ -1747,17 +1750,17 @@ namespace MathFighter
 			// aapt resource value: 0x7f0d000b
 			public const int tabMode = 2131558411;
 			
-			// aapt resource value: 0x7f0d0079
-			public const int text = 2131558521;
+			// aapt resource value: 0x7f0d007a
+			public const int text = 2131558522;
 			
-			// aapt resource value: 0x7f0d0077
-			public const int text2 = 2131558519;
+			// aapt resource value: 0x7f0d0078
+			public const int text2 = 2131558520;
 			
 			// aapt resource value: 0x7f0d0034
 			public const int textSpacerNoButtons = 2131558452;
 			
-			// aapt resource value: 0x7f0d0075
-			public const int time = 2131558517;
+			// aapt resource value: 0x7f0d0076
+			public const int time = 2131558518;
 			
 			// aapt resource value: 0x7f0d002a
 			public const int title = 2131558442;
@@ -1777,14 +1780,14 @@ namespace MathFighter
 			// aapt resource value: 0x7f0d0056
 			public const int tv_main_vanskelighetsgrad = 2131558486;
 			
-			// aapt resource value: 0x7f0d006c
-			public const int tv_player = 2131558508;
-			
 			// aapt resource value: 0x7f0d006d
-			public const int tv_playtime = 2131558509;
+			public const int tv_player = 2131558509;
 			
-			// aapt resource value: 0x7f0d006a
-			public const int tv_position = 2131558506;
+			// aapt resource value: 0x7f0d006e
+			public const int tv_playtime = 2131558510;
+			
+			// aapt resource value: 0x7f0d006b
+			public const int tv_position = 2131558507;
 			
 			// aapt resource value: 0x7f0d0059
 			public const int tv_quiz_current_question = 2131558489;
@@ -1792,8 +1795,8 @@ namespace MathFighter
 			// aapt resource value: 0x7f0d005a
 			public const int tv_quiz_show_question = 2131558490;
 			
-			// aapt resource value: 0x7f0d006e
-			public const int tv_score = 2131558510;
+			// aapt resource value: 0x7f0d006f
+			public const int tv_score = 2131558511;
 			
 			// aapt resource value: 0x7f0d0008
 			public const int up = 2131558408;
@@ -1948,43 +1951,46 @@ namespace MathFighter
 			public const int dialog_new_highscore = 2130903072;
 			
 			// aapt resource value: 0x7f030021
-			public const int item_highscore = 2130903073;
+			public const int dialog_player_settings = 2130903073;
 			
 			// aapt resource value: 0x7f030022
-			public const int notification_media_action = 2130903074;
+			public const int item_highscore = 2130903074;
 			
 			// aapt resource value: 0x7f030023
-			public const int notification_media_cancel_action = 2130903075;
+			public const int notification_media_action = 2130903075;
 			
 			// aapt resource value: 0x7f030024
-			public const int notification_template_big_media = 2130903076;
+			public const int notification_media_cancel_action = 2130903076;
 			
 			// aapt resource value: 0x7f030025
-			public const int notification_template_big_media_narrow = 2130903077;
+			public const int notification_template_big_media = 2130903077;
 			
 			// aapt resource value: 0x7f030026
-			public const int notification_template_lines = 2130903078;
+			public const int notification_template_big_media_narrow = 2130903078;
 			
 			// aapt resource value: 0x7f030027
-			public const int notification_template_media = 2130903079;
+			public const int notification_template_lines = 2130903079;
 			
 			// aapt resource value: 0x7f030028
-			public const int notification_template_part_chronometer = 2130903080;
+			public const int notification_template_media = 2130903080;
 			
 			// aapt resource value: 0x7f030029
-			public const int notification_template_part_time = 2130903081;
+			public const int notification_template_part_chronometer = 2130903081;
 			
 			// aapt resource value: 0x7f03002a
-			public const int select_dialog_item_material = 2130903082;
+			public const int notification_template_part_time = 2130903082;
 			
 			// aapt resource value: 0x7f03002b
-			public const int select_dialog_multichoice_material = 2130903083;
+			public const int select_dialog_item_material = 2130903083;
 			
 			// aapt resource value: 0x7f03002c
-			public const int select_dialog_singlechoice_material = 2130903084;
+			public const int select_dialog_multichoice_material = 2130903084;
 			
 			// aapt resource value: 0x7f03002d
-			public const int support_simple_spinner_dropdown_item = 2130903085;
+			public const int select_dialog_singlechoice_material = 2130903085;
+			
+			// aapt resource value: 0x7f03002e
+			public const int support_simple_spinner_dropdown_item = 2130903086;
 			
 			static Layout()
 			{

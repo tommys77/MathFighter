@@ -18,11 +18,11 @@ using Environment = Android.OS.Environment;
 using Uri = Android.Net.Uri;
 using Android.Support.V4.Content;
 using Android.Util;
-using Android.Media;
 
 namespace MathFighter
 {
-    public class PlayerSettingsDialog : DialogFragment
+    [Activity(Label = "SettingsActivity")]
+    public class SettingsActivity : Activity
     {
         private string playerName;
         private string imgPath;
@@ -33,7 +33,6 @@ namespace MathFighter
         private Bitmap playerImg;
 
         public EventHandler DialogClosed;
-        private Context context;
         private ISharedPreferences prefs;
         private ISharedPreferencesEditor editor;
 
@@ -46,108 +45,99 @@ namespace MathFighter
             public static Bitmap bitmap;
         }
 
-        public PlayerSettingsDialog(Context context)
+        protected override void OnCreate(Bundle savedInstanceState)
         {
-            this.context = context;
-        }
+            base.OnCreate(savedInstanceState);
 
-        public override void OnDismiss(IDialogInterface dialog)
-        {
-            base.OnDismiss(dialog);
-            DialogClosed?.Invoke(this, null);
-        }
-
-        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {
-            base.OnCreateView(inflater, container, savedInstanceState);
-            var view = inflater.Inflate(Resource.Layout.dialog_player_settings, container, false);
-            prefs = PreferenceManager.GetDefaultSharedPreferences(context);
-            editor = prefs.Edit();
-            playerName = prefs.GetString("player", null);
-            imgPath = prefs.GetString("imgPath", null);
-            SetListeners(view);
+            SetContentView(Resource.Layout.activity_settings);
+            prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            SetListeners();
             if (IsThereAnAppToTakePictures())
             {
                 CreateDirectoryForPictures();
             }
-
-            return view;
+            
         }
 
-        private void SetListeners(View view)
+        private void SetListeners()
         {
-            ivPlayer = view.FindViewById<ImageView>(Resource.Id.iv_player_settings);
-            ivPlayer.Click += IvPlayer_Click;
-            var layout = view.FindViewById<LinearLayout>(Resource.Id.layout_player_settings_mai);
-            var file = new File(imgPath);
-            playerImg = BitmapFactory.DecodeResource(context.Resources, Resource.Drawable.Adrian);
-            int height = context.Resources.DisplayMetrics.HeightPixels;
-            int width = ivPlayer.Height;
-            if (file.Exists())
+            playerName = prefs.GetString("player", null);
+            imgPath = prefs.GetString("imgPath", null);
+            if (imgPath == null)
             {
-                playerImg = file.Path.LoadAndResizeBitmap(width, height);
-                var bitmap = file.Path.ExifRotateBitmap(playerImg);
-                ivPlayer.SetImageBitmap(bitmap);
+                playerImg = BitmapFactory.DecodeResource(Resources, Resource.Drawable.Adrian);
             }
-            editPlayerName = view.FindViewById<EditText>(Resource.Id.et_player_settings);
+            else
+            {
+                try
+                {
+                    playerImg = BitmapFactory.DecodeFile(imgPath);
+                }
+                catch (Exception ex)
+                {
+                    Toast.MakeText(this, ex.Message, ToastLength.Long).Show();
+                }
+            }
+
+            editPlayerName = FindViewById<EditText>(Resource.Id.et_player_settings);
             if (editPlayerName != null)
             {
                 editPlayerName.Text = playerName;
             }
-            
-            btnSave = view.FindViewById<Button>(Resource.Id.btn_player_settings_save);
+            ivPlayer = FindViewById<ImageView>(Resource.Id.iv_player_settings);
+            ivPlayer.Click += IvPlayer_Click;
+            btnSave = FindViewById<Button>(Resource.Id.btn_player_settings_save);
             btnSave.Click += BtnSave_Click;
         }
 
-
-
-
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            editor.PutString("player", playerName);
-            editor.PutString("imgPath", imgPath);
+            editor = prefs.Edit();
+            editor.PutString("player", editPlayerName.Text);
+            editor.PutString("imgPath", null);
             editor.Apply();
-            Dismiss();
+
         }
 
-        public override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-
             base.OnActivityResult(requestCode, resultCode, data);
+            //Bitmap bitmap = (Bitmap)data.Extras.Get("data");
 
-            //Make it available in the gallery
+
+            //Make it available in the gallery 
 
             Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
-            Uri contentUri = FileProvider.GetUriForFile(context, AUTHORITY, App._file);
+            Uri contentUri = FileProvider.GetUriForFile(this, AUTHORITY, App._file);
             mediaScanIntent.SetData(contentUri);
-            context.SendBroadcast(mediaScanIntent);
+            SendBroadcast(mediaScanIntent);
 
             // Display in ImageView. We will resize the bitmap to fit the display.
             // Loading the full sized image will consume to much memory
             // and cause the application to crash.
-            
+
             int height = Resources.DisplayMetrics.HeightPixels;
             int width = ivPlayer.Height;
             App.bitmap = App._file.Path.LoadAndResizeBitmap(width, height);
             if (App.bitmap != null)
             {
-                ivPlayer.SetImageBitmap(App._file.Path.ExifRotateBitmap(App.bitmap));
-                imgPath = App._file.Path;
+                ivPlayer.SetImageBitmap(App.bitmap);
                 App.bitmap = null;
             }
+
             // Dispose of the Java side bitmap.
             GC.Collect();
 
         }
-
-
 
         private void IvPlayer_Click(object sender, EventArgs e)
         {
             //Toast.MakeText(context, "TODO: Change photo!", ToastLength.Long).Show();
             App._file = new File(App._dir, String.Format("playerPhoto_{0}.jpg", Guid.NewGuid()));
             Intent intent = new Intent(MediaStore.ActionImageCapture);
-            intent.PutExtra(MediaStore.ExtraOutput, FileProvider.GetUriForFile(context, AUTHORITY, App._file));
+            //intent.AddFlags(ActivityFlags.GrantWriteUriPermission);
+            //intent.AddFlags(ActivityFlags.GrantReadUriPermission);
+            intent.PutExtra(MediaStore.ExtraOutput, FileProvider.GetUriForFile(this, AUTHORITY, App._file));
             try
             {
                 StartActivityForResult(intent, 0);
@@ -162,29 +152,19 @@ namespace MathFighter
 
         private void CreateDirectoryForPictures()
         {
-
             App._dir = new File(
                 Environment.GetExternalStoragePublicDirectory(
                     Environment.DirectoryPictures), "MathFighterPhotos");
-            try
+            if (!App._dir.Exists())
             {
-                //Toast.MakeText(context, App._dir.ToString(), ToastLength.Long).Show();
                 App._dir.Mkdirs();
-
             }
-
-            catch (Exception ex)
-            {
-                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
-            }
-
-
         }
 
         private bool IsThereAnAppToTakePictures()
         {
             Intent intent = new Intent(MediaStore.ActionImageCapture);
-            IList<ResolveInfo> availableActivities = context.PackageManager.QueryIntentActivities(intent, PackageInfoFlags.MatchDefaultOnly);
+            IList<ResolveInfo> availableActivities = PackageManager.QueryIntentActivities(intent, PackageInfoFlags.MatchDefaultOnly);
 
             return availableActivities != null && availableActivities.Count > 0;
         }

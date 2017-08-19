@@ -51,14 +51,16 @@ namespace MathFighter
 
         private void BtnPlayerSettings_Click(object sender, System.EventArgs e)
         {
-            var transaction = FragmentManager.BeginTransaction();
-            var playerSettingsDialog = new PlayerSettingsDialog(this);
-            playerSettingsDialog.Show(transaction, "player_settings");
-            playerSettingsDialog.DialogClosed += delegate
-            {
-                var tvPlayer = FindViewById<TextView>(Resource.Id.tv_actionbar_player_name);
-                tvPlayer.Text = prefs.GetString("player", null);
-            };
+            Intent intent = new Intent(this, typeof(SettingsActivity));
+            StartActivity(intent);
+            //var transaction = FragmentManager.BeginTransaction();
+            //var playerSettingsDialog = new PlayerSettingsDialog(this);
+            //playerSettingsDialog.Show(transaction, "player_settings");
+            //playerSettingsDialog.DialogClosed += delegate
+            //{
+            //    var tvPlayer = FindViewById<TextView>(Resource.Id.tv_actionbar_player_name);
+            //    tvPlayer.Text = prefs.GetString("player", null);
+            //};
         }
 
        

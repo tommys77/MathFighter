@@ -1,8 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="MathFighter.MathFighter" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
-	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="26" />
+	<uses-sdk android:minSdkVersion="16" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<application android:label="MathFighter" android:theme="@android:style/Theme.Material" />
+  <uses-feature android:name="android.hardware.camera" />
+	<uses-permission android:name="android.permission.CAMERA" />
+	<application android:label="MathFighter" android:theme="@android:style/Theme.Material">
+		<provider android:name="android.support.v4.content.FileProvider" android:authorities="mathfighter.fileprovider" android:exported="false" android:grantUriPermissions="true">
+			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/provider_paths" />
+		</provider>
+	</application>
 	<activity android:name=".MainActivity">
 		<intent-filter>
 			<action android:name="android.intent.action.MAIN" />
@@ -10,6 +16,12 @@
 		</intent-filter>
 	</activity>
 	<activity android:name=".TopPlayersActivity">
+		<intent-filter>
+			<action android:name="android.intent.action.MAIN" />
+			<category android:name="android.intent.category.DEFAULT" />
+		</intent-filter>
+	</activity>
+	<activity android:name=".SettingsActivity">
 		<intent-filter>
 			<action android:name="android.intent.action.MAIN" />
 			<category android:name="android.intent.category.DEFAULT" />

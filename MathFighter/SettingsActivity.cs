@@ -21,7 +21,8 @@ using Android.Util;
 
 namespace MathFighter
 {
-    public class PlayerSettingsDialog : DialogFragment
+    [Activity(Label = "SettingsActivity")]
+    public class SettingsActivity : Activity
     {
         private string playerName;
         private string imgPath;
@@ -32,7 +33,6 @@ namespace MathFighter
         private Bitmap playerImg;
 
         public EventHandler DialogClosed;
-        private Context context;
         private ISharedPreferences prefs;
         private ISharedPreferencesEditor editor;
 
@@ -45,39 +45,27 @@ namespace MathFighter
             public static Bitmap bitmap;
         }
 
-        public PlayerSettingsDialog(Context context)
+        protected override void OnCreate(Bundle savedInstanceState)
         {
-            this.context = context;
-        }
+            base.OnCreate(savedInstanceState);
 
-        public override void OnDismiss(IDialogInterface dialog)
-        {
-            base.OnDismiss(dialog);
-            DialogClosed?.Invoke(this, null);
-        }
-
-        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {
-            base.OnCreateView(inflater, container, savedInstanceState);
-            var view = inflater.Inflate(Resource.Layout.dialog_player_settings, container, false);
-            prefs = PreferenceManager.GetDefaultSharedPreferences(context);
-
+            SetContentView(Resource.Layout.activity_settings);
+            prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            SetListeners();
             if (IsThereAnAppToTakePictures())
             {
                 CreateDirectoryForPictures();
             }
-            SetListeners(view);
-
-            return view;
+            
         }
 
-        private void SetListeners(View view)
+        private void SetListeners()
         {
             playerName = prefs.GetString("player", null);
             imgPath = prefs.GetString("imgPath", null);
             if (imgPath == null)
             {
-                playerImg = BitmapFactory.DecodeResource(context.Resources, Resource.Drawable.Adrian);
+                playerImg = BitmapFactory.DecodeResource(Resources, Resource.Drawable.Adrian);
             }
             else
             {
@@ -87,18 +75,18 @@ namespace MathFighter
                 }
                 catch (Exception ex)
                 {
-                    Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
+                    Toast.MakeText(this, ex.Message, ToastLength.Long).Show();
                 }
             }
 
-            editPlayerName = view.FindViewById<EditText>(Resource.Id.et_player_settings);
+            editPlayerName = FindViewById<EditText>(Resource.Id.et_player_settings);
             if (editPlayerName != null)
             {
                 editPlayerName.Text = playerName;
             }
-            ivPlayer = view.FindViewById<ImageView>(Resource.Id.iv_player_settings);
+            ivPlayer = FindViewById<ImageView>(Resource.Id.iv_player_settings);
             ivPlayer.Click += IvPlayer_Click;
-            btnSave = view.FindViewById<Button>(Resource.Id.btn_player_settings_save);
+            btnSave = FindViewById<Button>(Resource.Id.btn_player_settings_save);
             btnSave.Click += BtnSave_Click;
         }
 
@@ -108,18 +96,21 @@ namespace MathFighter
             editor.PutString("player", editPlayerName.Text);
             editor.PutString("imgPath", null);
             editor.Apply();
-            Dismiss();
+
         }
 
-        public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
             //Bitmap bitmap = (Bitmap)data.Extras.Get("data");
 
-            Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile, FileProvider.GetUriForFile(context, AUTHORITY, App._file));
-            Uri contentUri = Uri.FromFile(App._file);
+
+            //Make it available in the gallery 
+
+            Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
+            Uri contentUri = FileProvider.GetUriForFile(this, AUTHORITY, App._file);
             mediaScanIntent.SetData(contentUri);
-            Activity.SendBroadcast(mediaScanIntent);
+            SendBroadcast(mediaScanIntent);
 
             // Display in ImageView. We will resize the bitmap to fit the display.
             // Loading the full sized image will consume to much memory
@@ -143,12 +134,13 @@ namespace MathFighter
         {
             //Toast.MakeText(context, "TODO: Change photo!", ToastLength.Long).Show();
             App._file = new File(App._dir, String.Format("playerPhoto_{0}.jpg", Guid.NewGuid()));
-            Intent intent = new Intent(MediaStore.ActionImageCapture, FileProvider.GetUriForFile(context, AUTHORITY, App._file));
-            intent.AddFlags(ActivityFlags.GrantReadUriPermission);
-            intent.PutExtra(MediaStore.ExtraOutput, FileProvider.GetUriForFile(context, AUTHORITY, App._file));
+            Intent intent = new Intent(MediaStore.ActionImageCapture);
+            //intent.AddFlags(ActivityFlags.GrantWriteUriPermission);
+            //intent.AddFlags(ActivityFlags.GrantReadUriPermission);
+            intent.PutExtra(MediaStore.ExtraOutput, FileProvider.GetUriForFile(this, AUTHORITY, App._file));
             try
             {
-                Activity.StartActivityForResult(intent, 0);
+                StartActivityForResult(intent, 0);
             }
             catch (ActivityNotFoundException ex)
             {
@@ -156,7 +148,7 @@ namespace MathFighter
             }
         }
 
-        
+
 
         private void CreateDirectoryForPictures()
         {
@@ -172,8 +164,8 @@ namespace MathFighter
         private bool IsThereAnAppToTakePictures()
         {
             Intent intent = new Intent(MediaStore.ActionImageCapture);
-            IList<ResolveInfo> availableActivities = context.PackageManager.QueryIntentActivities(intent, PackageInfoFlags.MatchDefaultOnly);
-            
+            IList<ResolveInfo> availableActivities = PackageManager.QueryIntentActivities(intent, PackageInfoFlags.MatchDefaultOnly);
+
             return availableActivities != null && availableActivities.Count > 0;
         }
 

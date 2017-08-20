@@ -16,17 +16,17 @@ namespace MathFighter.Model
     {
         public int HighscoreId { get; set; }
         public string Player { get; set; }
+        public string ImagePath { get; set; }
         public int Score { get; set; }
         public string Playtime { get; set; }
-        //public string SubjectName { get; set; }
 
-        public HighscoreViewModel(int highscoreId, string player, int score, string playTime)
+        public HighscoreViewModel(int highscoreId, string player, string imagePath, int score, string playTime)
         {
             HighscoreId = highscoreId;
             Player = player;
             Score = score;
             Playtime = playTime;
-          //  SubjectName = subjectName;
+            ImagePath = imagePath;
         }
 
         //public override string ToString()

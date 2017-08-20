@@ -22,6 +22,7 @@ namespace MathFighter
         private const string CreateTableHighscore = "CREATE TABLE IF NOT EXISTS Highscore (" +
                                                       "HighscoreId INTEGER NOT NULL," +
                                                       "Player TEXT NOT NULL," +
+                                                      "ImagePath TEXT," +  
                                                       "Score INTEGER NOT NULL," +
                                                       "Playtime INTEGER NOT NULL," +
                                                       "SubjectId INTEGER NOT NULL," +
@@ -65,9 +66,9 @@ namespace MathFighter
                 {
                     for (var j = 1; j <= 3; j++)
                     {
-                        db.Insert(new Highscore(i, "Unregistered", 0, 0, 1, j));
-                        db.Insert(new Highscore(i, "Unregistered", 0, 0, 2, j));
-                        db.Insert(new Highscore(i, "Unregistered", 0, 0, 3, j));
+                        db.Insert(new Highscore(i, "Unregistered", "", 0, 0, 1, j));
+                        db.Insert(new Highscore(i, "Unregistered", "", 0, 0, 2, j));
+                        db.Insert(new Highscore(i, "Unregistered", "", 0, 0, 3, j));
                     }
                 }
             }
@@ -106,7 +107,7 @@ namespace MathFighter
                 if (item.SubjectId != subjectId) continue;
                 var playtime = TimeSpan.FromMilliseconds(item.Playtime).Minutes + "m" +
                                TimeSpan.FromMilliseconds(item.Playtime).Seconds + "s";
-                highscoresViewList.Add( new HighscoreViewModel( item.HighscoreId, item.Player, item.Score, playtime));
+                highscoresViewList.Add( new HighscoreViewModel( item.HighscoreId, item.Player, item.ImagePath, item.Score, playtime));
             }
             return highscoresViewList;
         }

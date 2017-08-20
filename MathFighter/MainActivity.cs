@@ -11,13 +11,15 @@ using Android.Preferences;
 using MathFighter.Model;
 using Android.Graphics;
 using System;
+using System.Threading.Tasks;
 
 namespace MathFighter
 {
     [Activity(Label = "MathFighter", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        private string dbPath = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "highscore.db3");
+        private readonly string dbPath = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "highscore.db3");
+        private string imgPath;
         private ISharedPreferences prefs;
         private ISharedPreferencesEditor editor;
         private TextView tvTema;
@@ -26,35 +28,44 @@ namespace MathFighter
 
         private TextView tvPlayer;
         private ImageView ivPlayer;
-        private string imgPath;
+
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
             ActionBar.SetDisplayShowHomeEnabled(false);
             ActionBar.SetDisplayShowTitleEnabled(false);
+
             ActionBar.SetCustomView(Resource.Layout.actionbar_main);
             ActionBar.SetDisplayShowCustomEnabled(true);
+
             SetContentView(Resource.Layout.activity_main);
+
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             editor = prefs.Edit();
             editor.PutString("dbPath", dbPath);
             editor.Apply();
-            RefreshScreen();
+
             dbManager = new DatabaseManager(dbPath);
             dbManager.CreateTable();
+
             var highscoreBtn = FindViewById<Button>(Resource.Id.main_btn_highscore);
-            highscoreBtn.Click += HighscoreBtn_Click;
             var startBtn = FindViewById<Button>(Resource.Id.btn_main_start);
-            startBtn.Click += StartBtn_Click;
             var subjectsBtn = FindViewById<Button>(Resource.Id.btn_main_tema);
-            subjectsBtn.Click += SubjectsBtn_Click;
-            var btnVanskelighetsgrad = FindViewById(Resource.Id.btn_main_vanskelighetsgrad);
-            btnVanskelighetsgrad.Click += BtnVanskelighetsgrad_Click;
+            var btnVanskelighetsgrad = FindViewById<Button>(Resource.Id.btn_main_vanskelighetsgrad);
             var btnPlayerSettings = FindViewById<ImageButton>(Resource.Id.btn_main_settings);
+
+            highscoreBtn.Click += HighscoreBtn_Click;
+            startBtn.Click += StartBtn_Click;
+            subjectsBtn.Click += SubjectsBtn_Click;
+            btnVanskelighetsgrad.Click += BtnVanskelighetsgrad_Click;
             btnPlayerSettings.Click += BtnPlayerSettings_Click;
+
             tvPlayer = FindViewById<TextView>(Resource.Id.tv_actionbar_player_name);
             tvPlayer.Text = prefs.GetString("player", null);
+
+            RefreshScreen();
         }
 
         private void BtnPlayerSettings_Click(object sender, System.EventArgs e)
@@ -68,7 +79,7 @@ namespace MathFighter
                 RefreshScreen();
             };
         }
-        
+
         private void BtnVanskelighetsgrad_Click(object sender, System.EventArgs e)
         {
             var difficultyId = prefs.GetInt("difficultyId", 0);
@@ -76,7 +87,7 @@ namespace MathFighter
             {
                 editor.PutInt("difficultyId", 1);
             }
-            else editor.PutInt("difficultyId", difficultyId+1);
+            else editor.PutInt("difficultyId", difficultyId + 1);
             editor.Apply();
             SetDifficulty();
         }
@@ -111,29 +122,51 @@ namespace MathFighter
 
         private void RefreshScreen()
         {
+            Java.IO.File file = null;
             imgPath = prefs.GetString("imgPath", null);
-            var file = new Java.IO.File(imgPath);
-            int height = Resources.DisplayMetrics.HeightPixels;
-            ivPlayer = FindViewById<ImageView>(Resource.Id.iv_actionbar_player);
-            int width = ivPlayer.Height;
-            Bitmap playerImg = BitmapFactory.DecodeResource(Resources, Resource.Drawable.Adrian);
-            if (file.Exists())
+
+            if (imgPath != null)
             {
-                playerImg = file.Path.LoadAndResizeBitmap(width, height);
-                var bitmap = file.Path.ExifRotateBitmap(playerImg);
-                ivPlayer.SetImageBitmap(bitmap);
+                file = new Java.IO.File(imgPath);
             }
 
+            var playerImg = BitmapFactory.DecodeResource(Resources, Resource.Drawable.Adrian);
+            ivPlayer = FindViewById<ImageView>(Resource.Id.iv_actionbar_player);
+            int width = ivPlayer.Height;
+            int height = Resources.DisplayMetrics.HeightPixels;
+            if (file != null)
+            {
+                playerImg = playerImg.PreparePlayerImage(width, height, file.Path);
+            }
+            else playerImg.PreparePlayerImage(width, height);
+
+            ivPlayer.SetImageBitmap(playerImg);
+
             tvTema = FindViewById<TextView>(Resource.Id.tv_main_tema);
-            tvVanskelighetsgrad = FindViewById<TextView>(Resource.Id.tv_main_vanskelighetsgrad);
             tvTema.SetText(prefs.GetString("subject", null) ?? "Ikke valgt", null);
+
+            tvVanskelighetsgrad = FindViewById<TextView>(Resource.Id.tv_main_vanskelighetsgrad);
             SetDifficulty();
         }
 
         private void StartBtn_Click(object sender, System.EventArgs e)
         {
-            Intent quiz = new Intent(this, typeof(QuizActivity));
-            StartActivity(quiz);
+            if (prefs.GetInt("subjectId", 0) != 0)
+            {
+                Intent quiz = new Intent(this, typeof(QuizActivity));
+                StartActivity(quiz);
+            }
+            else
+            {
+                var chooseSubjectAlert = new AlertDialog.Builder(this)
+                    .SetTitle("Vent litt!")
+                    .SetMessage("Du må velge et tema før du kan starte et spill :)")
+                    .SetPositiveButton("OK", (ok, args) =>
+                    {
+                    })
+                    .Show();
+            }
+
         }
 
         private void HighscoreBtn_Click(object sender, System.EventArgs e)
@@ -142,7 +175,7 @@ namespace MathFighter
             StartActivity(intent);
         }
 
-        
+
         protected override void OnResume()
         {
             base.OnResume();

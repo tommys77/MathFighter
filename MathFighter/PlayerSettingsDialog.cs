@@ -30,7 +30,6 @@ namespace MathFighter
         private EditText editPlayerName;
         private ImageView ivPlayer;
         private Button btnSave;
-        private Bitmap playerImg;
 
         public EventHandler DialogClosed;
         private Context context;
@@ -63,8 +62,7 @@ namespace MathFighter
             var view = inflater.Inflate(Resource.Layout.dialog_player_settings, container, false);
             prefs = PreferenceManager.GetDefaultSharedPreferences(context);
             editor = prefs.Edit();
-            playerName = prefs.GetString("player", null);
-            imgPath = prefs.GetString("imgPath", null);
+
             SetListeners(view);
             if (IsThereAnAppToTakePictures())
             {
@@ -77,34 +75,43 @@ namespace MathFighter
         private void SetListeners(View view)
         {
             ivPlayer = view.FindViewById<ImageView>(Resource.Id.iv_player_settings);
+            btnSave = view.FindViewById<Button>(Resource.Id.btn_player_settings_save);
+
             ivPlayer.Click += IvPlayer_Click;
-            var layout = view.FindViewById<LinearLayout>(Resource.Id.layout_player_settings_mai);
-            var file = new File(imgPath);
-            playerImg = BitmapFactory.DecodeResource(context.Resources, Resource.Drawable.Adrian);
+            btnSave.Click += BtnSave_Click;
+
+            playerName = prefs.GetString("player", null);
+            imgPath = prefs.GetString("imgPath", null);
+
+            File file = null;
+
+            if (imgPath != null)
+            {
+                file = new File(imgPath);
+            }
+
+            var playerImg = BitmapFactory.DecodeResource(context.Resources, Resource.Drawable.Adrian);
+
             int height = context.Resources.DisplayMetrics.HeightPixels;
             int width = ivPlayer.Height;
-            if (file.Exists())
+            if (file != null)
             {
-                playerImg = file.Path.LoadAndResizeBitmap(width, height);
-                var bitmap = file.Path.ExifRotateBitmap(playerImg);
-                ivPlayer.SetImageBitmap(bitmap);
+                playerImg = playerImg.PreparePlayerImage(width, height, file.Path);
             }
+            else playerImg.PreparePlayerImage(width, height);
+
+            ivPlayer.SetImageBitmap(playerImg);
+
             editPlayerName = view.FindViewById<EditText>(Resource.Id.et_player_settings);
             if (editPlayerName != null)
             {
                 editPlayerName.Text = playerName;
             }
-            
-            btnSave = view.FindViewById<Button>(Resource.Id.btn_player_settings_save);
-            btnSave.Click += BtnSave_Click;
         }
-
-
-
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            editor.PutString("player", playerName);
+            editor.PutString("player", editPlayerName.Text);
             editor.PutString("imgPath", imgPath);
             editor.Apply();
             Dismiss();
@@ -112,7 +119,6 @@ namespace MathFighter
 
         public override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-
             base.OnActivityResult(requestCode, resultCode, data);
 
             //Make it available in the gallery
@@ -125,9 +131,9 @@ namespace MathFighter
             // Display in ImageView. We will resize the bitmap to fit the display.
             // Loading the full sized image will consume to much memory
             // and cause the application to crash.
-            
-            int height = Resources.DisplayMetrics.HeightPixels;
+
             int width = ivPlayer.Height;
+            int height = Resources.DisplayMetrics.HeightPixels;
             App.bitmap = App._file.Path.LoadAndResizeBitmap(width, height);
             if (App.bitmap != null)
             {
@@ -135,12 +141,11 @@ namespace MathFighter
                 imgPath = App._file.Path;
                 App.bitmap = null;
             }
+
             // Dispose of the Java side bitmap.
             GC.Collect();
 
         }
-
-
 
         private void IvPlayer_Click(object sender, EventArgs e)
         {
@@ -158,27 +163,12 @@ namespace MathFighter
             }
         }
 
-
-
         private void CreateDirectoryForPictures()
         {
-
             App._dir = new File(
                 Environment.GetExternalStoragePublicDirectory(
                     Environment.DirectoryPictures), "MathFighterPhotos");
-            try
-            {
-                //Toast.MakeText(context, App._dir.ToString(), ToastLength.Long).Show();
-                App._dir.Mkdirs();
-
-            }
-
-            catch (Exception ex)
-            {
-                Toast.MakeText(context, ex.Message, ToastLength.Long).Show();
-            }
-
-
+            App._dir.Mkdirs();
         }
 
         private bool IsThereAnAppToTakePictures()

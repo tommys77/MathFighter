@@ -4,28 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="100">
-  <ListView
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:id="@+id/listView_top_player_highscores"
-      android:layout_weight="97"/>
-  <LinearLayout
-         android:orientation="horizontal"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_gravity="center_horizontal"
-         android:layout_weight="3">
-    <Button
-        android:text="Tema"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:id="@+id/btn_top_player_subject" />
-    <Button
-        android:text="Vanskelighetsgrad"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:id="@+id/btn_top_player_difficulty" />
-  </LinearLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/listView_top_player_highscores"
+        android:layout_weight="97" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="3">
+        <Button
+            android:text="Tema"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/btn_top_player_subject" />
+        <Button
+            android:text="Vanskelighetsgrad"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/btn_top_player_difficulty" />
+    </LinearLayout>
 </LinearLayout>

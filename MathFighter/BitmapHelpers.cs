@@ -9,6 +9,16 @@ namespace MathFighter
 
     public static class BitmapHelpers
     {
+        public static Bitmap PreparePlayerImage(this Bitmap bitmap, int width, int height, string path = "")
+        {
+            if (!path.Equals(""))
+            {
+                var image = path.LoadAndResizeBitmap(width, height);
+                bitmap = path.ExifRotateBitmap(image);
+            }
+            return bitmap;
+        }
+
         public static Bitmap LoadAndResizeBitmap(this string fileName, int width, int height)
         {
             GC.Collect();
@@ -39,7 +49,6 @@ namespace MathFighter
 
         public static Bitmap ExifRotateBitmap(this string filepath, Bitmap bitmap)
         {
-            GC.Collect();
             var exif = new ExifInterface(filepath);
             var rotation = exif.GetAttributeInt(ExifInterface.TagOrientation, (int)Orientation.Normal);
             var rotationInDegrees = ExifToDegrees(rotation);

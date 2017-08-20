@@ -57,15 +57,14 @@ namespace MathFighter
             var subjectId = prefs.GetInt("subjectId", 0);
             if (subjectId != 0)
             {
-                var newHighscore = new Highscore(id, yourName.Text, highscore, playtime, subjectId, difficultyId);
+                var newHighscore = new Highscore(id, yourName.Text, prefs.GetString("imgPath", ""), highscore, playtime, subjectId, difficultyId);
                 dbManager.InsertHighscore(newHighscore);
             }
             else
             {
-                Toast.MakeText(this.Activity.BaseContext, "Registrering feilet", ToastLength.Long).Show();
+                Toast.MakeText(Activity.BaseContext, "Registrering feilet", ToastLength.Long).Show();
             }
-            this.Dismiss();
-            
+            Dismiss();
         }
 
         public override void OnDismiss(IDialogInterface dialog)

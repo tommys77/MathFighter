@@ -30,7 +30,9 @@ namespace MathFighter
             ActionBar.SetDisplayShowTitleEnabled(false);
             ActionBar.SetCustomView(Resource.Layout.actionbar_top_player);
             ActionBar.SetDisplayShowCustomEnabled(true);
+
             SetContentView(Resource.Layout.activity_top_player);
+
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             dbPath = prefs.GetString("dbPath", null);
             subjectId = prefs.GetInt("subjectId", 1);

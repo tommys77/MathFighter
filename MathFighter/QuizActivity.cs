@@ -86,7 +86,7 @@ namespace MathFighter
             subjectId = prefs.GetInt("subjectId", 0);
 
             var showQuestion = "";
-            difficultyId = prefs.GetInt("difficultyId", 0);
+            difficultyId = prefs.GetInt("difficultyId", 1);
             var r = 0;
             switch (subjectId)
             {

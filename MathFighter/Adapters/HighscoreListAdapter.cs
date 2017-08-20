@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using MathFighter.Model;
 using Android.Graphics;
+using Android.Content.Res;
 
 namespace MathFighter.Adapters
 {
@@ -18,13 +19,11 @@ namespace MathFighter.Adapters
     {
         public List<HighscoreViewModel> highscores;
         private Context mContext;
-        private Bitmap playerMugshot;
 
         public HighscoreListAdapter(Context context, List<HighscoreViewModel> items)
         {
             highscores = items;
             mContext = context;
-            playerMugshot = BitmapFactory.DecodeResource(context.Resources, Resource.Drawable.Adrian);
         }
 
 
@@ -37,7 +36,7 @@ namespace MathFighter.Adapters
         public override int Count
         {
             get { return highscores.Count; }
-            
+
         }
 
         public override HighscoreViewModel this[int position]
@@ -58,11 +57,16 @@ namespace MathFighter.Adapters
             var txtPlayer = highscoreView.FindViewById<TextView>(Resource.Id.tv_player);
             var txtScore = highscoreView.FindViewById<TextView>(Resource.Id.tv_score);
             var txtPlaytime = highscoreView.FindViewById<TextView>(Resource.Id.tv_playtime);
-            var imgPlayer = highscoreView.FindViewById<ImageView>(Resource.Id.iv_mugshot);
+            var ivPlayer = highscoreView.FindViewById<ImageView>(Resource.Id.iv_mugshot);
             var pos = highscores.IndexOf(highscores[position]) + 1;
 
+            int width = ivPlayer.Height;
+            int height = mContext.Resources.DisplayMetrics.HeightPixels;
+
+            var image = SetPlayerImage(width, height, highscores[position].ImagePath);
+
             txtPos.SetText(pos.ToString(), null);
-            imgPlayer.SetImageBitmap(playerMugshot);
+            ivPlayer.SetImageBitmap(image);
             txtPlayer.SetText("Navn: " + highscores[position].Player, null);
             txtScore.SetText(highscores[position].Score.ToString(), null);
             txtPlaytime.Text = "Tid: " + highscores[position].Playtime;
@@ -70,5 +74,21 @@ namespace MathFighter.Adapters
             return highscoreView;
         }
 
+        private Bitmap SetPlayerImage(int width, int height, string path)
+        {
+            Java.IO.File file = null;
+            if ((path != null) || !path.Equals(""))
+            {
+                file = new Java.IO.File(path);
+            }
+            var playerImg = BitmapFactory.DecodeResource(mContext.Resources, id: Resource.Drawable.Adrian);
+            if (file != null)
+            {
+                playerImg = playerImg.PreparePlayerImage(width, height, path);
+            }
+            else playerImg.PreparePlayerImage(width, height);
+
+            return playerImg;
+        }
     }
 }

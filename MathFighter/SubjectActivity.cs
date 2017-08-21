@@ -21,6 +21,7 @@ namespace MathFighter
         private int questions = 10;
         private ISharedPreferences prefs;
         private ISharedPreferencesEditor editor;
+        private AlertDialog timesTableDialog;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -58,28 +59,34 @@ namespace MathFighter
             var adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerDropDownItem, factorStrings);
             timesTable.Click += delegate
             {
-                 new AlertDialog.Builder(this)
-                     .SetTitle("Velg en rekke")
-                     .SetSingleChoiceItems(adapter,factorStrings.IndexOf(prefs.GetInt("factor", -1).ToString()), TimesTableClicked)
-                     .Create()
-                     .Show();
-             };
+                var builder = new AlertDialog.Builder(this)
+                    .SetTitle("Velg en rekke")
+                    .SetSingleChoiceItems(adapter, factorStrings.IndexOf(prefs.GetInt("factor", -1).ToString()), TimesTableClicked);
+
+                timesTableDialog = builder.Create();
+                timesTableDialog.Show();
+            };
+
             var btnSqrt = FindViewById<Button>(Resource.Id.btn_subject_kvadratrot);
             btnSqrt.Click += delegate
             {
                 SetSharedPreferencesAndFinish(2, "Kvadratrøtter");
+
             };
             var btnLettBlanding = FindViewById<Button>(Resource.Id.btn_subject_lett_blanding);
             btnLettBlanding.Click += delegate
             {
                 SetSharedPreferencesAndFinish(3, "Lett blanding");
             };
+
         }
 
         private void TimesTableClicked(object sender, DialogClickEventArgs e)
         {
+            timesTableDialog.Dismiss();
             var rekke = factorInt.ElementAt(e.Which);
             SetSharedPreferencesAndFinish(1, factorStrings.ElementAt(e.Which), rekke);
+
         }
 
         private void SetSharedPreferencesAndFinish(int subjectId, string subject, int factor = 0)
@@ -91,8 +98,8 @@ namespace MathFighter
             editor.Apply();
             Finish();
         }
-        
 
+        
 
     }
 }

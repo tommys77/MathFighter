@@ -37,7 +37,8 @@ namespace MathFighter
         private static Calculator calculator;
         private List<int> spentQuestions = new List<int>();
         List<int> intList = new List<int>();
-        
+
+        public AlertDialog retryDialog { get; private set; }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -220,18 +221,28 @@ namespace MathFighter
         private void OpenRetryDialog(int totalScore, long playtime)
         {
             var playtimeString = TimeSpan.FromMilliseconds(playtime).Minutes + "m " + TimeSpan.FromMilliseconds(playtime).Seconds + "s";
-            var retry = new AlertDialog.Builder(this)
+
+            var builder = new AlertDialog.Builder(this)
             .SetTitle("En gang til?")
             .SetMessage("Poengsum: " + totalScore + "\nSpilletid: " + playtimeString)
-            .SetNegativeButton("Nei takk!", (cancel, args) =>
-            {
-                Finish();
-            })
-            .SetPositiveButton("OK", (ok, args) =>
-            {
-                Recreate();
-            });
-            retry.Create().Show();
+            .SetNegativeButton("Nei takk!", StopPlaying)
+            .SetPositiveButton("OK", PlayAgain);
+
+            retryDialog = builder.Create();
+            retryDialog.Show();
+
+        }
+
+        private void PlayAgain(object sender, DialogClickEventArgs e)
+        {
+            retryDialog.Dismiss();
+            Recreate();
+        }
+
+        private void StopPlaying(object sender, DialogClickEventArgs e)
+        {
+            retryDialog.Dismiss();
+            Finish();
         }
 
         //Score is based on time spent completing the questions and difficulty. Speedy completion, higher difficulty and more correct answers gives a higher score.
@@ -273,17 +284,27 @@ namespace MathFighter
         //Checks if the answer you gave is correct.
         private void CheckAnswer()
         {
+            if(responseSample != null)
+            {
+                responseSample.Release();
+            }
+
             var answer = (EditText)FindViewById(Resource.Id.answer);
             double.TryParse(answer.Text, out double yourAnswer);
 
             status = (TextView)FindViewById(Resource.Id.status);
             status.SetText("Ditt svar: " + yourAnswer + " Riktig svar: " + rightAnswer, null);
+
             if (yourAnswer.ToString().Equals(rightAnswer.ToString()))
             {
                 correctAnswers++;
                 responseSample = MediaPlayer.Create(this, Resource.Raw.correct);
                 responseSample.Start();
                 status.Append(" ---  Gratulerer du har nå " + correctAnswers + "av " + count + " mulige rette!");
+                if(!responseSample.IsPlaying)
+                {
+                    responseSample.Release();
+                }
                 // status.SetText("Riktig", null);
 
             }
@@ -292,8 +313,19 @@ namespace MathFighter
                 responseSample = MediaPlayer.Create(this, Resource.Raw.incorrect);
                 responseSample.Start();
                 status.Append("  ---  Beklager, det er feil.");
+                if (!responseSample.IsPlaying)
+                {
+                    responseSample.Release();
+                }
             }
             count++;
         }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            responseSample.Release();
+        }
+
     }
 }

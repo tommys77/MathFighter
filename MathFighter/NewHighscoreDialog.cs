@@ -52,6 +52,7 @@ namespace MathFighter
 
         private void Save_Click(object sender, EventArgs e)
         {
+            Dismiss();
             var dbPath = prefs.GetString("dbPath", null);
             var dbManager = new DatabaseManager(dbPath);
             var subjectId = prefs.GetInt("subjectId", 0);
@@ -64,7 +65,7 @@ namespace MathFighter
             {
                 Toast.MakeText(Activity.BaseContext, "Registrering feilet", ToastLength.Long).Show();
             }
-            Dismiss();
+            
         }
 
         public override void OnDismiss(IDialogInterface dialog)

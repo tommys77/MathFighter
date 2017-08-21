@@ -5,14 +5,11 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Widget;
-using Java.Lang;
 using Android.Preferences;
 using System.Diagnostics;
-using System.Globalization;
 using Android.Media;
 using MathFighter.Model;
 using SQLite;
-using Double = System.Double;
 
 namespace MathFighter
 {

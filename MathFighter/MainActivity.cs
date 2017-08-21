@@ -1,17 +1,9 @@
-﻿using System.Collections.Generic;
-using Android.App;
+﻿using Android.App;
 using Android.Widget;
 using Android.OS;
-using Java.Util;
-using Java.Lang;
-using System.IO;
-using SQLite;
 using Android.Content;
 using Android.Preferences;
-using MathFighter.Model;
 using Android.Graphics;
-using System;
-using System.Threading.Tasks;
 
 namespace MathFighter
 {

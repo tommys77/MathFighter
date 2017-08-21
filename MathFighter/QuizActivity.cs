@@ -38,7 +38,7 @@ namespace MathFighter
         private List<int> spentQuestions = new List<int>();
         List<int> intList = new List<int>();
 
-        public AlertDialog retryDialog { get; private set; }
+        private AlertDialog retryDialog;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {

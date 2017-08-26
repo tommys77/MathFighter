@@ -12,7 +12,8 @@
             android:layout_height="67dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:id="@+id/iv_actionbar_player" />
+            android:id="@+id/iv_actionbar_player" 
+            android:clickable="true"/>
         <TextView
             android:text="PlayerName"
             android:layout_centerInParent="true"
@@ -22,13 +23,6 @@
             android:layout_toEndOf="@id/iv_actionbar_player"
             android:layout_toRightOf="@id/iv_actionbar_player"
             android:id="@+id/tv_actionbar_player_name" />
-        <ImageButton
-            android:src="@android:drawable/ic_menu_preferences"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:id="@+id/btn_main_settings" />
+        
     </RelativeLayout>
 </LinearLayout>

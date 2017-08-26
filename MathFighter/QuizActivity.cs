@@ -10,90 +10,177 @@ using System.Diagnostics;
 using Android.Media;
 using MathFighter.Model;
 using SQLite;
+using System.Timers;
 
 namespace MathFighter
 {
     [Activity(Label = "QuizActivity")]
     public class QuizActivity : Activity
     {
+        // Primitives
         private int i;
-        private int x;
-        private int count = 1;
+        private int xFactor;
+        private int counter = 1;
+        private int questionCount;
         private int subjectId;
         private int difficultyId;
-        int correctAnswers = 0;
+        private int correctAnswersCount = 0;
+        private double rightAnswer = 0;
+        private string operation = "";
+        private static string dbPath;
+        bool hasAnswered = false;
+        private long maxPointsPerQuestion = 500;
+        private int spCorrect;
+        private int spIncorrect;
+
+        private List<long> timeBonuses = new List<long>();
+        private List<int> spentQuestions = new List<int>();
+        private List<int> intList = new List<int>();
+        private Stopwatch stopWatch = new Stopwatch();
+        private Timer timer;
+
+        // Android type variables
         private TextView oppgave;
         private TextView tvOppgaveNr;
         private TextView status;
-        private Stopwatch stopWatch = new Stopwatch();
-        private string dbPath;
-        private MediaPlayer responseSample;
-        private ISharedPreferences prefs;
-        private double rightAnswer = 0;
-        private string operation = "";
-        private static Calculator calculator;
-        private List<int> spentQuestions = new List<int>();
-        List<int> intList = new List<int>();
-
+        private TextView txtTimeBonus;
+        private EditText answerEdit;
+        private Button answerBtn;
+        private ProgressBar reverseProgressBar;
         private AlertDialog retryDialog;
+        //private MediaPlayer responseSample;
+        private static ISharedPreferences prefs;
+        private static SoundPool soundPool;
+
+        // Custom type variables
+        private static Calculator calculator;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_quiz);
-            prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-            calculator = new Calculator(this);
-            dbPath = prefs.GetString("dbPath", null);
-            status = (TextView)FindViewById(Resource.Id.status);
+            SetVariables();
+            SetQuizViewElements();
+            SetListeners();
             UpdateQuiz();
-            stopWatch = new Stopwatch();
-            stopWatch.Reset();
-            var answerBtn = (Button)FindViewById(Resource.Id.quiz_btn_answer);
+        }
+
+        private void SetListeners()
+        {
             answerBtn.SoundEffectsEnabled = false;
             answerBtn.Click += AnswerBtn_Click;
-            var answerEdit = (EditText)FindViewById(Resource.Id.answer);
+
+            answerEdit.EditorAction += AnswerEdit_EditorAction;
             answerEdit.Click += delegate
             {
+
                 answerEdit.Text = "";
                 answerEdit.SelectAll();
-                if (count == 1)
+                if (counter == 1)
                 {
                     stopWatch.Start();
                 }
             };
         }
 
-        //When one clicks a button, this is what happens.
+        private void SetVariables()
+        {
+            prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            calculator = new Calculator(this);
+            soundPool = new SoundPool(1, Stream.Music, 0);
+            spCorrect = soundPool.Load(this, Resource.Raw.correct, 1);
+            spIncorrect = soundPool.Load(this, Resource.Raw.incorrect, 1);
+
+            // From shared preferences
+            dbPath = prefs.GetString("dbPath", null);
+            difficultyId = prefs.GetInt("difficultyId", 1);
+            questionCount = prefs.GetInt("question", 10);
+            subjectId = prefs.GetInt("subjectId", 0);
+        }
+
+        private void SetQuizViewElements()
+        {
+            status = FindViewById<TextView>(Resource.Id.status);
+            txtTimeBonus = FindViewById<TextView>(Resource.Id.tv_quiz_timebonus);
+            answerEdit = FindViewById<EditText>(Resource.Id.answer);
+            reverseProgressBar = FindViewById<ProgressBar>(Resource.Id.progressBar1);
+            reverseProgressBar.Max = (int)maxPointsPerQuestion;
+            answerBtn = FindViewById<Button>(Resource.Id.quiz_btn_answer);
+            stopWatch = new Stopwatch();
+
+        }
+
+        // Reusable method to set up timer for each question.
+        private void BeginTimer()
+        {
+            reverseProgressBar.Progress = (int)maxPointsPerQuestion;
+
+            timer = new Timer();
+            timer.Interval = 10;
+            timer.Elapsed += TimerElapsed;
+            hasAnswered = false;
+            timer.Start();
+        }
+
+        private void TimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            if (!hasAnswered)
+            {
+                reverseProgressBar.Progress--;
+            }
+
+            if (reverseProgressBar.Progress == 0)
+            {
+                timer.Stop();
+                RunOnUiThread(() =>
+                {
+                    answerBtn.PerformClick();
+                });
+
+                //reverseProgressBar.Progress = (int)maxPointsPerQuestion;
+                //hasAnswered = true;
+                //answerBtn.PerformClick();
+            }
+        }
+
+        private void AnswerEdit_EditorAction(object sender, TextView.EditorActionEventArgs e)
+        {
+            e.Handled = false;
+            if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
+            {
+                answerBtn.PerformClick();
+            }
+        }
+
+        //When one clicks the answer button, this is what happens.
         private void AnswerBtn_Click(object sender, EventArgs e)
         {
+            hasAnswered = true;
+            timeBonuses.Add(reverseProgressBar.Progress);
+            txtTimeBonus.Text = "Time bonus: " + timeBonuses.Last().ToString();
+            timer.Dispose();
             CheckAnswer();
-
-            if (count > prefs.GetInt("question", 10))
+            if (counter > questionCount)
             {
                 stopWatch.Stop();
                 GameOver();
             }
-
-            UpdateQuiz();
+            else UpdateQuiz();
         }
 
         //For showing the next question
         private void UpdateQuiz()
         {
-
-            subjectId = prefs.GetInt("subjectId", 0);
-
             var showQuestion = "";
-            difficultyId = prefs.GetInt("difficultyId", 1);
-            var r = 0;
+
+
             switch (subjectId)
             {
                 case 1:
-                    x = prefs.GetInt("factor", 1);
-                    int numberOfQuestions = prefs.GetInt("questions", 10);
-                    if (count == 1)
+                    xFactor = prefs.GetInt("factor", 1);
+                    if (counter == 1)
                     {
-                        for (int k = 1; k <= numberOfQuestions; k++)
+                        for (int k = 1; k <= questionCount; k++)
                         {
                             intList.Add(k);
                         }
@@ -103,35 +190,14 @@ namespace MathFighter
                         i = intList.ElementAt(new Random().Next(intList.IndexOf(intList.Last())));
                     }
                     intList.Remove(i);
-                    //if (!spentQuestions.Co(ntains(i)) { UpdateQuiz(); }
-                    //spentQuestions.Add(i);
-                    showQuestion = $"{x} * {i}";
-                    rightAnswer = calculator.Multiply(x, i);
+                    showQuestion = $"{xFactor} * {i}";
+                    rightAnswer = calculator.Multiply(xFactor, i);
                     break;
                 case 2:
-                    var rootableInts = new List<int>();
-                    switch (difficultyId)
-                    {
-                        case 1:
-
-                            GenerateNumbers(10, rootableInts, true);
-                            break;
-                        case 2:
-                            GenerateNumbers(15, rootableInts);
-                            break;
-                        case 3:
-                            GenerateNumbers(25, rootableInts);
-                            break;
-                    }
-                    r = new Random().Next(rootableInts.Count);
-                    x = rootableInts.ElementAt(r);
-                    if (spentQuestions.Contains(x))
-                    {
-                        UpdateQuiz();
-                    }
-                    spentQuestions.Add(x);
-                    showQuestion = "\u221a" + x;
-                    rightAnswer = System.Math.Sqrt(x);
+                    xFactor = GenerateRootQuestion();
+                    spentQuestions.Add(xFactor);
+                    showQuestion = "\u221a" + xFactor;
+                    rightAnswer = Math.Sqrt(xFactor);
                     break;
                 case 3:
                     string[] input = { "+", "-", "/", "*" };
@@ -148,7 +214,7 @@ namespace MathFighter
                     var rnd = new Random();
                     var a = rnd.Next(intList.Count - 1);
                     var b = rnd.Next(intList.Count - 1);
-                    if (operation == "/" && (a == 0 || b == 0 || a % b != 0 ))
+                    if (operation == "/" && (a == 0 || b == 0 || a % b != 0))
                     {
                         UpdateQuiz();
                     }
@@ -159,11 +225,40 @@ namespace MathFighter
             }
             oppgave = (TextView)FindViewById(Resource.Id.tv_quiz_show_question);
             oppgave.SetText(showQuestion, null);
-            var oppgaveNr = "Spørsmål " + count;
+            var oppgaveNr = "Spørsmål " + counter;
             tvOppgaveNr = FindViewById<TextView>(Resource.Id.tv_quiz_current_question);
             tvOppgaveNr.SetText(oppgaveNr, null);
+
+            BeginTimer();
         }
 
+        private int GenerateRootQuestion()
+        {
+            var random = 0;
+            var rootableInts = new List<int>();
+            switch (difficultyId)
+            {
+                case 1:
+
+                    GenerateNumbers(10, rootableInts, true);
+                    break;
+                case 2:
+                    GenerateNumbers(15, rootableInts);
+                    break;
+                case 3:
+                    GenerateNumbers(25, rootableInts);
+                    break;
+            }
+            random = new Random().Next(rootableInts.Count);
+            xFactor = rootableInts.ElementAt(random);
+            if (spentQuestions.Contains(xFactor))
+            {
+                GenerateRootQuestion();
+            }
+            return xFactor;
+        }
+
+        // Generates numbers to use in creating a question
         private void GenerateNumbers(int max, List<int> list, bool sqrt = false)
         {
             for (var k = 0; k <= max; k++)
@@ -173,15 +268,14 @@ namespace MathFighter
             }
         }
 
-
-        //Controls what happens when a game is over.
+        // When the game is over...
         private void GameOver()
         {
             intList.Clear();
-            count = 10;
+            counter = 10;
             var totalScore = CalculateScore();
             var playtime = stopWatch.ElapsedMilliseconds;
-            correctAnswers = 0;
+            correctAnswersCount = 0;
             var lowestScore = FindLowestScore();
             if (lowestScore != null && totalScore > lowestScore.Score)
             {
@@ -190,19 +284,16 @@ namespace MathFighter
             else OpenRetryDialog(totalScore, playtime);
         }
 
-        //Returns the lowest current score in the database
+        // Returns the lowest current score in the database
         private Highscore FindLowestScore()
         {
-
             var db = new SQLiteConnection(dbPath);
-            //var subjectId = prefs.GetInt("subjectId", 0);
-            //Log.WriteLine(LogPriority.Debug, "MyTAG", "Current SubjectID: " + subjectId);
             var highscoreList = db.Table<Highscore>().Where(h => h.SubjectId == subjectId && h.DifficultyId == difficultyId);
             return subjectId != 0 ? highscoreList.OrderByDescending(s => s.Score).Last() : null;
         }
 
-        //Creates a dialog where you can enter your name and save your highscore, as well as remove the
-        //lowest scoring entry from the database.
+        // Opens a dialog fragment where you can enter your name and save your highscore, as well as remove the
+        // lowest scoring entry from the database.
         private void NewHighscore(int totalScore, int lowestScoreId, long playtime)
         {
             var transaction = FragmentManager.BeginTransaction();
@@ -214,7 +305,7 @@ namespace MathFighter
             };
         }
 
-        //Asks if the player wants to have another go, or if he wants to stop.
+        //Asks if the player wants to have another go. Goes back to main if not.
         private void OpenRetryDialog(int totalScore, long playtime)
         {
             var playtimeString = TimeSpan.FromMilliseconds(playtime).Minutes + "m " + TimeSpan.FromMilliseconds(playtime).Seconds + "s";
@@ -227,7 +318,6 @@ namespace MathFighter
 
             retryDialog = builder.Create();
             retryDialog.Show();
-
         }
 
         private void PlayAgain(object sender, DialogClickEventArgs e)
@@ -242,7 +332,9 @@ namespace MathFighter
             Finish();
         }
 
-        //Score is based on time spent completing the questions and difficulty. Speedy completion, higher difficulty and more correct answers gives a higher score.
+
+        // For now, score is calculated depending on time spent (a small bonus for everything below 1 min per 10 questions)
+        // number or correct questions (biggest bonus). The amount of points per question depends on difficulty.
         private int CalculateScore()
         {
             var numberOfQUestions = prefs.GetInt("questions", 10);
@@ -261,7 +353,7 @@ namespace MathFighter
             }
 
             var pointsPerCorrectAnswer = 1000 * difficulty;
-            var baseScore = pointsPerCorrectAnswer * correctAnswers;
+            var baseScore = pointsPerCorrectAnswer * correctAnswersCount;
             long timeBonus;
             long maxTime = 60000;
             if (numberOfQUestions == 20)
@@ -272,57 +364,61 @@ namespace MathFighter
             {
                 timeBonus = 0;
             }
-            else { timeBonus = ((maxTime / numberOfQUestions) - (stopWatch.ElapsedMilliseconds / numberOfQUestions)) * correctAnswers / 10; }
+            else { timeBonus = ((maxTime / numberOfQUestions) - (stopWatch.ElapsedMilliseconds / numberOfQUestions)) * correctAnswersCount / 10; }
             var totalScore = baseScore + timeBonus;
             return (int)totalScore;
-            //return Convert.ToInt32(baseScore * (1F / ((stopWatch.ElapsedMilliseconds / 1000) * (prefs.GetInt("questions", 10) / 10))));
         }
 
-        //Checks if the answer you gave is correct.
+        // Checks if the answer you gave is correct and takes the proper actions.
         private void CheckAnswer()
         {
-            if(responseSample != null)
-            {
-                responseSample.Release();
-            }
+            //if (responseSample != null)
+            //{
+            //    responseSample.Release();
+            //}
 
-            var answer = (EditText)FindViewById(Resource.Id.answer);
-            double.TryParse(answer.Text, out double yourAnswer);
+            double.TryParse(answerEdit.Text, out double yourAnswer);
 
-            status = (TextView)FindViewById(Resource.Id.status);
             status.SetText("Ditt svar: " + yourAnswer + " Riktig svar: " + rightAnswer, null);
 
             if (yourAnswer.ToString().Equals(rightAnswer.ToString()))
             {
-                correctAnswers++;
-                responseSample = MediaPlayer.Create(this, Resource.Raw.correct);
-                responseSample.Start();
-                status.Append(" ---  Gratulerer du har nå " + correctAnswers + "av " + count + " mulige rette!");
-                if(!responseSample.IsPlaying)
-                {
-                    responseSample.Release();
-                }
-                // status.SetText("Riktig", null);
-
+                correctAnswersCount++;
+                //responseSample = MediaPlayer.Create(this, Resource.Raw.correct);
+                //responseSample.Start();
+                soundPool.Play(spCorrect, 1, 1, 0, 0, 1);
+                status.Append(" ---  Gratulerer du har nå " + correctAnswersCount + "av " + counter + " mulige rette!");
+                //if (!responseSample.IsPlaying)
+                //{
+                //    responseSample.Release();
+                //}
             }
             else
             {
-                responseSample = MediaPlayer.Create(this, Resource.Raw.incorrect);
-                responseSample.Start();
+                //responseSample = MediaPlayer.Create(this, Resource.Raw.incorrect);
+                //responseSample.Start();
+                soundPool.Play(spIncorrect, 1, 1, 0, 0, 1);
                 status.Append("  ---  Beklager, det er feil.");
-                if (!responseSample.IsPlaying)
-                {
-                    responseSample.Release();
-                }
+                //if (!responseSample.IsPlaying)
+                //{
+                //    responseSample.Release();
+                //}
             }
-            count++;
+            counter++;
+            answerEdit.Text = "";
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            responseSample.Release();
+            stopWatch.Reset();
+            timer.Dispose();
         }
 
+        protected override void OnPause()
+        {
+            base.OnPause();
+            timer.Dispose();
+        }
     }
 }

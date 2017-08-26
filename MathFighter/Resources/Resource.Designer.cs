@@ -1435,8 +1435,8 @@ namespace MathFighter
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f0d0070
-			public const int action0 = 2131558512;
+			// aapt resource value: 0x7f0d0071
+			public const int action0 = 2131558513;
 			
 			// aapt resource value: 0x7f0d0041
 			public const int action_bar = 2131558465;
@@ -1462,8 +1462,8 @@ namespace MathFighter
 			// aapt resource value: 0x7f0d0042
 			public const int action_context_bar = 2131558466;
 			
-			// aapt resource value: 0x7f0d0074
-			public const int action_divider = 2131558516;
+			// aapt resource value: 0x7f0d0075
+			public const int action_divider = 2131558517;
 			
 			// aapt resource value: 0x7f0d0002
 			public const int action_menu_divider = 2131558402;
@@ -1495,47 +1495,44 @@ namespace MathFighter
 			// aapt resource value: 0x7f0d0018
 			public const int beginning = 2131558424;
 			
+			// aapt resource value: 0x7f0d0056
+			public const int btn_main_start = 2131558486;
+			
 			// aapt resource value: 0x7f0d0052
-			public const int btn_main_settings = 2131558482;
+			public const int btn_main_tema = 2131558482;
 			
-			// aapt resource value: 0x7f0d0057
-			public const int btn_main_start = 2131558487;
+			// aapt resource value: 0x7f0d0054
+			public const int btn_main_vanskelighetsgrad = 2131558484;
 			
-			// aapt resource value: 0x7f0d0053
-			public const int btn_main_tema = 2131558483;
-			
-			// aapt resource value: 0x7f0d0055
-			public const int btn_main_vanskelighetsgrad = 2131558485;
+			// aapt resource value: 0x7f0d006b
+			public const int btn_player_settings_save = 2131558507;
 			
 			// aapt resource value: 0x7f0d0060
-			public const int btn_player_settings_save = 2131558496;
+			public const int btn_subject_gangetabellen = 2131558496;
+			
+			// aapt resource value: 0x7f0d0061
+			public const int btn_subject_kvadratrot = 2131558497;
 			
 			// aapt resource value: 0x7f0d0062
-			public const int btn_subject_gangetabellen = 2131558498;
+			public const int btn_subject_lett_blanding = 2131558498;
 			
-			// aapt resource value: 0x7f0d0063
-			public const int btn_subject_kvadratrot = 2131558499;
+			// aapt resource value: 0x7f0d0065
+			public const int btn_top_player_difficulty = 2131558501;
 			
 			// aapt resource value: 0x7f0d0064
-			public const int btn_subject_lett_blanding = 2131558500;
-			
-			// aapt resource value: 0x7f0d0067
-			public const int btn_top_player_difficulty = 2131558503;
-			
-			// aapt resource value: 0x7f0d0066
-			public const int btn_top_player_subject = 2131558502;
+			public const int btn_top_player_subject = 2131558500;
 			
 			// aapt resource value: 0x7f0d002b
 			public const int buttonPanel = 2131558443;
 			
-			// aapt resource value: 0x7f0d0071
-			public const int cancel_action = 2131558513;
+			// aapt resource value: 0x7f0d0072
+			public const int cancel_action = 2131558514;
 			
 			// aapt resource value: 0x7f0d0039
 			public const int checkbox = 2131558457;
 			
-			// aapt resource value: 0x7f0d0077
-			public const int chronometer = 2131558519;
+			// aapt resource value: 0x7f0d0078
+			public const int chronometer = 2131558520;
 			
 			// aapt resource value: 0x7f0d001c
 			public const int collapseActionView = 2131558428;
@@ -1564,11 +1561,11 @@ namespace MathFighter
 			// aapt resource value: 0x7f0d0019
 			public const int end = 2131558425;
 			
-			// aapt resource value: 0x7f0d007c
-			public const int end_padder = 2131558524;
+			// aapt resource value: 0x7f0d007d
+			public const int end_padder = 2131558525;
 			
-			// aapt resource value: 0x7f0d005f
-			public const int et_player_settings = 2131558495;
+			// aapt resource value: 0x7f0d006a
+			public const int et_player_settings = 2131558506;
 			
 			// aapt resource value: 0x7f0d0025
 			public const int expand_activities_button = 2131558437;
@@ -1591,41 +1588,41 @@ namespace MathFighter
 			// aapt resource value: 0x7f0d0026
 			public const int image = 2131558438;
 			
-			// aapt resource value: 0x7f0d007b
-			public const int info = 2131558523;
+			// aapt resource value: 0x7f0d007c
+			public const int info = 2131558524;
 			
 			// aapt resource value: 0x7f0d0050
 			public const int iv_actionbar_player = 2131558480;
 			
-			// aapt resource value: 0x7f0d006c
-			public const int iv_mugshot = 2131558508;
+			// aapt resource value: 0x7f0d006d
+			public const int iv_mugshot = 2131558509;
 			
-			// aapt resource value: 0x7f0d005e
-			public const int iv_player_settings = 2131558494;
+			// aapt resource value: 0x7f0d0069
+			public const int iv_player_settings = 2131558505;
 			
-			// aapt resource value: 0x7f0d006a
-			public const int layout_player_settings_mai = 2131558506;
+			// aapt resource value: 0x7f0d0068
+			public const int layout_player_settings_mai = 2131558504;
 			
-			// aapt resource value: 0x7f0d0075
-			public const int line1 = 2131558517;
+			// aapt resource value: 0x7f0d0076
+			public const int line1 = 2131558518;
 			
-			// aapt resource value: 0x7f0d0079
-			public const int line3 = 2131558521;
+			// aapt resource value: 0x7f0d007a
+			public const int line3 = 2131558522;
 			
 			// aapt resource value: 0x7f0d0009
 			public const int listMode = 2131558409;
 			
-			// aapt resource value: 0x7f0d0065
-			public const int listView_top_player_highscores = 2131558501;
+			// aapt resource value: 0x7f0d0063
+			public const int listView_top_player_highscores = 2131558499;
 			
 			// aapt resource value: 0x7f0d0028
 			public const int list_item = 2131558440;
 			
-			// aapt resource value: 0x7f0d0058
-			public const int main_btn_highscore = 2131558488;
+			// aapt resource value: 0x7f0d0057
+			public const int main_btn_highscore = 2131558487;
 			
-			// aapt resource value: 0x7f0d0073
-			public const int media_actions = 2131558515;
+			// aapt resource value: 0x7f0d0074
+			public const int media_actions = 2131558516;
 			
 			// aapt resource value: 0x7f0d001a
 			public const int middle = 2131558426;
@@ -1636,11 +1633,11 @@ namespace MathFighter
 			// aapt resource value: 0x7f0d001e
 			public const int never = 2131558430;
 			
-			// aapt resource value: 0x7f0d0068
-			public const int new_highscore_name = 2131558504;
+			// aapt resource value: 0x7f0d0066
+			public const int new_highscore_name = 2131558502;
 			
-			// aapt resource value: 0x7f0d0069
-			public const int new_highscore_ok_btn = 2131558505;
+			// aapt resource value: 0x7f0d0067
+			public const int new_highscore_ok_btn = 2131558503;
 			
 			// aapt resource value: 0x7f0d000e
 			public const int none = 2131558414;
@@ -1650,6 +1647,9 @@ namespace MathFighter
 			
 			// aapt resource value: 0x7f0d002d
 			public const int parentPanel = 2131558445;
+			
+			// aapt resource value: 0x7f0d005a
+			public const int progressBar1 = 2131558490;
 			
 			// aapt resource value: 0x7f0d0005
 			public const int progress_circular = 2131558405;
@@ -1738,29 +1738,29 @@ namespace MathFighter
 			// aapt resource value: 0x7f0d005b
 			public const int status = 2131558491;
 			
-			// aapt resource value: 0x7f0d0072
-			public const int status_bar_latest_event_content = 2131558514;
+			// aapt resource value: 0x7f0d0073
+			public const int status_bar_latest_event_content = 2131558515;
 			
 			// aapt resource value: 0x7f0d004c
 			public const int submit_area = 2131558476;
 			
-			// aapt resource value: 0x7f0d0061
-			public const int sw_subject_antall_sporsmaal = 2131558497;
+			// aapt resource value: 0x7f0d005f
+			public const int sw_subject_antall_sporsmaal = 2131558495;
 			
 			// aapt resource value: 0x7f0d000b
 			public const int tabMode = 2131558411;
 			
-			// aapt resource value: 0x7f0d007a
-			public const int text = 2131558522;
+			// aapt resource value: 0x7f0d007b
+			public const int text = 2131558523;
 			
-			// aapt resource value: 0x7f0d0078
-			public const int text2 = 2131558520;
+			// aapt resource value: 0x7f0d0079
+			public const int text2 = 2131558521;
 			
 			// aapt resource value: 0x7f0d0034
 			public const int textSpacerNoButtons = 2131558452;
 			
-			// aapt resource value: 0x7f0d0076
-			public const int time = 2131558518;
+			// aapt resource value: 0x7f0d0077
+			public const int time = 2131558519;
 			
 			// aapt resource value: 0x7f0d002a
 			public const int title = 2131558442;
@@ -1774,29 +1774,32 @@ namespace MathFighter
 			// aapt resource value: 0x7f0d0051
 			public const int tv_actionbar_player_name = 2131558481;
 			
-			// aapt resource value: 0x7f0d0054
-			public const int tv_main_tema = 2131558484;
+			// aapt resource value: 0x7f0d0053
+			public const int tv_main_tema = 2131558483;
 			
-			// aapt resource value: 0x7f0d0056
-			public const int tv_main_vanskelighetsgrad = 2131558486;
-			
-			// aapt resource value: 0x7f0d006d
-			public const int tv_player = 2131558509;
+			// aapt resource value: 0x7f0d0055
+			public const int tv_main_vanskelighetsgrad = 2131558485;
 			
 			// aapt resource value: 0x7f0d006e
-			public const int tv_playtime = 2131558510;
-			
-			// aapt resource value: 0x7f0d006b
-			public const int tv_position = 2131558507;
-			
-			// aapt resource value: 0x7f0d0059
-			public const int tv_quiz_current_question = 2131558489;
-			
-			// aapt resource value: 0x7f0d005a
-			public const int tv_quiz_show_question = 2131558490;
+			public const int tv_player = 2131558510;
 			
 			// aapt resource value: 0x7f0d006f
-			public const int tv_score = 2131558511;
+			public const int tv_playtime = 2131558511;
+			
+			// aapt resource value: 0x7f0d006c
+			public const int tv_position = 2131558508;
+			
+			// aapt resource value: 0x7f0d0058
+			public const int tv_quiz_current_question = 2131558488;
+			
+			// aapt resource value: 0x7f0d0059
+			public const int tv_quiz_show_question = 2131558489;
+			
+			// aapt resource value: 0x7f0d005e
+			public const int tv_quiz_timebonus = 2131558494;
+			
+			// aapt resource value: 0x7f0d0070
+			public const int tv_score = 2131558512;
 			
 			// aapt resource value: 0x7f0d0008
 			public const int up = 2131558408;
@@ -1939,58 +1942,55 @@ namespace MathFighter
 			public const int activity_quiz = 2130903068;
 			
 			// aapt resource value: 0x7f03001d
-			public const int activity_settings = 2130903069;
+			public const int activity_subject = 2130903069;
 			
 			// aapt resource value: 0x7f03001e
-			public const int activity_subject = 2130903070;
+			public const int activity_top_player = 2130903070;
 			
 			// aapt resource value: 0x7f03001f
-			public const int activity_top_player = 2130903071;
+			public const int dialog_new_highscore = 2130903071;
 			
 			// aapt resource value: 0x7f030020
-			public const int dialog_new_highscore = 2130903072;
+			public const int dialog_player_settings = 2130903072;
 			
 			// aapt resource value: 0x7f030021
-			public const int dialog_player_settings = 2130903073;
+			public const int item_highscore = 2130903073;
 			
 			// aapt resource value: 0x7f030022
-			public const int item_highscore = 2130903074;
+			public const int notification_media_action = 2130903074;
 			
 			// aapt resource value: 0x7f030023
-			public const int notification_media_action = 2130903075;
+			public const int notification_media_cancel_action = 2130903075;
 			
 			// aapt resource value: 0x7f030024
-			public const int notification_media_cancel_action = 2130903076;
+			public const int notification_template_big_media = 2130903076;
 			
 			// aapt resource value: 0x7f030025
-			public const int notification_template_big_media = 2130903077;
+			public const int notification_template_big_media_narrow = 2130903077;
 			
 			// aapt resource value: 0x7f030026
-			public const int notification_template_big_media_narrow = 2130903078;
+			public const int notification_template_lines = 2130903078;
 			
 			// aapt resource value: 0x7f030027
-			public const int notification_template_lines = 2130903079;
+			public const int notification_template_media = 2130903079;
 			
 			// aapt resource value: 0x7f030028
-			public const int notification_template_media = 2130903080;
+			public const int notification_template_part_chronometer = 2130903080;
 			
 			// aapt resource value: 0x7f030029
-			public const int notification_template_part_chronometer = 2130903081;
+			public const int notification_template_part_time = 2130903081;
 			
 			// aapt resource value: 0x7f03002a
-			public const int notification_template_part_time = 2130903082;
+			public const int select_dialog_item_material = 2130903082;
 			
 			// aapt resource value: 0x7f03002b
-			public const int select_dialog_item_material = 2130903083;
+			public const int select_dialog_multichoice_material = 2130903083;
 			
 			// aapt resource value: 0x7f03002c
-			public const int select_dialog_multichoice_material = 2130903084;
+			public const int select_dialog_singlechoice_material = 2130903084;
 			
 			// aapt resource value: 0x7f03002d
-			public const int select_dialog_singlechoice_material = 2130903085;
-			
-			// aapt resource value: 0x7f03002e
-			public const int support_simple_spinner_dropdown_item = 2130903086;
+			public const int support_simple_spinner_dropdown_item = 2130903085;
 			
 			static Layout()
 			{

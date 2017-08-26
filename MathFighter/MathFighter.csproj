@@ -127,9 +127,6 @@
     <AndroidResource Include="Resources\layout\actionbar_main.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\activity_settings.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\dialog_player_settings.axml">
       <SubType>Designer</SubType>
     </AndroidResource>

@@ -1,17 +1,9 @@
-﻿using System.Collections.Generic;
-using Android.App;
+﻿using Android.App;
 using Android.Widget;
 using Android.OS;
-using Java.Util;
-using Java.Lang;
-using System.IO;
-using SQLite;
 using Android.Content;
 using Android.Preferences;
-using MathFighter.Model;
 using Android.Graphics;
-using System;
-using System.Threading.Tasks;
 
 namespace MathFighter
 {
@@ -20,15 +12,15 @@ namespace MathFighter
     {
         private readonly string dbPath = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "highscore.db3");
         private string imgPath;
+
         private ISharedPreferences prefs;
         private ISharedPreferencesEditor editor;
         private TextView tvTema;
         private TextView tvVanskelighetsgrad;
-        private DatabaseManager dbManager;
-
         private TextView tvPlayer;
         private ImageView ivPlayer;
 
+        private DatabaseManager dbManager;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -54,21 +46,21 @@ namespace MathFighter
             var startBtn = FindViewById<Button>(Resource.Id.btn_main_start);
             var subjectsBtn = FindViewById<Button>(Resource.Id.btn_main_tema);
             var btnVanskelighetsgrad = FindViewById<Button>(Resource.Id.btn_main_vanskelighetsgrad);
-            var btnPlayerSettings = FindViewById<ImageButton>(Resource.Id.btn_main_settings);
 
             highscoreBtn.Click += HighscoreBtn_Click;
             startBtn.Click += StartBtn_Click;
             subjectsBtn.Click += SubjectsBtn_Click;
             btnVanskelighetsgrad.Click += BtnVanskelighetsgrad_Click;
-            btnPlayerSettings.Click += BtnPlayerSettings_Click;
 
             tvPlayer = FindViewById<TextView>(Resource.Id.tv_actionbar_player_name);
             tvPlayer.Text = prefs.GetString("player", null);
+            ivPlayer = FindViewById<ImageView>(Resource.Id.iv_actionbar_player);
+            ivPlayer.Click += IvPlayer_Click;
 
             RefreshScreen();
         }
 
-        private void BtnPlayerSettings_Click(object sender, System.EventArgs e)
+        private void IvPlayer_Click(object sender, System.EventArgs e)
         {
             var transaction = FragmentManager.BeginTransaction();
             var playerSettingsDialog = new PlayerSettingsDialog(this);
@@ -79,6 +71,8 @@ namespace MathFighter
                 RefreshScreen();
             };
         }
+
+
 
         private void BtnVanskelighetsgrad_Click(object sender, System.EventArgs e)
         {
@@ -116,8 +110,8 @@ namespace MathFighter
 
         private void SubjectsBtn_Click(object sender, System.EventArgs e)
         {
-            var topics = new Intent(this, typeof(SubjectActivity));
-            StartActivity(topics);
+            var subjects = new Intent(this, typeof(SubjectActivity));
+            StartActivity(subjects);
         }
 
         private void RefreshScreen()
@@ -131,7 +125,6 @@ namespace MathFighter
             }
 
             var playerImg = BitmapFactory.DecodeResource(Resources, Resource.Drawable.Adrian);
-            ivPlayer = FindViewById<ImageView>(Resource.Id.iv_actionbar_player);
             int width = ivPlayer.Height;
             int height = Resources.DisplayMetrics.HeightPixels;
             if (file != null)

@@ -18,6 +18,14 @@
         android:textSize="50dp"
         android:gravity="center_horizontal"
         android:layout_below="@+id/tv_quiz_current_question" />
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_quiz_show_question"
+        android:id="@+id/progressBar1"
+        android:max="5000"
+        android:paddingTop="10dp" />
     <TextView
         android:id="@+id/status"
         android:layout_width="match_parent"
@@ -38,4 +46,12 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/status"
         android:layout_marginBottom="10dp" />
+    <TextView
+        android:text="Time bonus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/progressBar1"
+        android:id="@+id/tv_quiz_timebonus"
+        android:paddingTop="10dp"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

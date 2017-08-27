@@ -125,13 +125,19 @@ namespace MathFighter
             }
 
             var playerImg = BitmapFactory.DecodeResource(Resources, Resource.Drawable.Adrian);
-            int width = ivPlayer.Height;
-            int height = Resources.DisplayMetrics.HeightPixels;
+
             if (file != null)
             {
-                playerImg = playerImg.PreparePlayerImage(width, height, file.Path);
+                playerImg = BitmapFactory.DecodeFile(file.Path);
             }
-            else playerImg.PreparePlayerImage(width, height);
+            
+            //int width = ivPlayer.Height;
+            //int height = Resources.DisplayMetrics.HeightPixels;
+            //if (file != null)
+            //{
+            //    playerImg = playerImg.PreparePlayerImage(width, height, file.Path);
+            //}
+            //else playerImg.PreparePlayerImage(width, height);
 
             ivPlayer.SetImageBitmap(playerImg);
 

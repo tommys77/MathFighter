@@ -12,6 +12,7 @@ using Android.Widget;
 using MathFighter.Model;
 using Android.Graphics;
 using Android.Content.Res;
+using Java.IO;
 
 namespace MathFighter.Adapters
 {
@@ -76,18 +77,18 @@ namespace MathFighter.Adapters
 
         private Bitmap SetPlayerImage(int width, int height, string path)
         {
-            Java.IO.File file = null;
-            if ((path != null) || !path.Equals(""))
+            Bitmap playerImg = BitmapFactory.DecodeResource(mContext.Resources, id: Resource.Drawable.Adrian);
+            var file = new File(path);
+            if (file.Exists())
             {
-                file = new Java.IO.File(path);
+                playerImg = BitmapFactory.DecodeFile(file.Path);
+                
             }
-            var playerImg = BitmapFactory.DecodeResource(mContext.Resources, id: Resource.Drawable.Adrian);
-            if (file != null)
+            else
             {
-                playerImg = playerImg.PreparePlayerImage(width, height, path);
-            }
-            else playerImg.PreparePlayerImage(width, height);
+                playerImg = playerImg.PreparePlayerImage(width, height);
 
+            }
             return playerImg;
         }
     }

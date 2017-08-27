@@ -25,19 +25,19 @@ namespace MathFighter
         private int subjectId;
         private int difficultyId;
         private int correctAnswersCount = 0;
+        private int sfxCorrect;
+        private int sfxIncorrect;
         private double rightAnswer = 0;
+        private long maxTimeBonus = 500;
         private string operation = "";
         private static string dbPath;
         bool hasAnswered = false;
-        private long maxPointsPerQuestion = 500;
-        private int spCorrect;
-        private int spIncorrect;
 
         private List<long> timeBonuses = new List<long>();
         private List<int> spentQuestions = new List<int>();
-        private List<int> intList = new List<int>();
-        private Stopwatch stopWatch = new Stopwatch();
-        private Timer timer;
+        private List<int> numbersList = new List<int>();
+        private Stopwatch totalTimeStopWatch = new Stopwatch();
+        private Timer timeBonusTimer;
 
         // Android type variables
         private TextView oppgave;
@@ -78,7 +78,7 @@ namespace MathFighter
                 answerEdit.SelectAll();
                 if (counter == 1)
                 {
-                    stopWatch.Start();
+                    totalTimeStopWatch.Start();
                 }
             };
         }
@@ -88,13 +88,13 @@ namespace MathFighter
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             calculator = new Calculator(this);
             soundPool = new SoundPool(1, Stream.Music, 0);
-            spCorrect = soundPool.Load(this, Resource.Raw.correct, 1);
-            spIncorrect = soundPool.Load(this, Resource.Raw.incorrect, 1);
+            sfxCorrect = soundPool.Load(this, Resource.Raw.correct, 1);
+            sfxIncorrect = soundPool.Load(this, Resource.Raw.incorrect, 1);
 
             // From shared preferences
             dbPath = prefs.GetString("dbPath", null);
             difficultyId = prefs.GetInt("difficultyId", 1);
-            questionCount = prefs.GetInt("question", 10);
+            questionCount = prefs.GetInt("questions", 10);
             subjectId = prefs.GetInt("subjectId", 0);
         }
 
@@ -104,22 +104,24 @@ namespace MathFighter
             txtTimeBonus = FindViewById<TextView>(Resource.Id.tv_quiz_timebonus);
             answerEdit = FindViewById<EditText>(Resource.Id.answer);
             reverseProgressBar = FindViewById<ProgressBar>(Resource.Id.progressBar1);
-            reverseProgressBar.Max = (int)maxPointsPerQuestion;
+            reverseProgressBar.Max = (int)maxTimeBonus;
             answerBtn = FindViewById<Button>(Resource.Id.quiz_btn_answer);
-            stopWatch = new Stopwatch();
+            totalTimeStopWatch = new Stopwatch();
 
         }
 
         // Reusable method to set up timer for each question.
         private void BeginTimer()
         {
-            reverseProgressBar.Progress = (int)maxPointsPerQuestion;
+            reverseProgressBar.Progress = (int)maxTimeBonus;
 
-            timer = new Timer();
-            timer.Interval = 10;
-            timer.Elapsed += TimerElapsed;
+            timeBonusTimer = new Timer
+            {
+                Interval = 10
+            };
+            timeBonusTimer.Elapsed += TimerElapsed;
             hasAnswered = false;
-            timer.Start();
+            timeBonusTimer.Start();
         }
 
         private void TimerElapsed(object sender, ElapsedEventArgs e)
@@ -131,7 +133,7 @@ namespace MathFighter
 
             if (reverseProgressBar.Progress == 0)
             {
-                timer.Stop();
+                timeBonusTimer.Stop();
                 RunOnUiThread(() =>
                 {
                     answerBtn.PerformClick();
@@ -158,11 +160,11 @@ namespace MathFighter
             hasAnswered = true;
             timeBonuses.Add(reverseProgressBar.Progress);
             txtTimeBonus.Text = "Time bonus: " + timeBonuses.Last().ToString();
-            timer.Dispose();
+            timeBonusTimer.Dispose();
             CheckAnswer();
             if (counter > questionCount)
             {
-                stopWatch.Stop();
+                totalTimeStopWatch.Stop();
                 GameOver();
             }
             else UpdateQuiz();
@@ -173,23 +175,24 @@ namespace MathFighter
         {
             var showQuestion = "";
 
-
             switch (subjectId)
             {
                 case 1:
                     xFactor = prefs.GetInt("factor", 1);
+
+                    // Generate numbers to use first. Up to 20, if you've turned on 20 questions
                     if (counter == 1)
                     {
                         for (int k = 1; k <= questionCount; k++)
                         {
-                            intList.Add(k);
+                            numbersList.Add(k);
                         }
                     }
-                    if (intList.Count() != 0)
+                    if (numbersList.Count() != 0)
                     {
-                        i = intList.ElementAt(new Random().Next(intList.IndexOf(intList.Last())));
+                        i = numbersList.ElementAt(new Random().Next(numbersList.IndexOf(numbersList.Last())));
                     }
-                    intList.Remove(i);
+                    numbersList.Remove(i);
                     showQuestion = $"{xFactor} * {i}";
                     rightAnswer = calculator.Multiply(xFactor, i);
                     break;
@@ -200,27 +203,12 @@ namespace MathFighter
                     rightAnswer = Math.Sqrt(xFactor);
                     break;
                 case 3:
-                    string[] input = { "+", "-", "/", "*" };
-                    operation = input.ElementAt(new Random().Next(input.Count() - 1));
-                    if (intList.Count == 0)
-                    {
-                        GenerateNumbers(10, intList);
-                        if (difficultyId == 2)
-                        {
-                            GenerateNumbers(15, intList);
-                        }
-                        else if (difficultyId == 3) GenerateNumbers(25, intList);
-                    }
-                    var rnd = new Random();
-                    var a = rnd.Next(intList.Count - 1);
-                    var b = rnd.Next(intList.Count - 1);
-                    if (operation == "/" && (a == 0 || b == 0 || a % b != 0))
-                    {
-                        UpdateQuiz();
-                    }
+                    var numbers = GenerateMixedQuestions();
+                    var a = numbers.Item1;
+                    var b = numbers.Item2;
                     showQuestion = $"{a} {operation} {b}";
                     rightAnswer = calculator.MixedSubjects(operation, a, b);
-                    intList.Remove(b);
+                    numbersList.Remove(b);
                     break;
             }
             oppgave = (TextView)FindViewById(Resource.Id.tv_quiz_show_question);
@@ -231,6 +219,31 @@ namespace MathFighter
 
             BeginTimer();
         }
+
+        // Returns a tuple of two integers, made returning two values simple thanks to C#7.
+        private Tuple<int, int> GenerateMixedQuestions()
+        {
+            string[] input = { "+", "-", "/", "*" };
+            operation = input.ElementAt(new Random().Next(input.Count() - 1));
+            if (numbersList.Count == 0)
+            {
+                GenerateNumbers(10, numbersList);
+                if (difficultyId == 2)
+                {
+                    GenerateNumbers(15, numbersList);
+                }
+                else if (difficultyId == 3) GenerateNumbers(25, numbersList);
+            }
+            var rnd = new Random();
+            var a = rnd.Next(numbersList.Count - 1);
+            var b = rnd.Next(numbersList.Count - 1);
+            if (operation == "/" && (a == 0 || b == 0 || a % b != 0))
+            {
+                GenerateMixedQuestions();
+            }
+            return Tuple.Create(a, b);
+        }
+
 
         private int GenerateRootQuestion()
         {
@@ -271,10 +284,10 @@ namespace MathFighter
         // When the game is over...
         private void GameOver()
         {
-            intList.Clear();
+            numbersList.Clear();
             counter = 10;
             var totalScore = CalculateScore();
-            var playtime = stopWatch.ElapsedMilliseconds;
+            var playtime = totalTimeStopWatch.ElapsedMilliseconds;
             correctAnswersCount = 0;
             var lowestScore = FindLowestScore();
             if (lowestScore != null && totalScore > lowestScore.Score)
@@ -337,9 +350,9 @@ namespace MathFighter
         // number or correct questions (biggest bonus). The amount of points per question depends on difficulty.
         private int CalculateScore()
         {
-            var numberOfQUestions = prefs.GetInt("questions", 10);
+            var numberOfQuestions = prefs.GetInt("questions", 10);
             double difficulty;
-            switch (prefs.GetInt("difficultyId", 1))
+            switch (difficultyId)
             {
                 case 2:
                     difficulty = 1.5;
@@ -354,18 +367,39 @@ namespace MathFighter
 
             var pointsPerCorrectAnswer = 1000 * difficulty;
             var baseScore = pointsPerCorrectAnswer * correctAnswersCount;
-            long timeBonus;
-            long maxTime = 60000;
-            if (numberOfQUestions == 20)
+            long timeBonus = 0;
+            foreach (var bonus in timeBonuses)
             {
-                maxTime *= 2;
+                timeBonus += bonus;
             }
-            if (stopWatch.ElapsedMilliseconds > maxTime)
+            var wrongAnswersPenalty = 500 * (questionCount - correctAnswersCount);
+
+            //long maxTime = 60000;
+            //if (numberOfQUestions == 20)
+            //{
+            //    maxTime *= 2;
+            //}
+            //if (totalTimeStopWatch.ElapsedMilliseconds > maxTime)
+            //{
+            //    timeBonus = 0;
+            //}
+            //else { timeBonus = ((maxTime / numberOfQUestions) - (totalTimeStopWatch.ElapsedMilliseconds / numberOfQUestions)) * correctAnswersCount / 10; }
+
+            var totalScore = baseScore;
+            if (difficultyId == 2)
             {
-                timeBonus = 0;
+                totalScore = baseScore + timeBonus;
             }
-            else { timeBonus = ((maxTime / numberOfQUestions) - (stopWatch.ElapsedMilliseconds / numberOfQUestions)) * correctAnswersCount / 10; }
-            var totalScore = baseScore + timeBonus;
+
+            else if (difficulty == 3)
+            {
+                totalScore = baseScore + timeBonus - wrongAnswersPenalty;
+                if (totalScore <= 0)
+                {
+                    return 0;
+                }
+            }
+
             return (int)totalScore;
         }
 
@@ -386,7 +420,7 @@ namespace MathFighter
                 correctAnswersCount++;
                 //responseSample = MediaPlayer.Create(this, Resource.Raw.correct);
                 //responseSample.Start();
-                soundPool.Play(spCorrect, 1, 1, 0, 0, 1);
+                soundPool.Play(sfxCorrect, 1, 1, 0, 0, 1);
                 status.Append(" ---  Gratulerer du har nå " + correctAnswersCount + "av " + counter + " mulige rette!");
                 //if (!responseSample.IsPlaying)
                 //{
@@ -397,7 +431,7 @@ namespace MathFighter
             {
                 //responseSample = MediaPlayer.Create(this, Resource.Raw.incorrect);
                 //responseSample.Start();
-                soundPool.Play(spIncorrect, 1, 1, 0, 0, 1);
+                soundPool.Play(sfxIncorrect, 1, 1, 0, 0, 1);
                 status.Append("  ---  Beklager, det er feil.");
                 //if (!responseSample.IsPlaying)
                 //{
@@ -411,14 +445,14 @@ namespace MathFighter
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            stopWatch.Reset();
-            timer.Dispose();
+            totalTimeStopWatch.Reset();
+            timeBonusTimer.Dispose();
         }
 
         protected override void OnPause()
         {
             base.OnPause();
-            timer.Dispose();
+            timeBonusTimer.Dispose();
         }
     }
 }

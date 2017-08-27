@@ -49,6 +49,7 @@ namespace MathFighter
 
         public static Bitmap ExifRotateBitmap(this string filepath, Bitmap bitmap)
         {
+            GC.Collect();
             var exif = new ExifInterface(filepath);
             var rotation = exif.GetAttributeInt(ExifInterface.TagOrientation, (int)Orientation.Normal);
             var rotationInDegrees = ExifToDegrees(rotation);
@@ -60,6 +61,7 @@ namespace MathFighter
                 matrix.PreRotate(rotationInDegrees);
                 return Bitmap.CreateBitmap(bitmap, 0, 0, bitmap.Width, bitmap.Height, matrix, true);
             }
+            
         }
 
         public static int ExifToDegrees(int exifOrientation)

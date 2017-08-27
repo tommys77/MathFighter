@@ -84,21 +84,24 @@ namespace MathFighter
             imgPath = prefs.GetString("imgPath", null);
 
             File file = null;
-
+            var playerImg = BitmapFactory.DecodeResource(context.Resources, Resource.Drawable.Adrian);
             if (imgPath != null)
             {
                 file = new File(imgPath);
             }
 
-            var playerImg = BitmapFactory.DecodeResource(context.Resources, Resource.Drawable.Adrian);
-
-            int height = context.Resources.DisplayMetrics.HeightPixels;
-            int width = ivPlayer.Height;
             if (file != null)
             {
-                playerImg = playerImg.PreparePlayerImage(width, height, file.Path);
+                playerImg = BitmapFactory.DecodeFile(file.Path);
             }
-            else playerImg.PreparePlayerImage(width, height);
+
+            //int height = context.Resources.DisplayMetrics.HeightPixels;
+            //int width = ivPlayer.Width;
+            //if (file != null)
+            //{
+            //    playerImg = playerImg.PreparePlayerImage(width, height, file.Path);
+            //}
+            //else playerImg.PreparePlayerImage(width, height);
 
             ivPlayer.SetImageBitmap(playerImg);
 
@@ -137,14 +140,43 @@ namespace MathFighter
             App.bitmap = App._file.Path.LoadAndResizeBitmap(width, height);
             if (App.bitmap != null)
             {
-                ivPlayer.SetImageBitmap(App._file.Path.ExifRotateBitmap(App.bitmap));
-                imgPath = App._file.Path;
+                var bitmap = App._file.Path.ExifRotateBitmap(App.bitmap);
+                var newPath = CreateLesserVersionOfImage(App._file.Path, bitmap);
+                if (newPath != null)
+                {
+                    imgPath = newPath;
+                    ivPlayer.SetImageBitmap(BitmapFactory.DecodeFile(newPath));
+                }
                 App.bitmap = null;
             }
 
             // Dispose of the Java side bitmap.
             GC.Collect();
 
+        }
+
+
+        // Trying to create a smaller version of the image and save to MathFighterPhotos.
+        private string CreateLesserVersionOfImage(string path, Bitmap bitmap)
+        {
+            //var filePath = path.Substring(0, path.Length - 4) + "small.jpg";
+            //var file = new File(filePath);
+            
+
+            try
+            {
+                System.IO.FileStream fos = new System.IO.FileStream(path, System.IO.FileMode.Open);
+                Bitmap b = Bitmap.CreateScaledBitmap(bitmap, (int) (bitmap.Width * 0.25), (int) (bitmap.Height * 0.25), false);
+                b.Compress(Bitmap.CompressFormat.Jpeg, 50, fos);
+                fos.Close();
+                return path;
+                //return filePath;
+            }
+            catch (Exception ex)
+            {
+                Toast.MakeText(Activity.BaseContext, ex.Message + " \nCould not create smaller version, no image saved", ToastLength.Long).Show();
+            }
+            return null;
         }
 
         private void IvPlayer_Click(object sender, EventArgs e)

@@ -113,15 +113,23 @@ namespace MathFighter
         // Reusable method to set up timer for each question.
         private void BeginTimer()
         {
-            reverseProgressBar.Progress = (int)maxTimeBonus;
-
-            timeBonusTimer = new Timer
+            if (difficultyId != 1)
             {
-                Interval = 10
-            };
-            timeBonusTimer.Elapsed += TimerElapsed;
-            hasAnswered = false;
-            timeBonusTimer.Start();
+                reverseProgressBar.Visibility = Android.Views.ViewStates.Visible;
+                reverseProgressBar.Progress = (int)maxTimeBonus;
+
+                timeBonusTimer = new Timer
+                {
+                    Interval = 10
+                };
+                timeBonusTimer.Elapsed += TimerElapsed;
+                hasAnswered = false;
+                timeBonusTimer.Start();
+            }
+            else
+            {
+                reverseProgressBar.Visibility = Android.Views.ViewStates.Invisible;
+            }
         }
 
         private void TimerElapsed(object sender, ElapsedEventArgs e)
@@ -158,9 +166,15 @@ namespace MathFighter
         private void AnswerBtn_Click(object sender, EventArgs e)
         {
             hasAnswered = true;
-            timeBonuses.Add(reverseProgressBar.Progress);
-            txtTimeBonus.Text = "Time bonus: " + timeBonuses.Last().ToString();
-            timeBonusTimer.Dispose();
+            if(difficultyId != 1)
+            {
+                timeBonuses.Add(reverseProgressBar.Progress);
+                txtTimeBonus.Text = "Time bonus: " + timeBonuses.Last().ToString();
+            }
+            if (timeBonusTimer != null)
+            {
+                timeBonusTimer.Dispose();
+            }
             CheckAnswer();
             if (counter > questionCount)
             {
@@ -446,13 +460,20 @@ namespace MathFighter
         {
             base.OnDestroy();
             totalTimeStopWatch.Reset();
-            timeBonusTimer.Dispose();
+            if (timeBonusTimer != null)
+            {
+                timeBonusTimer.Dispose();
+            }
         }
 
         protected override void OnPause()
         {
             base.OnPause();
-            timeBonusTimer.Dispose();
+            if(timeBonusTimer != null)
+            {
+                timeBonusTimer.Dispose();
+            }
+            
         }
     }
 }

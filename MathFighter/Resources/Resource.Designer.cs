@@ -2088,7 +2088,7 @@ namespace MathFighter
 			public const int abc_toolbar_collapse_description = 2131165202;
 			
 			// aapt resource value: 0x7f070016
-			public const int square_root_symbol = 2131165206;
+			public const int squarerootsymbol = 2131165206;
 			
 			// aapt resource value: 0x7f070013
 			public const int status_bar_notification_info_overflow = 2131165203;

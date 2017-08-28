@@ -37,6 +37,10 @@ namespace MathFighter
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             editor = prefs.Edit();
             editor.PutString("dbPath", dbPath);
+            if(prefs.GetInt("difficultyId", 0) == 0)
+            {
+                editor.PutInt("difficultyId", 1);
+            }
             editor.Apply();
 
             dbManager = new DatabaseManager(dbPath);

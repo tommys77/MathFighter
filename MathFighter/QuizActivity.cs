@@ -48,6 +48,7 @@ namespace MathFighter
         private Button answerBtn;
         private ProgressBar reverseProgressBar;
         private AlertDialog retryDialog;
+        private AlertDialog continueDialog;
         //private MediaPlayer responseSample;
         private static ISharedPreferences prefs;
         private static SoundPool soundPool;
@@ -120,7 +121,7 @@ namespace MathFighter
 
                 timeBonusTimer = new Timer
                 {
-                    Interval = 10
+                    Interval = 20
                 };
                 timeBonusTimer.Elapsed += TimerElapsed;
                 hasAnswered = false;
@@ -456,6 +457,12 @@ namespace MathFighter
             answerEdit.Text = "";
         }
 
+        private void ContinueGame(object sender, DialogClickEventArgs e)
+        {
+            continueDialog.Dismiss();
+            timeBonusTimer.Start();
+        }
+
         protected override void OnDestroy()
         {
             base.OnDestroy();
@@ -471,9 +478,24 @@ namespace MathFighter
             base.OnPause();
             if(timeBonusTimer != null)
             {
-                timeBonusTimer.Dispose();
+                timeBonusTimer.Stop();
             }
-            
+        }
+
+        protected override void OnRestart()
+        {
+            base.OnResume();
+            if(timeBonusTimer != null)
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                    .SetTitle("Pause")
+                    .SetMessage("Trykk for å fortsette")
+                    .SetNegativeButton("Ok", ContinueGame);
+
+                continueDialog = builder.Create();
+                continueDialog.Show();
+            }
+
         }
     }
 }
